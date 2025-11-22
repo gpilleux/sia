@@ -20,17 +20,32 @@ SIA is a reusable framework that injects high-level architectural reasoning, dom
 
 SIA is designed to be installed as a git submodule in your project:
 
-\`\`\`bash
+```bash
 # In your project root
 git submodule add https://github.com/gpilleux/sia.git sia
-cd sia && bash installer/install.sh
-\`\`\`
+cd sia && bash installer/install.sh  # macOS/Linux
+# or
+cd sia && installer\install.bat      # Windows
+```
 
-The installer will:
-1. Auto-discover your project structure
-2. Generate \`.sia.detected.yaml\` configuration
-3. Create \`.github/copilot-instructions.md\` with SIA integration
-4. Initialize \`.agents/\` directory for project-specific agents
+**What happens:**
+1. ✅ Auto-detects your project structure (backend/, domain/, api/)
+2. ✅ Identifies tech stack (Python, FastAPI, Next.js, etc.)
+3. ✅ Extracts bounded contexts from domain layer
+4. ✅ Generates `.sia.detected.yaml` configuration
+5. ✅ Creates `.github/copilot-instructions.md` with SIA integration
+
+**Prerequisites:**
+- Git 2.0+
+- Python 3.10+
+- GitHub Copilot subscription (for AI orchestration)
+
+**Platform Support:**
+- ✅ macOS (Homebrew recommended)
+- ✅ Linux (Debian/Ubuntu, RHEL/CentOS)
+- ✅ Windows (PowerShell/Command Prompt)
+
+**Quick Start:** See [QUICKSTART.md](./QUICKSTART.md) for detailed step-by-step guide.
 
 ## Directory Structure
 
