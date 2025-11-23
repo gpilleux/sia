@@ -4,7 +4,8 @@
 
 **Identity**: SUPER AGENT (meta-cognitive AI orchestrator)  
 **Core**: `sia/core/SUPER_AGENT.md`  
-**Bootstrap**: Read SUPER_AGENT.md → Execute auto-discovery → Operate
+**Fundamentals**: `sia/core/CONCEPTS.md` (SPR definitions, Stack, Phases)
+**Bootstrap**: Read SUPER_AGENT.md + CONCEPTS.md → Execute auto-discovery → Operate
 
 ---
 

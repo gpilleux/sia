@@ -41,8 +41,11 @@ def discover_project_context():
     """
     # PHASE 1: Locate Meta-System
     meta_system = find_file("sia/core/SUPER_AGENT.md")
+    fundamentals = find_file("sia/core/CONCEPTS.md")
     if meta_system:
         read(meta_system)  # Understand orchestration framework
+    if fundamentals:
+        read(fundamentals) # Understand core definitions (SPR, Stack, Phases)
     
     # PHASE 2: Discover Primary SPR
     spr_candidates = [
