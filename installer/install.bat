@@ -58,7 +58,11 @@ echo See sia\requirements\README.md for complete workflow. >> .sia\requirements\
 echo # Project Skills > .sia\skills\README.md
 echo Reusable skills available in sia\skills\ >> .sia\skills\README.md
 
+REM Copy INIT_REQUIRED template
+copy sia\templates\INIT_REQUIRED.template.md .sia\INIT_REQUIRED.md >nul
+
 echo    [OK] .sia\ structure created
+echo    [OK] .sia\INIT_REQUIRED.md created (one-time init instructions)
 
 echo.
 echo [STEP 2/3] Running Auto-Discovery...
@@ -81,6 +85,7 @@ echo   Created:
 echo   - Directory: .sia\ (agents, knowledge, requirements, skills)
 echo   - Configuration: .sia.detected.yaml
 echo   - Instructions: .github\copilot-instructions.md
+echo   - Init Protocol: .sia\INIT_REQUIRED.md (one-time)
 echo.
 echo   WARNING: Repository requires SUPER AGENT initialization
 echo.

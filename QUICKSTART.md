@@ -10,30 +10,48 @@
 
 ## Installation
 
-### Step 1: Add SIA as Git Submodule
+### Option 1: Git Submodule (Recommended)
 
-Navigate to your project root and run:
+**Why submodule**: Keep SIA updated across projects, track framework version, reuse configuration.
+
+**Step 1**: Add SIA as submodule:
 
 ```bash
 git submodule add https://github.com/gpilleux/sia.git sia
 git submodule update --init --recursive
 ```
 
-### Step 2: Run Installer
+**Step 2**: Run installer:
 
 **macOS / Linux:**
 ```bash
-cd sia
-bash installer/install.sh
+cd sia && bash installer/install.sh
 ```
 
 **Windows:**
 ```cmd
-cd sia
-installer\install.bat
+cd sia && installer\install.bat
 ```
 
-**What the installer does:**
+---
+
+### Option 2: Standalone Clone
+
+**Why standalone**: Single project, no multi-repo management, simpler `.gitignore`.
+
+**One-liner** (macOS/Linux):
+```bash
+git clone https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh && echo "sia/" >> ../.gitignore
+```
+
+**Windows**:
+```cmd
+git clone https://github.com/gpilleux/sia.git sia && cd sia && installer\install.bat && echo sia/ >> ..\.gitignore
+```
+
+---
+
+### What the Installer Does
 1. ✅ Auto-detects your project structure
 2. ✅ Identifies tech stack (Python, Node, FastAPI, Next.js, etc.)
 3. ✅ Extracts bounded contexts from domain layer

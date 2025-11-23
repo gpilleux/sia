@@ -22,14 +22,26 @@ Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD 
 
 **One-liner for each platform** – copy and paste in your project root:
 
-### macOS / Linux
+### Option 1: Git Submodule (Recommended)
+
+Keeps SIA updated across projects, tracks framework version.
+
+#### macOS / Linux
 ```bash
 git submodule add https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh
 ```
 
-### Windows (PowerShell/CMD)
+#### Windows (PowerShell/CMD)
 ```cmd
 git submodule add https://github.com/gpilleux/sia.git sia && cd sia && installer\install.bat
+```
+
+### Option 2: Standalone Clone
+
+Single project, no submodule. Add `sia/` to `.gitignore`.
+
+```bash
+git clone https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh && echo "sia/" >> ../.gitignore
 ```
 
 **That's it!** SIA will auto-discover your project and configure itself in ~30 seconds.

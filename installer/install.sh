@@ -106,7 +106,11 @@ Project-specific automation scripts.
 Reusable skills available in `sia/skills/`
 EOF
 
+# Copy INIT_REQUIRED template
+cp sia/templates/INIT_REQUIRED.template.md .sia/INIT_REQUIRED.md
+
 echo "   ✅ .sia/ structure created"
+echo "   ✅ .sia/INIT_REQUIRED.md created (one-time init instructions)"
 
 echo ""
 echo "[STEP 2/3] Running Auto-Discovery..."
@@ -127,6 +131,7 @@ echo "  Created:"
 echo "  - Directory: .sia/ (agents, knowledge, requirements, skills)"
 echo "  - Configuration: .sia.detected.yaml"
 echo "  - Instructions: .github/copilot-instructions.md"
+echo "  - Init Protocol: .sia/INIT_REQUIRED.md (one-time)"
 echo ""
 echo "⚠️  IMPORTANT: Repository requires SUPER AGENT initialization"
 echo ""
@@ -140,6 +145,7 @@ echo "     - Generate project SPR (.sia/agents/<project>.md)"
 echo "     - Detect specialized agents (e.g., Repository Guardian)"
 echo "     - Create initial knowledge base"
 echo "     - Populate skills catalog"
+echo "     - Delete .sia/INIT_REQUIRED.md (auto-cleanup)"
 echo ""
 echo "  3. Review generated files in .sia/"
 echo "  4. Start working with natural language requirements!"
