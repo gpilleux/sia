@@ -1,4 +1,4 @@
-# SIA (Super Intelligence Agency)
+# Super Intelligence Agency (SIA)
 
 <div align="center">
 
@@ -108,13 +108,13 @@ pip3 install uv
 
 ## 🎯 Core Capabilities
 
-| Capability | Description |
-|------------|-------------|
-| 🧠 **Meta-Cognition** | Reasons about architecture and design patterns above the code |
-| 🔍 **Auto-Discovery** | Detects project identity, tech stack, and domain boundaries automatically |
-| 🏛️ **DDD Enforcement** | Strictly enforces Domain-Driven Design (Layer separation, Dependency Rule) |
-| 📋 **Requirements Management** | Implements rigorous 7-phase QUANT lifecycle |
-| 🛠️ **Skill Injection** | High-leverage tools for complexity analysis, visualization, auditing |
+| Capability                    | Description                                                                |
+| ----------------------------- | -------------------------------------------------------------------------- |
+| 🧠 **Meta-Cognition**          | Reasons about architecture and design patterns above the code              |
+| 🔍 **Auto-Discovery**          | Detects project identity, tech stack, and domain boundaries automatically  |
+| 🏛️ **DDD Enforcement**         | Strictly enforces Domain-Driven Design (Layer separation, Dependency Rule) |
+| 📋 **Requirements Management** | Implements rigorous 7-phase QUANT lifecycle                                |
+| 🛠️ **Skill Injection**         | High-leverage tools for complexity analysis, visualization, auditing       |
 
 ---
 
@@ -286,13 +286,13 @@ SIA evolves with every project. Contributions welcome:
 
 SIA follows these principles:
 
-| Principle | Description |
-|-----------|-------------|
-| **Zero Configuration** | Auto-discovers project context |
-| **Non-Invasive** | Works alongside existing workflows |
-| **Reusable** | Same framework across multiple projects |
-| **Evolvable** | Learns and adapts from each project |
-| **Traceable** | Every decision has a requirement trace |
+| Principle              | Description                             |
+| ---------------------- | --------------------------------------- |
+| **Zero Configuration** | Auto-discovers project context          |
+| **Non-Invasive**       | Works alongside existing workflows      |
+| **Reusable**           | Same framework across multiple projects |
+| **Evolvable**          | Learns and adapts from each project     |
+| **Traceable**          | Every decision has a requirement trace  |
 
 ---
 
