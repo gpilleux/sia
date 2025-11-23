@@ -32,59 +32,65 @@ class AutoDiscovery:
         
         return self.config
 
+    def _find_directory_recursive(self, target_name: str, max_depth: int = 4) -> Optional[Path]:
+        """Recursively search for a directory with given name up to max_depth levels."""
+        def search(current_path: Path, current_depth: int) -> Optional[Path]:
+            if current_depth > max_depth:
+                return None
+                
+            try:
+                for item in current_path.iterdir():
+                    # Skip common ignore patterns
+                    if item.name in [".git", "node_modules", "venv", ".venv", "__pycache__", 
+                                     "dist", "build", ".next", ".pytest_cache", "htmlcov"]:
+                        continue
+                        
+                    if item.is_dir():
+                        if item.name == target_name:
+                            return item
+                        # Recurse into subdirectory
+                        result = search(item, current_depth + 1)
+                        if result:
+                            return result
+            except PermissionError:
+                pass
+                
+            return None
+        
+        return search(self.root, 0)
+
     def extract_bounded_contexts(self):
         print("4️⃣  Extracting Bounded Contexts...")
         contexts = set()
         
-        # Determine domain directory
-        domain_dir = None
-        # Try multiple common patterns
-        possible_paths = [
-            self.root / "backend" / "src" / "erp" / "domain",  # FastAPI with app name
-            self.root / "backend" / "src" / "app" / "domain",
-            self.root / "backend" / "src" / "domain",
-            self.root / "backend" / "domain",
-            self.root / "src" / "domain",
-            self.root / "domain"
-        ]
+        # Strategy 1: Find 'domain' directory recursively (DDD pattern)
+        domain_dir = self._find_directory_recursive("domain")
         
-        for path in possible_paths:
-            if path.exists():
-                domain_dir = path
-                break
-
-        # Strategy 1: Domain Subdirectories
-        if domain_dir and domain_dir.exists():
+        if domain_dir:
+            print(f"   🔍 Found domain directory: {domain_dir.relative_to(self.root)}")
             for item in domain_dir.iterdir():
-                if item.is_dir() and item.name not in ["repositories", "__pycache__", "common", "shared", "entities.py", "value_objects.py"]:
+                if item.is_dir() and item.name not in ["repositories", "__pycache__", "common", "shared"]:
                     contexts.add(item.name.capitalize())
         
-        # Strategy 2: API Routers (if Strategy 1 yielded nothing)
+        # Strategy 2: Find API routers (if Strategy 1 yielded nothing)
         if not contexts:
-            api_dir = None
-            if (self.root / "backend" / "src" / "api" / "v1").exists():
-                api_dir = self.root / "backend" / "src" / "api" / "v1"
-            elif (self.root / "backend" / "api" / "v1").exists():
-                api_dir = self.root / "backend" / "api" / "v1"
-            elif (self.root / "api" / "v1").exists():
-                api_dir = self.root / "api" / "v1"
-
-            if api_dir and api_dir.exists():
-                for item in api_dir.glob("*.py"):
-                    if item.name != "__init__.py":
-                        contexts.add(item.stem.capitalize())
+            # Try finding 'api' directory recursively
+            api_dir = self._find_directory_recursive("api")
             
-            # Try api/routers if api/v1 not found
-            if not contexts:
-                api_dir = None
-                if (self.root / "backend" / "src" / "api" / "routers").exists():
-                    api_dir = self.root / "backend" / "src" / "api" / "routers"
-                elif (self.root / "backend" / "api" / "routers").exists():
-                    api_dir = self.root / "backend" / "api" / "routers"
-                elif (self.root / "api" / "routers").exists():
-                    api_dir = self.root / "api" / "routers"
-
-                if api_dir and api_dir.exists():
+            if api_dir:
+                # Look for v1, routers, or direct route files
+                for subdir_name in ["v1", "routers", "routes"]:
+                    routes_dir = api_dir / subdir_name
+                    if routes_dir.exists():
+                        print(f"   🔍 Found API directory: {routes_dir.relative_to(self.root)}")
+                        for item in routes_dir.glob("*.py"):
+                            if item.name != "__init__.py":
+                                contexts.add(item.stem.capitalize())
+                        if contexts:
+                            break
+                
+                # If no subdirectories, check api_dir itself
+                if not contexts:
                     for item in api_dir.glob("*.py"):
                         if item.name != "__init__.py":
                             contexts.add(item.stem.capitalize())
@@ -146,62 +152,78 @@ class AutoDiscovery:
             print(f"   ✅ Active Agents: {len(agents)} found")
 
 
+    def _find_file_recursive(self, filename: str, max_depth: int = 4) -> Optional[Path]:
+        """Recursively search for a file with given name up to max_depth levels."""
+        def search(current_path: Path, current_depth: int) -> Optional[Path]:
+            if current_depth > max_depth:
+                return None
+                
+            try:
+                for item in current_path.iterdir():
+                    # Skip common ignore patterns
+                    if item.name in [".git", "node_modules", "venv", ".venv", "__pycache__", 
+                                     "dist", "build", ".next", ".pytest_cache", "htmlcov"]:
+                        continue
+                        
+                    if item.is_file() and item.name == filename:
+                        return item
+                    elif item.is_dir():
+                        result = search(item, current_depth + 1)
+                        if result:
+                            return result
+            except PermissionError:
+                pass
+                
+            return None
+        
+        return search(self.root, 0)
+
     def detect_tech_stack(self):
         print("2️⃣  Detecting Technology Stack...")
         stack = []
         architecture = []
         
-        # Backend Detection (Python)
-        backend_root = self.root / "backend"
-        if backend_root.exists():
-            if (backend_root / "pyproject.toml").exists() or (backend_root / "requirements.txt").exists():
-                stack.append("python")
-                # Check for FastAPI
-                if (backend_root / "pyproject.toml").exists():
-                    content = (backend_root / "pyproject.toml").read_text()
-                    if "fastapi" in content:
-                        stack.append("fastapi")
-                elif (backend_root / "requirements.txt").exists():
-                    content = (backend_root / "requirements.txt").read_text()
-                    if "fastapi" in content:
-                        stack.append("fastapi")
-        # Fallback to root
-        elif (self.root / "pyproject.toml").exists() or (self.root / "requirements.txt").exists():
+        # Python Detection (search for pyproject.toml or requirements.txt)
+        pyproject = self._find_file_recursive("pyproject.toml")
+        requirements = self._find_file_recursive("requirements.txt")
+        
+        if pyproject or requirements:
             stack.append("python")
-            if (self.root / "pyproject.toml").exists():
-                content = (self.root / "pyproject.toml").read_text()
-                if "fastapi" in content:
+            # Check for FastAPI
+            config_file = pyproject if pyproject else requirements
+            try:
+                content = config_file.read_text()
+                if "fastapi" in content.lower():
                     stack.append("fastapi")
+                if "django" in content.lower():
+                    stack.append("django")
+                if "flask" in content.lower():
+                    stack.append("flask")
+            except Exception:
+                pass
 
-        # Frontend Detection (Node)
-        frontend_root = self.root / "frontend"
-        if frontend_root.exists() and (frontend_root / "package.json").exists():
+        # Node/JavaScript Detection (search for package.json)
+        package_json = self._find_file_recursive("package.json")
+        
+        if package_json:
             stack.append("node")
-            content = (frontend_root / "package.json").read_text()
-            if "react" in content:
-                stack.append("react")
-            if "next" in content:
-                stack.append("nextjs")
-        # Fallback to root
-        elif (self.root / "package.json").exists():
-            stack.append("node")
-            content = (self.root / "package.json").read_text()
-            if "react" in content:
-                stack.append("react")
-            if "next" in content:
-                stack.append("nextjs")
+            try:
+                content = package_json.read_text()
+                if "react" in content.lower():
+                    stack.append("react")
+                if "next" in content.lower():
+                    stack.append("nextjs")
+                if "vue" in content.lower():
+                    stack.append("vue")
+                if "angular" in content.lower():
+                    stack.append("angular")
+            except Exception:
+                pass
 
-        # Architecture Detection
-        # Check backend/src/domain or backend/domain or root domain
-        domain_path = None
-        if (self.root / "backend" / "src" / "domain").exists():
-            domain_path = self.root / "backend" / "src" / "domain"
-        elif (self.root / "backend" / "domain").exists():
-            domain_path = self.root / "backend" / "domain"
-        elif (self.root / "domain").exists():
-            domain_path = self.root / "domain"
-
-        if domain_path:
+        # Architecture Detection (search for 'domain' directory = DDD)
+        domain_dir = self._find_directory_recursive("domain")
+        
+        if domain_dir:
             architecture.append("ddd")
         elif (self.root / "app").exists() and (self.root / "models").exists():
             architecture.append("mvc")
