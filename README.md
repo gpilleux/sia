@@ -48,7 +48,109 @@ bash sia/installer/install.sh  # Run from project root
 echo "sia/" >> .gitignore
 ```
 
-**That's it!** SIA will auto-discover your project and configure itself in ~30 seconds.
+**Installation complete!** Now tell GitHub Copilot: *"Initialize SIA for this repository"* to activate the Super Agent.
+
+---
+
+## 💡 Usage Scenarios
+
+### Scenario A: Existing Codebase (Brownfield)
+
+**Goal**: Analyze existing code, map architecture, and enforce standards.
+
+```
+You: "Initialize SIA for this repository"
+
+SIA Actions:
+1. ✅ Reads .sia.detected.yaml (tech stack, bounded contexts)
+2. ✅ Generates Project SPR mapping your architecture
+3. ✅ Identifies technical debt and refactoring opportunities
+4. ✅ Sets up requirements/ workflow for future changes
+5. ✅ Baseline analysis (complexity, coverage, dependencies)
+
+Result: Complete architectural understanding + quality metrics
+```
+
+---
+
+### Scenario B: New Project (Greenfield)
+
+**Goal**: Scaffold a new application from scratch using best practices.
+
+```
+You: "Initialize SIA. I want to build a SaaS for pet grooming."
+
+SIA Actions:
+1. ✅ Proposes AI-Native Stack:
+   - Backend: Python + FastAPI + DDD/SOLID/KISS
+   - Database: PostgreSQL 15 + TimescaleDB + PostGIS
+   - Frontend: React 18 + Vite + SSE (real-time)
+   - AI Layer: Google ADK (optional, agents-as-services)
+   - DevOps: Docker Compose (hot reload, all services)
+   - Testing: Playwright MCP (E2E automation)
+
+2. ✅ Scaffolds DDD directory structure:
+   - Domain (entities, value objects, aggregates)
+   - Application (use cases, DTOs)
+   - Infrastructure (repositories, external services)
+   - API (FastAPI endpoints, dependency injection)
+
+3. ✅ Generates Project SPR (.sia/agents/pet_grooming.md)
+4. ✅ Creates first REQ-001 for MVP
+5. ✅ Note: AI is optional. App is 100% functional without agents.
+         AI = Additional layer (assistants, not core logic).
+
+Result: Production-ready structure + clean architecture + MVP roadmap
+```
+
+---
+
+### Scenario C: Feature Implementation
+
+**Natural language to implementation:**
+
+```
+You: "I need user authentication with JWT tokens"
+
+SIA Workflow:
+1. ✅ Creates REQ-XXX with formal specification
+2. ✅ Analyzes impacted bounded contexts (Users, Auth)
+3. ✅ Decomposes into QUANT tasks:
+   - QUANT-001: Domain entities (User, Token)
+   - QUANT-002: Repository interfaces
+   - QUANT-003: JWT service implementation
+   - QUANT-004: API endpoints
+   - QUANT-005: Integration tests
+4. ✅ Guides DDD-compliant implementation
+5. ✅ Validates architecture with skills
+6. ✅ Archives completed requirement
+
+Result: Clean architecture + tests + documentation
+```
+
+---
+
+### Scenario D: Architecture Analysis
+
+**Run analysis skills:**
+
+```bash
+# Check code complexity
+sh sia/skills/check_complexity.sh
+# Output: Functions with Rank C/D/E (refactor candidates)
+
+# Visualize architecture
+sh sia/skills/visualize_architecture.sh  
+# Output: dependency_graph.svg (detect layer violations)
+
+# Check test coverage
+sh sia/skills/check_coverage.sh
+# Output: htmlcov/index.html (coverage gaps)
+
+# Audit DDD compliance
+python3 sia/skills/audit_ddd.py
+# Output: Domain purity violations, layer separation issues
+```
 
 ---
 
@@ -157,7 +259,60 @@ Result: Clean architecture + tests + documentation
 
 ---
 
-## 💡 Example Usage
+## 💡 Usage Scenarios
+
+### Scenario A: Existing Codebase (Brownfield)
+
+**Goal**: Analyze existing code, map architecture, and enforce standards.
+
+```
+You: "Initialize SIA for this repository"
+
+SIA Actions:
+1. ✅ Reads .sia.detected.yaml (tech stack, bounded contexts)
+2. ✅ Generates Project SPR mapping your architecture
+3. ✅ Identifies technical debt and refactoring opportunities
+4. ✅ Sets up requirements/ workflow for future changes
+5. ✅ Baseline analysis (complexity, coverage, dependencies)
+
+Result: Complete architectural understanding + quality metrics
+```
+
+---
+
+### Scenario B: New Project (Greenfield)
+
+**Goal**: Scaffold a new application from scratch using best practices.
+
+```
+You: "Initialize SIA. I want to build a SaaS for pet grooming."
+
+SIA Actions:
+1. ✅ Proposes AI-Native Stack:
+   - Backend: Python + FastAPI + DDD/SOLID/KISS
+   - Database: PostgreSQL 15 + TimescaleDB + PostGIS
+   - Frontend: React 18 + Vite + SSE (real-time)
+   - AI Layer: Google ADK (optional, agents-as-services)
+   - DevOps: Docker Compose (hot reload, all services)
+   - Testing: Playwright MCP (E2E automation)
+
+2. ✅ Scaffolds DDD directory structure:
+   - Domain (entities, value objects, aggregates)
+   - Application (use cases, DTOs)
+   - Infrastructure (repositories, external services)
+   - API (FastAPI endpoints, dependency injection)
+
+3. ✅ Generates Project SPR (.sia/agents/pet_grooming.md)
+4. ✅ Creates first REQ-001 for MVP
+5. ✅ Note: AI is optional. App is 100% functional without agents.
+         AI = Additional layer (assistants, not core logic).
+
+Result: Production-ready structure + clean architecture + MVP roadmap
+```
+
+---
+
+### Scenario C: Feature Implementation
 
 **Natural language to implementation:**
 
@@ -165,20 +320,24 @@ Result: Clean architecture + tests + documentation
 You: "I need user authentication with JWT tokens"
 
 SIA Workflow:
-1. Creates REQ-XXX with formal specification
-2. Analyzes impacted bounded contexts (Users, Auth)
-3. Decomposes into QUANT tasks:
+1. ✅ Creates REQ-XXX with formal specification
+2. ✅ Analyzes impacted bounded contexts (Users, Auth)
+3. ✅ Decomposes into QUANT tasks:
    - QUANT-001: Domain entities (User, Token)
    - QUANT-002: Repository interfaces
    - QUANT-003: JWT service implementation
    - QUANT-004: API endpoints
    - QUANT-005: Integration tests
-4. Guides DDD-compliant implementation
-5. Validates architecture with skills
-6. Archives completed requirement
+4. ✅ Guides DDD-compliant implementation
+5. ✅ Validates architecture with skills
+6. ✅ Archives completed requirement
 
-Result: Clean architecture + tests + documentation ✅
+Result: Clean architecture + tests + documentation
 ```
+
+---
+
+### Scenario D: Architecture Analysis
 
 **Run analysis skills:**
 
@@ -194,6 +353,10 @@ sh sia/skills/visualize_architecture.sh
 # Check test coverage
 sh sia/skills/check_coverage.sh
 # Output: htmlcov/index.html (coverage gaps)
+
+# Audit DDD compliance
+python3 sia/skills/audit_ddd.py
+# Output: Domain purity violations, layer separation issues
 ```
 
 ---
