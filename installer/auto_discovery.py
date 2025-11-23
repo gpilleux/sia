@@ -38,12 +38,20 @@ class AutoDiscovery:
         
         # Determine domain directory
         domain_dir = None
-        if (self.root / "backend" / "src" / "domain").exists():
-            domain_dir = self.root / "backend" / "src" / "domain"
-        elif (self.root / "backend" / "domain").exists():
-            domain_dir = self.root / "backend" / "domain"
-        elif (self.root / "domain").exists():
-            domain_dir = self.root / "domain"
+        # Try multiple common patterns
+        possible_paths = [
+            self.root / "backend" / "src" / "erp" / "domain",  # FastAPI with app name
+            self.root / "backend" / "src" / "app" / "domain",
+            self.root / "backend" / "src" / "domain",
+            self.root / "backend" / "domain",
+            self.root / "src" / "domain",
+            self.root / "domain"
+        ]
+        
+        for path in possible_paths:
+            if path.exists():
+                domain_dir = path
+                break
 
         # Strategy 1: Domain Subdirectories
         if domain_dir and domain_dir.exists():
