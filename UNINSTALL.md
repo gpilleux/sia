@@ -116,16 +116,16 @@ cd sia && bash installer/install.sh
 
 ## 📋 What Gets Removed
 
-| Component | Location | Description |
-|-----------|----------|-------------|
-| **SIA Framework** | `sia/` | Core framework (submodule) |
-| **Project Agents** | `.sia/agents/` | Project-specific agent definitions |
-| **Knowledge Base** | `.sia/knowledge/` | Active and archived knowledge |
-| **Requirements** | `.sia/requirements/` | Requirements management files |
-| **Skills** | `.sia/skills/` | Project-specific automation scripts |
-| **Configuration** | `.sia.detected.yaml` | Auto-detected project config |
-| **Copilot Instructions** | `.github/copilot-instructions.md` | GitHub Copilot integration |
-| **Git Config** | `.gitmodules` | Submodule configuration (if no other submodules) |
+| Component                | Location                          | Description                                      |
+| ------------------------ | --------------------------------- | ------------------------------------------------ |
+| **SIA Framework**        | `sia/`                            | Core framework (submodule)                       |
+| **Project Agents**       | `.sia/agents/`                    | Project-specific agent definitions               |
+| **Knowledge Base**       | `.sia/knowledge/`                 | Active and archived knowledge                    |
+| **Requirements**         | `.sia/requirements/`              | Requirements management files                    |
+| **Skills**               | `.sia/skills/`                    | Project-specific automation scripts              |
+| **Configuration**        | `.sia.detected.yaml`              | Auto-detected project config                     |
+| **Copilot Instructions** | `.github/copilot-instructions.md` | GitHub Copilot integration                       |
+| **Git Config**           | `.gitmodules`                     | Submodule configuration (if no other submodules) |
 
 ---
 

@@ -130,12 +130,12 @@ Copilot loads: `.sia/features/adk.md`, `.sia/features/postgres.md`, `.sia/featur
 
 ## Decision Matrix
 
-| Prompt Type | Location | Lifetime | Token Cost | Cleanup |
-|-------------|----------|----------|------------|---------|
-| **Permanent** | `.github/copilot-instructions.md` | Forever | 2k-5k | Never |
-| **One-Time** | `.sia/INIT_REQUIRED.md` | Single use | 2k-3k | Auto-delete post-execution |
-| **Conditional** | `.sia/features/*.md` | Per-feature | 500-1k each | Manual (rare) |
-| **Session** | `.sia/requirements/*/`, `.sia/knowledge/active/` | Days-weeks | 1k-2k | Archive protocol |
+| Prompt Type     | Location                                         | Lifetime    | Token Cost  | Cleanup                    |
+| --------------- | ------------------------------------------------ | ----------- | ----------- | -------------------------- |
+| **Permanent**   | `.github/copilot-instructions.md`                | Forever     | 2k-5k       | Never                      |
+| **One-Time**    | `.sia/INIT_REQUIRED.md`                          | Single use  | 2k-3k       | Auto-delete post-execution |
+| **Conditional** | `.sia/features/*.md`                             | Per-feature | 500-1k each | Manual (rare)              |
+| **Session**     | `.sia/requirements/*/`, `.sia/knowledge/active/` | Days-weeks  | 1k-2k       | Archive protocol           |
 
 ---
 
