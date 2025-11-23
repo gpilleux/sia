@@ -95,6 +95,9 @@ class SmartInit:
         with open(self.root / ".sia.detected.yaml", "w") as f:
             yaml.dump(config, f, default_flow_style=False)
         print("   -> Updated .sia.detected.yaml")
+        
+        # Generate Copilot Instructions
+        discovery.assemble_instructions()
 
     def _cleanup(self):
         print("5️⃣  Cleaning up...")
