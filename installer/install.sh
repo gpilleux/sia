@@ -113,10 +113,11 @@ echo "   ✅ .sia/ structure created"
 echo "   ✅ .sia/INIT_REQUIRED.md created (one-time init instructions)"
 
 echo ""
-echo "[STEP 2/3] Running Auto-Discovery..."
+echo "[STEP 2/3] Running Smart Initialization..."
 echo "---------------------------------------------------"
-uv run sia/installer/auto_discovery.py || {
-    echo "[ERROR] Auto-discovery failed"
+# Run smart_init.py which handles migration, population, and auto-discovery
+uv run --with pyyaml python3 sia/installer/smart_init.py || {
+    echo "[ERROR] Smart initialization failed"
     exit 1
 }
 

@@ -66,45 +66,58 @@ class DDDAuditor:
 
     def _check_entity_immutability(self):
         print("2️⃣  Checking entity immutability...")
-        entities_file = self.domain_dir / "entities.py"
-        if not entities_file.exists():
+        # Support modular structure: domain/{module}/entities.py
+        entity_files = list(self.domain_dir.rglob("entities.py"))
+        
+        if not entity_files:
+             # Fallback for flat structure
+             flat_entities = self.domain_dir / "entities.py"
+             if flat_entities.exists():
+                 entity_files = [flat_entities]
+
+        if not entity_files:
+            print("⚠️  No entities.py found in domain layer.")
             return
 
-        try:
-            with open(entities_file, "r", encoding="utf-8") as f:
-                tree = ast.parse(f.read())
-            
-            for node in ast.walk(tree):
-                if isinstance(node, ast.ClassDef):
-                    is_dataclass = False
-                    is_frozen = False
-                    
-                    for decorator in node.decorator_list:
-                        if isinstance(decorator, ast.Name) and decorator.id == "dataclass":
-                            is_dataclass = True
-                        elif isinstance(decorator, ast.Call) and isinstance(decorator.func, ast.Name) and decorator.func.id == "dataclass":
-                            is_dataclass = True
-                            for keyword in decorator.keywords:
-                                if keyword.arg == "frozen" and isinstance(keyword.value, ast.Constant) and keyword.value.value is True:
-                                    is_frozen = True
-                    
-                    if is_dataclass and not is_frozen:
-                        self.violations.append(
-                            f"⚠️  Warning in {entities_file.relative_to(self.root)}: Entity '{node.name}' is not frozen (Mutable Domain Object)"
-                        )
-        except Exception as e:
-            print(f"⚠️  Could not parse entities.py: {e}")
+        for entities_file in entity_files:
+            try:
+                with open(entities_file, "r", encoding="utf-8") as f:
+                    tree = ast.parse(f.read())
+                
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef):
+                        is_dataclass = False
+                        is_frozen = False
+                        
+                        for decorator in node.decorator_list:
+                            if isinstance(decorator, ast.Name) and decorator.id == "dataclass":
+                                is_dataclass = True
+                            elif isinstance(decorator, ast.Call) and isinstance(decorator.func, ast.Name) and decorator.func.id == "dataclass":
+                                is_dataclass = True
+                                for keyword in decorator.keywords:
+                                    if keyword.arg == "frozen" and isinstance(keyword.value, ast.Constant) and keyword.value.value is True:
+                                        is_frozen = True
+                        
+                        if is_dataclass and not is_frozen:
+                            self.violations.append(
+                                f"⚠️  Warning in {entities_file.relative_to(self.root)}: Entity '{node.name}' is not frozen (Mutable Domain Object)"
+                            )
+            except Exception as e:
+                print(f"⚠️  Could not parse {entities_file}: {e}")
 
     def _check_repository_pattern(self):
         print("3️⃣  Checking repository pattern...")
-        # Just checking existence for now
-        domain_repos = list(self.domain_dir.glob("repositories/*.py"))
-        infra_repos = list(self.infra_dir.glob("repositories/*.py"))
+        # Check for interfaces in domain
+        domain_repos = list(self.domain_dir.rglob("repositories.py"))
+        
+        # Check for implementations in infrastructure
+        # This is heuristic: looking for 'repositories.py' or 'repositories/' in infrastructure
+        infra_repos = list(self.infra_dir.rglob("repositories.py"))
         
         if not domain_repos:
-            print("⚠️  No repository interfaces found in domain/repositories/")
+            print("⚠️  No repository interfaces found in domain layer (looked for repositories.py)")
         if not infra_repos:
-            print("⚠️  No repository implementations found in infrastructure/repositories/")
+            print("⚠️  No repository implementations found in infrastructure layer")
 
     def _report(self):
         print("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")

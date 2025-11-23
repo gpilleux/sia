@@ -68,6 +68,12 @@ After installation, SIA provides:
 - Identifies architecture patterns (DDD, MVC)
 - Generates `.sia.detected.yaml` configuration
 
+📝 **SPR Skills**
+- **Sparse Priming Representation** (70-80% compression)
+- Extract domain knowledge from code (reverse DDD)
+- Generate Project SPR (`.sia/agents/{project}.md`)
+- Compress documentation for LLM efficiency
+
 🛠️ **Analysis Skills**
 - `check_complexity.sh` - Radon cyclomatic complexity
 - `visualize_architecture.sh` - Pydeps dependency graphs

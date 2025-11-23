@@ -136,18 +136,29 @@ class AutoDiscovery:
     def detect_spr(self):
         print("3️⃣  Detecting SPR & Agents...")
         project_name = self.config["project"].get("name", "unknown")
-        agents_dir = self.root / ".agents"
+        sia_agents_dir = self.root / ".sia" / "agents"  # New structure
+        legacy_agents_dir = self.root / ".agents"      # Legacy structure
         
         spr_path = None
         
-        # Strategy 1: .agents/{project_name}.md
-        candidate = agents_dir / f"{project_name}.md"
+        # Strategy 1: .sia/agents/{project_name}.md (preferred)
+        candidate = sia_agents_dir / f"{project_name}.md"
         if candidate.exists():
             spr_path = str(candidate.relative_to(self.root))
         
-        # Strategy 2: .agents/README.md
-        if not spr_path and (agents_dir / "README.md").exists():
-            spr_path = str((agents_dir / "README.md").relative_to(self.root))
+        # Strategy 2: .agents/{project_name}.md (legacy)
+        if not spr_path:
+            candidate = legacy_agents_dir / f"{project_name}.md"
+            if candidate.exists():
+                spr_path = str(candidate.relative_to(self.root))
+        
+        # Strategy 3: .sia/agents/README.md
+        if not spr_path and (sia_agents_dir / "README.md").exists():
+            spr_path = str((sia_agents_dir / "README.md").relative_to(self.root))
+        
+        # Strategy 4: .agents/README.md (legacy)
+        if not spr_path and (legacy_agents_dir / "README.md").exists():
+            spr_path = str((legacy_agents_dir / "README.md").relative_to(self.root))
             
         # Strategy 3: {PROJECT_NAME}_AGENT.spr.md (common pattern)
         if not spr_path:
@@ -174,16 +185,18 @@ class AutoDiscovery:
         self.config["spr"]["path"] = spr_path
         print(f"   ✅ SPR Found: {spr_path}")
         
-        # Detect Active Agents
-        if agents_dir.exists():
-            agents = []
-            for agent_file in agents_dir.glob("*.md"):
-                if agent_file.name == f"{project_name}.md" or agent_file.name == "README.md":
-                    continue
-                agents.append(agent_file.stem)
-            
-            self.config["agents"]["active"] = agents
-            print(f"   ✅ Active Agents: {len(agents)} found")
+        # Detect Active Agents (both .sia/agents/ and legacy .agents/)
+        agents = []
+        for agents_dir in [sia_agents_dir, legacy_agents_dir]:
+            if agents_dir.exists():
+                for agent_file in agents_dir.glob("*.md"):
+                    if agent_file.name == f"{project_name}.md" or agent_file.name == "README.md":
+                        continue
+                    if agent_file.stem not in agents:  # Avoid duplicates
+                        agents.append(agent_file.stem)
+        
+        self.config["agents"]["active"] = agents
+        print(f"   ✅ Active Agents: {len(agents)} found")
 
 
     def _find_file_recursive(self, filename: str, max_depth: int = 4) -> Optional[Path]:

@@ -71,6 +71,40 @@ ls -la .sia.detected.yaml
 ls -la .github/copilot-instructions.md
 ```
 
+## Initialization Scenarios
+
+Once installed, open VS Code and use GitHub Copilot Chat to initialize the Super Agent based on your project state.
+
+### Scenario A: Existing Codebase (Brownfield)
+**Goal**: Analyze existing code, map architecture, and enforce standards.
+
+1.  **Prompt**: "Initialize SIA for this repository"
+2.  **Agent Action**:
+    *   Reads `.sia.detected.yaml` (tech stack, contexts).
+    *   Generates `SPR` (System Prompt Reference) mapping your architecture.
+    *   Identifies "Technical Debt" and "Refactoring Opportunities".
+    *   Sets up the `requirements/` workflow.
+
+### Scenario B: New Project (Greenfield)
+**Goal**: Scaffold a new application from scratch using best practices.
+
+1.  **Prompt**: "Initialize SIA. I want to build a [Type] application for [Purpose]."
+    *   *Example*: "Initialize SIA. I want to build a SaaS for pet grooming."
+2.  **Agent Action**:
+    *   Proposes **AI-Native Stack** (Default from `sia/agents/sia.md`):
+        *   **Backend**: Python + FastAPI + DDD/SOLID/KISS
+        *   **Database**: PostgreSQL 15 + TimescaleDB + PostGIS
+        *   **Frontend**: React 18 + Vite + SSE (real-time)
+        *   **AI Layer**: Google ADK (optional, agents-as-services)
+        *   **DevOps**: Docker Compose (hot reload, all services)
+        *   **Testing**: Playwright MCP (E2E automation)
+    *   Scaffolds **DDD directory structure** (Domain, Application, Infrastructure, API).
+    *   Generates **Project SPR** (`.sia/agents/{project_name}.md`) - The project's specific architectural agent.
+    *   Creates first `REQ-001` for MVP.
+    *   **Nota**: AI es opcional. La app es 100% funcional sin agentes. AI = Capa adicional (asistentes, no lógica core).
+
+---
+
 ## What You Get
 
 After installation, your project will have:

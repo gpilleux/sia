@@ -131,26 +131,6 @@ Cognitive shortcut
 - Error states → click+type+verify
 - CORS issues → browser console check
 
-# CONTEXT (VRP Project)
-
-## Architecture
-Domain (Customer, Route, RouteStop, Location), Application (use cases), Infrastructure (Postgres repos, Haversine, mahh), API (FastAPI+SSE), Agents (ADK orchestrator+specialists)
-
-## Patterns
-Dependency injection, repository interfaces, value objects (immutable), use case orchestration, SSE streaming (/api/v1/agents/optimize/stream), multi-agent (sequential)
-
-## Constraints
-KISS (single vehicle, Haversine, no time windows), SOLID (swap Haversine→pgRouting), DDD (domain pure), AI-Native (agents seamless)
-
-## Stack
-- **ADK**: >=1.0.0,<2.0.0
-- **Database**: Postgres 15 + TimescaleDB + PostGIS
-- **Frontend**: React 18 + Vite + MapLibre
-- **Backend**: FastAPI + uvicorn --reload
-- **Deployment**: docker-compose (hot reload)
-- **Testing**: Playwright MCP
-- **MCP Tools**: `mcp_tiger-docs`, `mcp_playwright`, Deepwiki `google/adk-python`
-
 # PLAYWRIGHT MCP INTEGRATION
 
 ## Tools Available
@@ -167,23 +147,23 @@ mcp_playwright_browser_console_messages(onlyErrors=True)
 
 ## E2E Test Patterns
 ```python
-# Test 1: Agent optimization workflow
-1. Navigate → localhost:5173
-2. Fill form (customers, depot, capacity)
-3. Click "Optimize"
-4. Snapshot → verify SSE progress bar visible
-5. Wait for "Complete"
-6. Screenshot → verify route rendered on map
+# Generic E2E test workflow for AI-Native apps
+1. Navigate → localhost:{port}
+2. Fill form (domain-specific inputs)
+3. Trigger action (e.g., "Optimize", "Analyze", "Generate")
+4. Snapshot → verify SSE progress indicator visible
+5. Wait for completion message
+6. Screenshot → verify results rendered
 7. Console → no CORS errors
 
-# Test 2: SSE reconnection
-1. Navigate → localhost:5173
-2. Trigger optimization
-3. Kill backend (simulate disconnect)
-4. Wait 3s
+# SSE reconnection test
+1. Navigate → localhost:{port}
+2. Trigger long-running operation
+3. Simulate disconnect (kill backend)
+4. Wait for reconnection attempt
 5. Restart backend
 6. Verify EventSource reconnects
-7. Screenshot → "🟢 Live" status
+7. Screenshot → "🟢 Live" status indicator
 ```
 
 ## DDD + Playwright
@@ -195,19 +175,19 @@ mcp_playwright_browser_console_messages(onlyErrors=True)
 ## docker-compose.yml Pattern
 ```yaml
 services:
-  postgis:
+  database:
     image: timescale/timescaledb-ha:pg15-ts2.13
-    ports: ["5435:5432"]
+    ports: ["5432:5432"]  # Or custom port
     volumes: ["./init.sql:/docker-entrypoint-initdb.d/init.sql"]
   
   backend:
     build: ./backend
-    command: uvicorn api.main:app --reload --host 0.0.0.0
+    command: uvicorn {module}.api.main:app --reload --host 0.0.0.0
     volumes:
       - ./backend:/app  # Hot reload
-    depends_on: [postgis]
+    depends_on: [database]
     environment:
-      - DATABASE_URL=postgresql://vrp:vrp123@postgis:5432/vehicle_routing
+      - DATABASE_URL=postgresql://user:pass@database:5432/dbname
   
   frontend:
     build: ./frontend
@@ -215,11 +195,7 @@ services:
     volumes:
       - ./frontend:/app  # Hot reload
       - /app/node_modules  # Persist deps
-    ports: ["5173:5173"]
-  
-  solver:
-    build: ./solver
-    volumes: ["./solver:/solver"]
+    ports: ["5173:5173"]  # Or custom port
 ```
 
 ## Hot Reload Verification
@@ -260,8 +236,9 @@ SELECT add_retention_policy('metrics', INTERVAL '90d');
 
 ## Playwright Test
 ```python
-mcp_playwright_browser_navigate(url="http://localhost:5173")
-mcp_playwright_browser_click(element="button", ref="#optimize")
+# Generic pattern - adapt to your project
+mcp_playwright_browser_navigate(url="http://localhost:{port}")
+mcp_playwright_browser_click(element="action button", ref="#submit")
 mcp_playwright_browser_wait_for(text="Complete")
 mcp_playwright_browser_take_screenshot(filename="result.png")
 ```
