@@ -32,11 +32,22 @@ class AutoDiscovery:
         
         return self.config
 
-    def _find_directory_recursive(self, target_name: str, max_depth: int = 4) -> Optional[Path]:
-        """Recursively search for a directory with given name up to max_depth levels."""
-        def search(current_path: Path, current_depth: int) -> Optional[Path]:
+    def _find_directory_recursive(self, target_name: str, max_depth: int = 4, exclude_patterns: List[str] = None) -> Optional[Path]:
+        """Recursively search for a directory with given name up to max_depth levels.
+        
+        Args:
+            target_name: Name of directory to find
+            max_depth: Maximum depth to search
+            exclude_patterns: List of path patterns to exclude (e.g., 'test', 'tests')
+        """
+        if exclude_patterns is None:
+            exclude_patterns = []
+            
+        candidates = []
+        
+        def search(current_path: Path, current_depth: int):
             if current_depth > max_depth:
-                return None
+                return
                 
             try:
                 for item in current_path.iterdir():
@@ -44,27 +55,39 @@ class AutoDiscovery:
                     if item.name in [".git", "node_modules", "venv", ".venv", "__pycache__", 
                                      "dist", "build", ".next", ".pytest_cache", "htmlcov"]:
                         continue
+                    
+                    # Skip if path contains any exclude pattern
+                    if any(pattern in str(item) for pattern in exclude_patterns):
+                        continue
                         
                     if item.is_dir():
                         if item.name == target_name:
-                            return item
+                            candidates.append(item)
                         # Recurse into subdirectory
-                        result = search(item, current_depth + 1)
-                        if result:
-                            return result
+                        search(item, current_depth + 1)
             except PermissionError:
                 pass
-                
-            return None
         
-        return search(self.root, 0)
+        search(self.root, 0)
+        
+        # Prioritize: shorter paths first (closer to root), non-test paths
+        if candidates:
+            # Sort by: 1) doesn't contain 'test', 2) path depth (shorter first)
+            candidates.sort(key=lambda p: (
+                any(part in ['test', 'tests', 'testing'] for part in p.parts),
+                len(p.parts)
+            ))
+            return candidates[0]
+        
+        return None
 
     def extract_bounded_contexts(self):
         print("4️⃣  Extracting Bounded Contexts...")
         contexts = set()
         
         # Strategy 1: Find 'domain' directory recursively (DDD pattern)
-        domain_dir = self._find_directory_recursive("domain")
+        # Exclude test directories to find production domain code
+        domain_dir = self._find_directory_recursive("domain", exclude_patterns=["test", "tests", "testing"])
         
         if domain_dir:
             print(f"   🔍 Found domain directory: {domain_dir.relative_to(self.root)}")
@@ -75,7 +98,7 @@ class AutoDiscovery:
         # Strategy 2: Find API routers (if Strategy 1 yielded nothing)
         if not contexts:
             # Try finding 'api' directory recursively
-            api_dir = self._find_directory_recursive("api")
+            api_dir = self._find_directory_recursive("api", exclude_patterns=["test", "tests", "testing"])
             
             if api_dir:
                 # Look for v1, routers, or direct route files
