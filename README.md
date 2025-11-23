@@ -148,7 +148,7 @@ sh sia/skills/check_coverage.sh
 # Output: htmlcov/index.html (coverage gaps)
 
 # Audit DDD compliance
-python3 sia/skills/audit_ddd.py
+uv run python3 sia/skills/audit_ddd.py
 # Output: Domain purity violations, layer separation issues
 ```
 
