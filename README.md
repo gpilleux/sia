@@ -337,30 +337,6 @@ Result: Clean architecture + tests + documentation
 
 ---
 
-### Scenario D: Architecture Analysis
-
-**Run analysis skills:**
-
-```bash
-# Check code complexity
-sh sia/skills/check_complexity.sh
-# Output: Functions with Rank C/D/E (refactor candidates)
-
-# Visualize architecture
-sh sia/skills/visualize_architecture.sh  
-# Output: dependency_graph.svg (detect layer violations)
-
-# Check test coverage
-sh sia/skills/check_coverage.sh
-# Output: htmlcov/index.html (coverage gaps)
-
-# Audit DDD compliance
-python3 sia/skills/audit_ddd.py
-# Output: Domain purity violations, layer separation issues
-```
-
----
-
 ## 📂 Directory Structure
 
 <details>
