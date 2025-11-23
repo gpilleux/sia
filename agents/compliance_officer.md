@@ -31,7 +31,9 @@ You do not trust; you verify.
 
 **Command**:
 ```bash
-uv run sia/skills/audit_ddd.py backend/src/erp
+# Usage: uv run sia/skills/audit_ddd.py <path_to_source_code>
+# Example:
+uv run sia/skills/audit_ddd.py src/
 ```
 
 ### 3. Relationship Integrity (Schema vs Code)
