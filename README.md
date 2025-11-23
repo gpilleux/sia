@@ -28,12 +28,14 @@ Keeps SIA updated across projects, tracks framework version.
 
 #### macOS / Linux
 ```bash
-git submodule add https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh
+git submodule add https://github.com/gpilleux/sia.git sia
+bash sia/installer/install.sh  # Run from project root
 ```
 
 #### Windows (PowerShell/CMD)
 ```cmd
-git submodule add https://github.com/gpilleux/sia.git sia && cd sia && installer\install.bat
+git submodule add https://github.com/gpilleux/sia.git sia
+sia\installer\install.bat  # Run from project root
 ```
 
 ### Option 2: Standalone Clone
@@ -41,7 +43,9 @@ git submodule add https://github.com/gpilleux/sia.git sia && cd sia && installer
 Single project, no submodule. Add `sia/` to `.gitignore`.
 
 ```bash
-git clone https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh && echo "sia/" >> ../.gitignore
+git clone https://github.com/gpilleux/sia.git sia
+bash sia/installer/install.sh  # Run from project root
+echo "sia/" >> .gitignore
 ```
 
 **That's it!** SIA will auto-discover your project and configure itself in ~30 seconds.

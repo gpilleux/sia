@@ -21,16 +21,16 @@ git submodule add https://github.com/gpilleux/sia.git sia
 git submodule update --init --recursive
 ```
 
-**Step 2**: Run installer:
+**Step 2**: Run installer (from project root):
 
 **macOS / Linux:**
 ```bash
-cd sia && bash installer/install.sh
+bash sia/installer/install.sh
 ```
 
 **Windows:**
 ```cmd
-cd sia && installer\install.bat
+sia\installer\install.bat
 ```
 
 ---
@@ -39,14 +39,18 @@ cd sia && installer\install.bat
 
 **Why standalone**: Single project, no multi-repo management, simpler `.gitignore`.
 
-**One-liner** (macOS/Linux):
+**macOS/Linux**:
 ```bash
-git clone https://github.com/gpilleux/sia.git sia && cd sia && bash installer/install.sh && echo "sia/" >> ../.gitignore
+git clone https://github.com/gpilleux/sia.git sia
+bash sia/installer/install.sh
+echo "sia/" >> .gitignore
 ```
 
 **Windows**:
 ```cmd
-git clone https://github.com/gpilleux/sia.git sia && cd sia && installer\install.bat && echo sia/ >> ..\.gitignore
+git clone https://github.com/gpilleux/sia.git sia
+sia\installer\install.bat
+echo sia/ >> .gitignore
 ```
 
 ---
