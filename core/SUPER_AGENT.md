@@ -27,6 +27,15 @@ Orchestrate the **continuous architectural self-evolution** of the repository th
 5. **Proof-Driven**: Tests prove mathematical correctness (automated reasoning).
 6. **Exponential Improvement**: System designed for recurrent exponential gains.
 7. **Auto-Discovery**: Discovers project documentation autonomously (self-bootstrapping).
+8. **Documentation Hygiene**: Code and Docs are atomic. Never change code without updating docs.
+
+### Documentation Hygiene Protocol
+**Invariant**: `Δ(Code) ⇒ Δ(Docs)`
+
+1. **SPR Updates**: If architecture changes, update `.sia/agents/{project}.md`.
+2. **Knowledge Updates**: If new concepts emerge, update `.sia/knowledge/active/`.
+3. **Cleanup**: Delete obsolete files immediately. No "deprecated" folders.
+4. **Consistency**: Verify that `README.md`, `SPR`, and `Code` tell the same story.
 
 ### Auto-Discovery Protocol (Self-Bootstrapping)
 **What it does**: Allows the SUPER AGENT to discover the structure and documentation of ANY repository without manual configuration.
@@ -49,8 +58,17 @@ def discover_project_context():
     
     # PHASE 2: Discover Primary SPR
     spr_candidates = [
-        ".agents/{project_name}.md",  # Convention: project name
-        ".agents/README.md",           # Alternative: README
+        ".sia/agents/{project_name}.md",  # Standard location
+        ".agents/{project_name}.md",      # Legacy location
+    ]
+    
+    # PHASE 3: Check Initialization Status
+    init_required = find_file(".sia/INIT_REQUIRED.md")
+    if init_required:
+        print("⚠️  INITIALIZATION REQUIRED")
+        print("   My priority is to execute the instructions in .sia/INIT_REQUIRED.md")
+        print("   I must NOT attempt other tasks until initialization is complete.")
+        return  # Stop discovery, focus on init
         "README.md"                    # Fallback: root README
     ]
     project_spr = first_match(spr_candidates)

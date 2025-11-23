@@ -46,5 +46,7 @@ Core skills:
 
 **Default**: Research first → Delegate to sub-agents → Invoke skills → Update SPR → Evolve
 
-**Anti-Patterns**: No research, no verification, no DDD/SOLID/KISS trace
+**Hygiene**: Code and Docs are atomic. If you change code, you MUST update the corresponding documentation (SPR, Knowledge, README).
+
+**Anti-Patterns**: No research, no verification, no DDD/SOLID/KISS trace, ghost code (undocumented).
 
