@@ -45,6 +45,9 @@ class AutoDiscovery:
             
         candidates = []
         
+        # Prioritized path segments (production code indicators)
+        priority_segments = ['src', 'app', 'backend', 'server', 'core', 'lib', 'packages']
+        
         def search(current_path: Path, current_depth: int):
             if current_depth > max_depth:
                 return
@@ -53,7 +56,8 @@ class AutoDiscovery:
                 for item in current_path.iterdir():
                     # Skip common ignore patterns
                     if item.name in [".git", "node_modules", "venv", ".venv", "__pycache__", 
-                                     "dist", "build", ".next", ".pytest_cache", "htmlcov"]:
+                                     "dist", "build", ".next", ".pytest_cache", "htmlcov",
+                                     ".agents", ".agents.backup", ".sia"]:
                         continue
                     
                     # Skip if path contains any exclude pattern
@@ -70,13 +74,20 @@ class AutoDiscovery:
         
         search(self.root, 0)
         
-        # Prioritize: shorter paths first (closer to root), non-test paths
+        # Prioritize candidates
         if candidates:
-            # Sort by: 1) doesn't contain 'test', 2) path depth (shorter first)
-            candidates.sort(key=lambda p: (
-                any(part in ['test', 'tests', 'testing'] for part in p.parts),
-                len(p.parts)
-            ))
+            def priority_score(path: Path) -> tuple:
+                parts = path.parts
+                # 1. Contains test-related words (higher = worse)
+                has_test = any(part in ['test', 'tests', 'testing', 'spec', 'specs'] for part in parts)
+                # 2. Contains priority segments (lower = better, more priority segments = better)
+                priority_count = sum(1 for part in parts if part in priority_segments)
+                # 3. Path depth (lower = better, closer to root)
+                depth = len(parts)
+                
+                return (has_test, -priority_count, depth)
+            
+            candidates.sort(key=priority_score)
             return candidates[0]
         
         return None
