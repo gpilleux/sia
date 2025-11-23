@@ -101,7 +101,25 @@ class AutoDiscovery:
         if not spr_path and (agents_dir / "README.md").exists():
             spr_path = str((agents_dir / "README.md").relative_to(self.root))
             
-        # Strategy 3: README.md
+        # Strategy 3: {PROJECT_NAME}_AGENT.spr.md (common pattern)
+        if not spr_path:
+            candidate = self.root / f"{project_name.upper()}_AGENT.spr.md"
+            if candidate.exists():
+                spr_path = str(candidate.relative_to(self.root))
+                
+        # Strategy 4: {PROJECT_NAME}.spr.md
+        if not spr_path:
+            candidate = self.root / f"{project_name.upper()}.spr.md"
+            if candidate.exists():
+                spr_path = str(candidate.relative_to(self.root))
+                
+        # Strategy 5: Any *.spr.md in root (pick first alphabetically)
+        if not spr_path:
+            spr_files = sorted(self.root.glob("*.spr.md"))
+            if spr_files:
+                spr_path = str(spr_files[0].relative_to(self.root))
+            
+        # Strategy 6: README.md (fallback)
         if not spr_path and (self.root / "README.md").exists():
             spr_path = "README.md"
             
