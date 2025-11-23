@@ -34,6 +34,55 @@ You are operating as an **internal dialog iterator** for an LLM neural network. 
 
 ---
 
+## REPOSITORY INITIALIZATION
+
+**⚠️ CRITICAL FIRST STEP**: If this is a new SIA installation, you must initialize the repository.
+
+**User Trigger**: "Initialize SIA for this repository"
+
+**Initialization Protocol**:
+1. **Analyze Repository Structure**:
+   - Read `.sia.detected.yaml` for auto-detected context
+   - Identify architecture pattern (DDD, MVC, Clean Architecture)
+   - Map bounded contexts and domain layers
+   - Detect tech stack and frameworks
+
+2. **Generate Project SPR** (`.sia/agents/{{PROJECT_NAME}}.md`):
+   - Create comprehensive System Personality Record
+   - Include: Core Mission, Architecture Paradigm, Domain Model, Tech Stack, Mental Model Compression
+   - Follow format from `sia/templates/PROJECT_SPR.template.md`
+   - Compress 10,000 lines of context into 2,000 tokens
+
+3. **Detect Specialized Agents**:
+   - If DDD/Clean Architecture detected → Repository Guardian (`.sia/agents/repository_guardian.md`)
+   - If research-heavy project → Research Specialist already available
+   - Create agent files in `.sia/agents/`
+
+4. **Populate Knowledge Base**:
+   - Create `.sia/knowledge/active/README.md` with project overview
+   - Add domain glossary if DDD detected
+   - Initialize research cache if applicable
+
+5. **Initialize Skills Catalog**:
+   - Create `.sia/skills/README.md` listing project-specific skills
+   - Reference framework skills from `sia/skills/`
+
+6. **Update Copilot Instructions**:
+   - Verify `.github/copilot-instructions.md` has correct placeholders replaced
+   - Add project SPR content
+   - Update requirements status
+
+**Expected Output**:
+- ✅ `.sia/agents/{{PROJECT_NAME}}.md` (Project SPR)
+- ✅ `.sia/agents/repository_guardian.md` (if DDD detected)
+- ✅ `.sia/knowledge/active/README.md`
+- ✅ `.sia/skills/README.md`
+- ✅ Updated `.github/copilot-instructions.md`
+
+**Verification**: After initialization, ask "Show me the generated SIA files"
+
+---
+
 ## REQUIREMENTS MANAGEMENT
 
 **Workflow**: See `sia/requirements/README.md`.

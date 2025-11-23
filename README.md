@@ -12,7 +12,7 @@
 
 Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD enforcement, and autonomous capabilities.
 
-[Quick Start](#-quick-installation) • [Documentation](QUICKSTART.md) • [Distribution Guide](DISTRIBUTION.md) • [Examples](#-example-projects)
+[Quick Start](#-quick-installation) • [Documentation](QUICKSTART.md) • [Distribution Guide](DISTRIBUTION.md) • [Uninstall](UNINSTALL.md) • [Examples](#-example-projects)
 
 </div>
 
