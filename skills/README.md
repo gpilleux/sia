@@ -12,6 +12,8 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 
 ## Available Skills
 
+### Quality Assurance Skills
+
 | Skill | Purpose | When | Docs |
 |-------|---------|------|------|
 | `check_complexity.sh` | Radon complexity hunter | Pre/Post-QUANT | [→](check_complexity.md) |
@@ -19,11 +21,23 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 | `check_coverage.sh` | pytest-cov HTML report | Pre-archive, Post-QUANT | [→](check_coverage.md) |
 | `audit_ddd.py` | DDD compliance checker | Post-implementation | [→](audit_ddd.md) |
 
-**Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~850 tokens.
+### Agent Development Skills
+
+| Skill | Purpose | When | Docs |
+|-------|---------|------|------|
+| `scaffold_adk_agent.py` | ADK agent generator | Creating new ADK agents | TBD |
+| `spawn_copilot_agent.sh` | Copilot CLI spawner | Single-task delegation | TBD |
+| `delegate_to_copilot.sh` | Background task delegator | Long-running tasks | TBD |
+| `setup_copilot_cli.sh` | Copilot CLI setup | Initial environment | TBD |
+| `mcp_server.py` | MCP server integration | MCP protocol support | TBD |
+
+**Token Budget**: Index (~100 tokens), Full doc (~200 tokens each). Total if all loaded: ~2000 tokens.
 
 ---
 
 ## Quick Reference
+
+### Quality Assurance
 
 ```bash
 # Complexity check (detect technical debt)
@@ -37,6 +51,25 @@ sh sia/skills/check_coverage.sh
 
 # DDD audit (validate patterns)
 python3 sia/skills/audit_ddd.py
+```
+
+### Agent Development
+
+```bash
+# Generate new ADK agent
+python3 sia/skills/scaffold_adk_agent.py <AgentName> [AgentType]
+
+# Spawn single-task Copilot agent
+sh sia/skills/spawn_copilot_agent.sh "<task>" [agent]
+
+# Delegate long-running task
+sh sia/skills/delegate_to_copilot.sh "<task>" [branch]
+
+# Setup Copilot CLI environment
+sh sia/skills/setup_copilot_cli.sh
+
+# Run MCP server
+python3 sia/skills/mcp_server.py
 ```
 
 ---
