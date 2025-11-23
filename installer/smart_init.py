@@ -98,10 +98,10 @@ class SmartInit:
 
     def _cleanup(self):
         print("5️⃣  Cleaning up...")
-        init_req = self.sia_dir / "INIT_REQUIRED.md"
-        if init_req.exists():
-            init_req.unlink()
-            print("   -> Removed INIT_REQUIRED.md")
+        # We do NOT delete INIT_REQUIRED.md here.
+        # It serves as a flag for the Super Agent to know that initialization is pending.
+        # The Super Agent will delete it after completing Phase 2.
+        pass
 
 if __name__ == "__main__":
     SmartInit().run()

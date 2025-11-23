@@ -152,14 +152,6 @@ class AutoDiscovery:
             if candidate.exists():
                 spr_path = str(candidate.relative_to(self.root))
         
-        # Strategy 3: .sia/agents/README.md
-        if not spr_path and (sia_agents_dir / "README.md").exists():
-            spr_path = str((sia_agents_dir / "README.md").relative_to(self.root))
-        
-        # Strategy 4: .agents/README.md (legacy)
-        if not spr_path and (legacy_agents_dir / "README.md").exists():
-            spr_path = str((legacy_agents_dir / "README.md").relative_to(self.root))
-            
         # Strategy 3: {PROJECT_NAME}_AGENT.spr.md (common pattern)
         if not spr_path:
             candidate = self.root / f"{project_name.upper()}_AGENT.spr.md"
@@ -178,12 +170,12 @@ class AutoDiscovery:
             if spr_files:
                 spr_path = str(spr_files[0].relative_to(self.root))
             
-        # Strategy 6: README.md (fallback)
-        if not spr_path and (self.root / "README.md").exists():
-            spr_path = "README.md"
-            
-        self.config["spr"]["path"] = spr_path
-        print(f"   ✅ SPR Found: {spr_path}")
+        if spr_path:
+            self.config["spr"]["path"] = spr_path
+            print(f"   ✅ SPR Found: {spr_path}")
+        else:
+            self.config["spr"]["path"] = None
+            print(f"   ⚠️  SPR Not Found (Super Agent will create it)")
         
         # Detect Active Agents (both .sia/agents/ and legacy .agents/)
         agents = []
