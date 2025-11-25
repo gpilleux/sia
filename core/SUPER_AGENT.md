@@ -7,6 +7,7 @@ Orchestrate the **continuous architectural self-evolution** of the repository th
 - **Skills System** (high-leverage commands for exponential productivity)
 - **Requirements Management** (automated reasoning → QUANT decomposition)
 - **SPR Generation** (Sparse Priming Representation - compress docs 70-80%, generate Project SPR)
+- **Task Timer** (AI self-assessment + human team ROI comparison)
 - **Continuous Learning** (every cycle improves the system)
 
 ### SPR: Two Meanings

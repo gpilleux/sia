@@ -5,6 +5,32 @@ All notable changes to the SIA (Super Intelligence Agency) framework will be doc
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-24
+
+### Added
+- **Task Timer Skill** (`skills/task_timer.py`, `skills/task_timer.md`)
+  - QUANT task chronometer with background persistence
+  - Actual vs estimated time tracking (AI prediction vs LLM hallucination)
+  - Human team comparison baseline (4x multiplier)
+  - Correction factor generation from historical variance
+  - Metrics report with prediction insights
+  - JSON state persistence (~/.sia/timer_state.json, ~/.sia/task_metrics.json)
+- **UV Package Manager Standard** (`core/UV_STANDARD.md`)
+  - Mandatory `uv` usage for all Python scripts
+  - Shebang pattern: `#!/usr/bin/env uv run python`
+  - Zero-config isolated environments
+  - 10-100x faster than pip (Rust-based resolver)
+  - Migration guide from python3/pip workflows
+  - Anti-patterns documentation
+  - Skill development checklist
+
+### Changed
+- **Skills README** - Added task_timer skill entry with `uv run` commands
+- **FASE 5 Integration** - Timer workflow in verification gates pattern
+
+### Fixed
+- Division by zero in metrics report when tasks complete instantly
+
 ## [1.1.0] - 2025-11-23
 
 ### Added

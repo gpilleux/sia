@@ -1606,15 +1606,15 @@ def adk_function_response_to_mcp_ui_resource(
 ```
 
 **Supported Mappings**:
-| ADK Function | Generator Method | Frame Size |
-|---|---|---|
-| `create_bar_chart` | `ChartGenerators.generate_bar_chart_html()` | 800x400 |
-| `create_pie_chart` | `ChartGenerators.generate_pie_chart_html()` | 600x400 |
-| `create_line_chart` | `ChartGenerators.generate_line_chart_html()` | 800x400 |
-| `create_metric_card` | `ChartGenerators.generate_metric_card_html()` | 300x150 |
-| `create_statistics_table` | `TableGenerators.generate_statistics_table_html()` | 800x400 |
-| `create_key_value_table` | `TableGenerators.generate_key_value_table_html()` | 600x300 |
-| `create_timeline_table` | `TableGenerators.generate_timeline_table_html()` | 800x500 |
+| ADK Function              | Generator Method                                   | Frame Size |
+| ------------------------- | -------------------------------------------------- | ---------- |
+| `create_bar_chart`        | `ChartGenerators.generate_bar_chart_html()`        | 800x400    |
+| `create_pie_chart`        | `ChartGenerators.generate_pie_chart_html()`        | 600x400    |
+| `create_line_chart`       | `ChartGenerators.generate_line_chart_html()`       | 800x400    |
+| `create_metric_card`      | `ChartGenerators.generate_metric_card_html()`      | 300x150    |
+| `create_statistics_table` | `TableGenerators.generate_statistics_table_html()` | 800x400    |
+| `create_key_value_table`  | `TableGenerators.generate_key_value_table_html()`  | 600x300    |
+| `create_timeline_table`   | `TableGenerators.generate_timeline_table_html()`   | 800x500    |
 
 **SSE Event Integration** (`chat_integration.py`):
 ```python

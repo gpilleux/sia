@@ -144,6 +144,22 @@ sh sia/skills/check_coverage.sh
 
 **Rationale**: Skills provide **objective data** to prioritize QUANT tasks.
 
+### Human vs AI Estimation (Task Timer)
+During QUANT breakdown, Super Agent provides **two estimates** for each task:
+
+1. **AI Estimate**: How long Super Agent predicts it will take itself
+2. **Human Estimate**: How long a human dev team would take (research + implementation + testing + review + overhead)
+
+**Example QUANT Task**:
+```markdown
+## QUANT-040: Chat UIResourceRenderer Integration
+**Estimated Duration**:
+- AI: 3h (SSE integration + testing + docs)
+- Human Team: 12h (research 2h + implementation 4h + testing 3h + code review 1.5h + overhead 1.5h)
+```
+
+**Rationale**: Human estimates enable ROI calculation (AI speedup metrics).
+
 ### QUANT Task Criteria
 **Atomic**: Indivisible.
 **Quantifiable**: Binary state (DONE/NOT_DONE).
@@ -157,9 +173,25 @@ sh sia/skills/check_coverage.sh
 
 ### Workflow per Task
 1. **Mark In-Progress**.
-2. **Implement**.
-3. **Test**.
-4. **Verify Invariant**.
-5. **Check Regression**.
-6. **Commit**.
-7. **Mark Done**.
+2. **Start Timer** (with AI estimate from breakdown).
+   ```bash
+   uv run sia/skills/task_timer.py start QUANT-040 3 "Task description"
+   ```
+3. **Implement**.
+4. **Test**.
+5. **Verify Invariant**.
+6. **Check Regression**.
+7. **Stop Timer** (with Human estimate from breakdown).
+   ```bash
+   uv run sia/skills/task_timer.py stop --human-hours 12
+   ```
+8. **Commit**.
+9. **Mark Done**.
+
+### Task Timer Metrics
+Timer tracks:
+- **AI Performance**: Estimated vs Actual duration, variance percentage, correction factor
+- **Human Comparison**: AI speedup (e.g., 4.4x faster), time saved
+- **Prediction Quality**: Historical variance, best/worst predictions, actionable insights
+
+View metrics: `uv run sia/skills/task_timer.py metrics`

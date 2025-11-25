@@ -26,15 +26,15 @@ Converts Google ADK function responses to MCP-UI UIResource with generated HTML 
 
 **Supported Function Mappings**:
 
-| ADK Function Name | Visualization Type | Generator Method |
-|---|---|---|
-| `create_bar_chart` | Bar Chart (vertical/horizontal) | `ChartGenerators.generate_bar_chart_html()` |
-| `create_pie_chart` | Pie Chart | `ChartGenerators.generate_pie_chart_html()` |
-| `create_line_chart` | Line Chart (single/multi-line) | `ChartGenerators.generate_line_chart_html()` |
-| `create_metric_card` | Metric Card (with trend) | `ChartGenerators.generate_metric_card_html()` |
-| `create_statistics_table` | Data Table | `TableGenerators.generate_statistics_table_html()` |
-| `create_key_value_table` | 2-Column Table | `TableGenerators.generate_key_value_table_html()` |
-| `create_timeline_table` | Timeline Table | `TableGenerators.generate_timeline_table_html()` |
+| ADK Function Name         | Visualization Type              | Generator Method                                   |
+| ------------------------- | ------------------------------- | -------------------------------------------------- |
+| `create_bar_chart`        | Bar Chart (vertical/horizontal) | `ChartGenerators.generate_bar_chart_html()`        |
+| `create_pie_chart`        | Pie Chart                       | `ChartGenerators.generate_pie_chart_html()`        |
+| `create_line_chart`       | Line Chart (single/multi-line)  | `ChartGenerators.generate_line_chart_html()`       |
+| `create_metric_card`      | Metric Card (with trend)        | `ChartGenerators.generate_metric_card_html()`      |
+| `create_statistics_table` | Data Table                      | `TableGenerators.generate_statistics_table_html()` |
+| `create_key_value_table`  | 2-Column Table                  | `TableGenerators.generate_key_value_table_html()`  |
+| `create_timeline_table`   | Timeline Table                  | `TableGenerators.generate_timeline_table_html()`   |
 
 **Example Conversion**:
 ```python
