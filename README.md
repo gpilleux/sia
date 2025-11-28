@@ -145,26 +145,6 @@ Result: Clean architecture + tests + documentation
 
 ---
 
-### Scenario D: Architecture Analysis
-
-**Run built-in analysis skills:**
-
-```bash
-# Check code complexity
-sh sia/skills/check_complexity.sh
-# Output: Functions with Rank C/D/E (refactor candidates)
-
-# Visualize architecture
-sh sia/skills/visualize_architecture.sh  
-# Output: dependency_graph.svg (detect layer violations)
-
-# Check test coverage
-sh sia/skills/check_coverage.sh
-# Output: htmlcov/index.html (coverage gaps)
-```
-
----
-
 ## 📖 How It Works
 
 **1. Install SIA as submodule** → Installer runs auto-discovery  
@@ -229,25 +209,6 @@ pip3 install uv
 
 </details>
 
----
-
-### Scenario D: Architecture Analysis
-
-**Run built-in analysis skills:**
-
-```bash
-# Check code complexity
-sh sia/skills/check_complexity.sh
-# Output: Functions with Rank C/D/E (refactor candidates)
-
-# Visualize architecture
-sh sia/skills/visualize_architecture.sh  
-# Output: dependency_graph.svg (detect layer violations)
-
-# Check test coverage
-sh sia/skills/check_coverage.sh
-# Output: htmlcov/index.html (coverage gaps)
-```
 
 ---
 
