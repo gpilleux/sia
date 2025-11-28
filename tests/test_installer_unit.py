@@ -7,6 +7,7 @@ Tests actual code coverage without subprocess isolation
 import sys
 import tempfile
 from pathlib import Path
+
 import pytest
 
 # Add installer to path
