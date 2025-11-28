@@ -5,31 +5,45 @@ All notable changes to the SIA (Super Intelligence Agency) framework will be doc
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-11-24
+## [Unreleased]
 
 ### Added
-- **Task Timer Skill** (`skills/task_timer.py`, `skills/task_timer.md`)
-  - QUANT task chronometer with background persistence
-  - Actual vs estimated time tracking (AI prediction vs LLM hallucination)
-  - Human team comparison baseline (4x multiplier)
-  - Correction factor generation from historical variance
-  - Metrics report with prediction insights
-  - JSON state persistence (~/.sia/timer_state.json, ~/.sia/task_metrics.json)
-- **UV Package Manager Standard** (`core/UV_STANDARD.md`)
-  - Mandatory `uv` usage for all Python scripts
-  - Shebang pattern: `#!/usr/bin/env uv run python`
-  - Zero-config isolated environments
-  - 10-100x faster than pip (Rust-based resolver)
-  - Migration guide from python3/pip workflows
-  - Anti-patterns documentation
-  - Skill development checklist
-
-### Changed
-- **Skills README** - Added task_timer skill entry with `uv run` commands
-- **FASE 5 Integration** - Timer workflow in verification gates pattern
-
-### Fixed
-- Division by zero in metrics report when tasks complete instantly
+- **Microsoft Suite Specialist Agent** (`agents/microsoft_suite_specialist.md`)
+  - Microsoft 365 expertise (SharePoint, OneDrive, Teams, Graph API)
+  - Google Workspace → Microsoft 365 migration playbook
+  - SharePoint configuration patterns (hub sites, content types, permissions, search)
+  - Microsoft Graph API integration (batching, delta queries, throttling)
+  - Power Platform guidance (Power Automate, Power Apps)
+  - Governance & compliance (retention, DLP, sensitivity labels, eDiscovery)
+  - **MCP Tools Reference** (`agents/microsoft_suite_specialist_mcp_tools.md`):
+    - Lokka (@merill/lokka) - Unified Graph API interface (✅ authenticated)
+    - MS-365-MCP (@softeria/ms-365-mcp-server) - 45 specialized tools (calendar, mail, OneDrive, Excel, Planner)
+    - CLI-Microsoft365 (@pnp/cli-microsoft365-mcp-server) - 600+ SharePoint/Teams commands
+    - Real tool invocations, authentication workflows, permission requirements, troubleshooting
+  - **Quick Start Guide** (`agents/microsoft_suite_specialist_quickstart.md`) - <10 min setup with validation checklist
+  - **Update Summary** (`agents/MICROSOFT_SUITE_MCP_UPDATE_SUMMARY.md`) - Documentation evolution and impact assessment
+  - Latent Space Activation (LSA) - cognitive priming for SharePoint expertise
+  - SPR-compressed format (<5k tokens, high-density knowledge)
+  - Examples updated with real MCP invocations (Lokka batch requests, Graph API calls)
+- **Agents Catalog** (`agents/README.md`)
+  - Comprehensive agent directory with capabilities and selection guide
+  - Agent communication protocol documentation
+  - MCP-first workflow standards
+  - Agent creation checklist and quality standards
+  - LSA (Latent Space Activation) guidelines for new agents
+- **Expert Agent Creation Skill** (`skills/create_expert_agent.md`)
+  - Systematic 7-phase methodology for creating domain-specialist agents
+  - Evidence-based approach using MCP Deepwiki research
+  - LSA (Latent Space Activation) design patterns
+  - SPR compression techniques for agents
+  - Quality validation checklists
+  - Example: Microsoft Suite agent creation documented
+  - Time estimate: 60-90 minutes per agent
+- **Microsoft Suite Usage Examples** (`agents/microsoft_suite_specialist_examples.md`)
+  - 4 real-world scenarios (permissions, migration, search, API optimization)
+  - Code examples in PowerShell, Python, Graph API
+  - MCP setup guide with Azure authentication
+  - Verification checklists for each scenario
 
 ## [1.1.0] - 2025-11-23
 
