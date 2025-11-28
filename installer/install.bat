@@ -30,7 +30,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [STEP 1/3] Creating .sia\ Directory Structure...
+echo [STEP 1/4] Creating .sia\ Directory Structure...
 echo ---------------------------------------------------
 mkdir .sia\agents 2>nul
 mkdir .sia\knowledge\active 2>nul
@@ -38,54 +38,144 @@ mkdir .sia\knowledge\_archive 2>nul
 mkdir .sia\requirements 2>nul
 mkdir .sia\requirements\_archive 2>nul
 mkdir .sia\skills 2>nul
+mkdir .sia\prompts 2>nul
+mkdir .vscode 2>nul
 
 REM Create README files
-echo # SIA Project Configuration > .sia\README.md
-echo. >> .sia\README.md
-echo This directory contains the SIA framework integration for this project. >> .sia\README.md
-echo See sia\README.md for complete framework documentation. >> .sia\README.md
+(
+echo # SIA Project Configuration
+echo.
+echo This directory contains the SIA framework integration for this project.
+echo.
+echo ## Structure
+echo - `agents/`: Project-specific agent definitions
+echo - `knowledge/`: Active and archived knowledge base
+echo - `requirements/`: Requirements management ^(active and archived^)
+echo - `skills/`: Project-specific automation skills
+echo.
+echo See `sia/README.md` for complete framework documentation.
+) > .sia\README.md
 
-echo # Project Agents > .sia\agents\README.md
-echo. >> .sia\agents\README.md
-echo Ask GitHub Copilot: "Initialize SIA agents for this repository" >> .sia\agents\README.md
+(
+echo # Project Agents
+echo.
+echo Define project-specific agents here. The SUPER AGENT will populate this
+echo directory during repository initialization.
+echo.
+echo ## Next Steps
+echo Ask GitHub Copilot: "Initialize SIA agents for this repository"
+) > .sia\agents\README.md
 
-echo # Active Knowledge Base > .sia\knowledge\active\README.md
-echo See .github\DOCUMENT_LIFECYCLE.md for archival protocol. >> .sia\knowledge\active\README.md
+(
+echo # Active Knowledge Base
+echo.
+echo Active research, decisions, and domain knowledge.
+echo.
+echo ## Document Lifecycle
+echo See `.github/DOCUMENT_LIFECYCLE.md` for archival protocol.
+) > .sia\knowledge\active\README.md
 
-echo # Requirements Management > .sia\requirements\README.md
-echo See sia\requirements\README.md for complete workflow. >> .sia\requirements\README.md
+(
+echo # Requirements Management
+echo.
+echo See `sia/requirements/README.md` for complete workflow.
+echo.
+echo ## Quick Start
+echo 1. Define requirements in natural language
+echo 2. SUPER AGENT decomposes into QUANT tasks
+echo 3. Execute, verify, archive
+) > .sia\requirements\README.md
 
-echo # Project Skills > .sia\skills\README.md
-echo Reusable skills available in sia\skills\ >> .sia\skills\README.md
+(
+echo # Project Skills
+echo.
+echo Project-specific automation scripts.
+echo.
+echo ## Framework Skills
+echo Reusable skills available in `sia/skills/`
+) > .sia\skills\README.md
 
 REM Copy INIT_REQUIRED template
 copy sia\templates\INIT_REQUIRED.template.md .sia\INIT_REQUIRED.md >nul
 
+REM Copy slash commands (prompts)
+echo    [INFO] Installing slash commands...
+xcopy sia\templates\prompts\*.prompt.md .sia\prompts\ /Y /Q >nul
+
+REM Install VS Code settings
+if exist .vscode\settings.json (
+    echo    [WARN] .vscode\settings.json already exists, skipping...
+    echo           Review sia\templates\vscode-settings.template.json for recommended settings
+) else (
+    echo    [INFO] Creating .vscode\settings.json...
+    REM Simple placeholder replacement for Windows
+    powershell -Command "(Get-Content sia\templates\vscode-settings.template.json) -replace '{{LOCALE}}', 'en' -replace '{{EXTRA_PATHS}}', '' | Set-Content .vscode\settings.json"
+)
+
+REM Install .gitignore if not exists
+if exist .gitignore (
+    echo    [WARN] .gitignore already exists, skipping...
+    echo           Review sia\templates\gitignore.template for recommended exclusions
+) else (
+    echo    [INFO] Creating .gitignore from template...
+    copy sia\templates\gitignore.template .gitignore >nul
+)
+
 echo    [OK] .sia\ structure created
+echo    [OK] .sia\prompts\ slash commands installed
+echo    [OK] .vscode\settings.json configured
 echo    [OK] .sia\INIT_REQUIRED.md created (one-time init instructions)
 
 echo.
-echo [STEP 2/3] Running Auto-Discovery...
+echo [STEP 2/4] Running Smart Initialization...
 echo ---------------------------------------------------
-uv run sia\installer\auto_discovery.py
+uv run --with pyyaml python sia\installer\smart_init.py
 if %errorlevel% neq 0 (
-    echo [ERROR] Auto-discovery failed
+    echo [ERROR] Smart initialization failed
     pause
     exit /b 1
 )
 
 echo.
 echo ---------------------------------------------------
-echo [STEP 3/3] Repository Initialization Required
+echo [STEP 3/4] Installing Copilot Instructions...
+echo ---------------------------------------------------
+mkdir .github 2>nul
+if exist .github\copilot-instructions.md (
+    echo    [WARN] .github\copilot-instructions.md already exists, skipping...
+    echo           Review sia\core\copilot-instructions.template.md for updates
+) else (
+    echo    [INFO] Creating .github\copilot-instructions.md from template...
+    copy sia\core\copilot-instructions.template.md .github\copilot-instructions.md >nul
+    echo    [WARN] Manual customization required:
+    echo           Edit .github\copilot-instructions.md and replace placeholders:
+    echo           - {{PROJECT_NAME}}
+    echo           - {{PROJECT_TYPE}}
+    echo           - {{PROJECT_MISSION}}
+    echo           - {{TECH_STACK}}
+    echo           - {{ARCHITECTURE_PATTERN}}
+    echo           - {{EXECUTION_COMMAND}}
+    echo           - {{ARCHITECTURE_DNA}}
+    echo           - {{RESEARCH_SOURCES}}
+    echo           - {{PROJECT_SLUG}}
+    echo           - {{ADDITIONAL_CONTEXT}}
+)
+
+echo.
+echo ---------------------------------------------------
+echo [STEP 4/4] Repository Initialization Required
 echo ---------------------------------------------------
 echo.
 echo [SUCCESS] SIA Installation Complete!
 echo.
 echo   Created:
-echo   - Directory: .sia\ (agents, knowledge, requirements, skills)
+echo   - Directory: .sia\ (agents, knowledge, requirements, skills, prompts)
+echo   - Directory: .vscode\ (VS Code configuration)
 echo   - Configuration: .sia.detected.yaml
+echo   - Configuration: .vscode\settings.json (slash commands enabled)
 echo   - Instructions: .github\copilot-instructions.md
 echo   - Init Protocol: .sia\INIT_REQUIRED.md (one-time)
+echo   - Slash Commands: .sia\prompts\*.prompt.md (11 commands)
 echo.
 echo   WARNING: Repository requires SUPER AGENT initialization
 echo.
@@ -96,9 +186,10 @@ echo.
 echo      The SUPER AGENT will:
 echo      - Analyze repository structure and domain
 echo      - Generate project SPR (.sia\agents\^<project^>.md)
-echo      - Detect specialized agents
+echo      - Detect specialized agents (e.g., Repository Guardian)
 echo      - Create initial knowledge base
 echo      - Populate skills catalog
+echo      - Delete .sia\INIT_REQUIRED.md (auto-cleanup)
 echo.
 echo   3. Review generated files in .sia\
 echo   4. Start working with natural language requirements!
@@ -106,6 +197,6 @@ echo.
 echo Documentation:
 echo   - Framework: sia\README.md
 echo   - Quick Start: sia\QUICKSTART.md
-echo   - Uninstall: sia\UNINSTALL.md
+echo   - Distribution: sia\DISTRIBUTION.md
 echo.
 pause
