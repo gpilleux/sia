@@ -4,7 +4,7 @@
 
 [![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/gpilleux/sia/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)](QUICKSTART.md)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)](docs/QUICKSTART.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-Required-purple.svg)](https://github.com/features/copilot)
 
@@ -12,7 +12,7 @@
 
 Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD enforcement, and autonomous capabilities.
 
-[Quick Start](#-quick-installation) • [Documentation](QUICKSTART.md) • [Distribution Guide](DISTRIBUTION.md) • [Uninstall](UNINSTALL.md) • [Examples](#-example-projects)
+[Quick Start](#-quick-installation) • [Documentation](docs/QUICKSTART.md) • [Architecture](docs/ARCHITECTURE.md) • [Contributing](docs/CONTRIBUTING.md) • [Distribution](docs/DISTRIBUTION.md) • [Uninstall](docs/UNINSTALL.md)
 
 </div>
 
@@ -432,10 +432,17 @@ domain:
 
 ## 📚 Documentation
 
-- 📖 **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup guide
-- 🚀 **[DISTRIBUTION.md](DISTRIBUTION.md)** - Share with your team
-- 🏗️ **[requirements/README.md](requirements/README.md)** - QUANT workflow
-- 🧠 **[core/SUPER_AGENT.md](core/SUPER_AGENT.md)** - Framework architecture
+- 📖 **[QUICKSTART.md](docs/QUICKSTART.md)** - 5-minute setup guide
+- 🏗️ **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Framework architecture deep-dive
+- 🚀 **[DISTRIBUTION.md](docs/DISTRIBUTION.md)** - Share with your team
+- 🔧 **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Contribution guidelines
+- 📝 **[CHANGELOG.md](docs/CHANGELOG.md)** - Version history
+- 🗑️ **[UNINSTALL.md](docs/UNINSTALL.md)** - Clean removal guide
+- ✅ **[VALIDATION.md](docs/VALIDATION.md)** - Installation verification
+- 🧠 **[core/SUPER_AGENT.md](core/SUPER_AGENT.md)** - Core capabilities
+- 🎯 **[requirements/README.md](requirements/README.md)** - QUANT workflow
+- 💬 **[docs/SLASH_COMMANDS.md](docs/SLASH_COMMANDS.md)** - Slash commands guide
+- ⚙️ **[docs/VSCODE_SETUP.md](docs/VSCODE_SETUP.md)** - VS Code configuration
 
 ---
 
@@ -492,7 +499,7 @@ MIT License - See [LICENSE](LICENSE) file for details.
 Projects using this framework maintain higher code quality, faster onboarding, and better architectural consistency.
 
 [![Made with ❤️](https://img.shields.io/badge/made%20with-%E2%9D%A4%EF%B8%8F-red.svg)](https://github.com/gpilleux/sia)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.md)
 
 [⬆ Back to Top](#sia-super-intelligence-agency)
 
