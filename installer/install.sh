@@ -43,7 +43,7 @@ if ! command -v uv &> /dev/null; then
 fi
 
 echo ""
-echo "[STEP 1/3] Creating .sia/ Directory Structure..."
+echo "[STEP 1/4] Creating .sia/ Directory Structure..."
 echo "---------------------------------------------------"
 mkdir -p .sia/agents
 mkdir -p .sia/knowledge/active
@@ -51,6 +51,8 @@ mkdir -p .sia/knowledge/_archive
 mkdir -p .sia/requirements
 mkdir -p .sia/requirements/_archive
 mkdir -p .sia/skills
+mkdir -p .sia/prompts
+mkdir -p .vscode
 
 # Create README files for each directory
 cat > .sia/README.md << 'EOF'
@@ -109,11 +111,38 @@ EOF
 # Copy INIT_REQUIRED template
 cp sia/templates/INIT_REQUIRED.template.md .sia/INIT_REQUIRED.md
 
+# Copy slash commands (prompts)
+echo "   📋 Installing slash commands..."
+cp sia/templates/prompts/*.prompt.md .sia/prompts/
+
+# Install VS Code settings
+if [ -f .vscode/settings.json ]; then
+    echo "   ⚠️  .vscode/settings.json already exists, skipping..."
+    echo "      Review sia/templates/vscode-settings.template.json for recommended settings"
+else
+    echo "   📝 Creating .vscode/settings.json..."
+    # Copy template and replace placeholders with sensible defaults
+    sed -e 's/{{LOCALE}}/en/' \
+        -e 's/{{EXTRA_PATHS}}//' \
+        sia/templates/vscode-settings.template.json > .vscode/settings.json
+fi
+
+# Install .gitignore if not exists
+if [ -f .gitignore ]; then
+    echo "   ⚠️  .gitignore already exists, skipping..."
+    echo "      Review sia/templates/gitignore.template for recommended exclusions"
+else
+    echo "   📝 Creating .gitignore from template..."
+    cp sia/templates/gitignore.template .gitignore
+fi
+
 echo "   ✅ .sia/ structure created"
+echo "   ✅ .sia/prompts/ slash commands installed"
+echo "   ✅ .vscode/settings.json configured"
 echo "   ✅ .sia/INIT_REQUIRED.md created (one-time init instructions)"
 
 echo ""
-echo "[STEP 2/3] Running Smart Initialization..."
+echo "[STEP 2/4] Running Smart Initialization..."
 echo "---------------------------------------------------"
 # Run smart_init.py which handles migration, population, and auto-discovery
 uv run --with pyyaml python3 sia/installer/smart_init.py || {
@@ -123,16 +152,44 @@ uv run --with pyyaml python3 sia/installer/smart_init.py || {
 
 echo ""
 echo "---------------------------------------------------"
-echo "[STEP 3/3] Repository Initialization Required"
+echo "[STEP 3/4] Installing Copilot Instructions..."
+echo "---------------------------------------------------"
+mkdir -p .github
+if [ -f .github/copilot-instructions.md ]; then
+    echo "   ⚠️  .github/copilot-instructions.md already exists, skipping..."
+    echo "      Review sia/core/copilot-instructions.template.md for updates"
+else
+    echo "   📝 Creating .github/copilot-instructions.md from template..."
+    cp sia/core/copilot-instructions.template.md .github/copilot-instructions.md
+    echo "   ⚠️  Manual customization required:"
+    echo "      Edit .github/copilot-instructions.md and replace placeholders:"
+    echo "      - {{PROJECT_NAME}}"
+    echo "      - {{PROJECT_TYPE}}"
+    echo "      - {{PROJECT_MISSION}}"
+    echo "      - {{TECH_STACK}}"
+    echo "      - {{ARCHITECTURE_PATTERN}}"
+    echo "      - {{EXECUTION_COMMAND}}"
+    echo "      - {{ARCHITECTURE_DNA}}"
+    echo "      - {{RESEARCH_SOURCES}}"
+    echo "      - {{PROJECT_SLUG}}"
+    echo "      - {{ADDITIONAL_CONTEXT}}"
+fi
+
+echo ""
+echo "---------------------------------------------------"
+echo "[STEP 4/4] Repository Initialization Required"
 echo "---------------------------------------------------"
 echo ""
 echo "[SUCCESS] SIA Installation Complete!"
 echo ""
 echo "  Created:"
-echo "  - Directory: .sia/ (agents, knowledge, requirements, skills)"
+echo "  - Directory: .sia/ (agents, knowledge, requirements, skills, prompts)"
+echo "  - Directory: .vscode/ (VS Code configuration)"
 echo "  - Configuration: .sia.detected.yaml"
+echo "  - Configuration: .vscode/settings.json (slash commands enabled)"
 echo "  - Instructions: .github/copilot-instructions.md"
 echo "  - Init Protocol: .sia/INIT_REQUIRED.md (one-time)"
+echo "  - Slash Commands: .sia/prompts/*.prompt.md (11 commands)"
 echo ""
 echo "⚠️  IMPORTANT: Repository requires SUPER AGENT initialization"
 echo ""
