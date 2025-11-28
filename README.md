@@ -146,7 +146,7 @@ Result: Clean architecture + tests + documentation
 
 ### Scenario D: Architecture Analysis
 
-**Run analysis skills:**
+**Run built-in analysis skills:**
 
 ```bash
 # Check code complexity
@@ -160,51 +160,37 @@ sh sia/skills/visualize_architecture.sh
 # Check test coverage
 sh sia/skills/check_coverage.sh
 # Output: htmlcov/index.html (coverage gaps)
-
-# Audit DDD compliance
-uv run python3 sia/skills/audit_ddd.py
-# Output: Domain purity violations, layer separation issues
 ```
 
 ---
 
-## ✨ What You Get
+## 📖 How It Works
 
-After installation, SIA provides:
+**1. Install SIA as submodule** → Installer runs auto-discovery  
+**2. SIA detects your project** → Generates `.sia.detected.yaml`  
+**3. Copilot enhanced** → Reads `.github/copilot-instructions.md`  
+**4. You interact naturally** → SIA orchestrates specialized agents  
 
-🤖 **AI Orchestration**
-- GitHub Copilot becomes a "Super Agent"
-- Auto-discovers project architecture
-- Enforces DDD/SOLID principles
-- Manages 7-phase QUANT requirements
+```
+You: "I need user authentication with JWT"
+      ↓
+SIA: Translates to REQ-XXX → Analyzes domain → Decomposes QUANT → Guides implementation
+      ↓
+Result: Clean architecture + tests + documentation
+```
 
-🔍 **Auto-Discovery**
-- Detects tech stack (Python, FastAPI, Next.js, etc.)
-- Extracts bounded contexts from domain layer
-- Identifies architecture patterns (DDD, MVC)
-- Generates `.sia.detected.yaml` configuration
+---
 
-📝 **SPR Skills**
-- **Sparse Priming Representation** (70-80% compression)
-- Extract domain knowledge from code (reverse DDD)
-- Generate Project SPR (`.sia/agents/{project}.md`)
-- Compress documentation for LLM efficiency
+## 🎯 Core Capabilities
 
-🛠️ **Analysis Skills**
-- `check_complexity.sh` - Radon cyclomatic complexity
-- `visualize_architecture.sh` - Pydeps dependency graphs
-- `check_coverage.sh` - pytest-cov HTML reports
-
-📋 **Requirements Management**
-- Formal REQ-XXX tracking
-- Domain analysis templates
-- QUANT task decomposition
-- Archive completed work
-
-🧠 **Specialized Sub-Agents**
-- Repository Guardian (DDD enforcement)
-- Research Specialist (knowledge discovery)
-- Requirement Translator (natural → formal)
+| Capability | Description | Features |
+|------------|-------------|----------|
+| 🧠 **Meta-Cognition** | Reasons about architecture and design patterns above the code | AI Orchestration, DDD enforcement, SOLID principles |
+| 🔍 **Auto-Discovery** | Detects project identity automatically | Tech stack detection, bounded contexts extraction, `.sia.detected.yaml` generation |
+| 📝 **SPR Skills** | Sparse Priming Representation (70-80% compression) | Extract domain knowledge, generate Project SPR, compress docs |
+| 🛠️ **Analysis Tools** | High-leverage code quality tools | Complexity analysis, dependency graphs, coverage reports |
+| 📋 **Requirements Management** | Rigorous 7-phase QUANT lifecycle | REQ-XXX tracking, domain analysis, QUANT decomposition, archival |
+| 🧠 **Specialized Agents** | Sub-agents for specific tasks | Repository Guardian, Research Specialist, Requirement Translator |
 
 ---
 
@@ -244,109 +230,22 @@ pip3 install uv
 
 ---
 
-## 🎯 Core Capabilities
+### Scenario D: Architecture Analysis
 
-| Capability                    | Description                                                                |
-| ----------------------------- | -------------------------------------------------------------------------- |
-| 🧠 **Meta-Cognition**          | Reasons about architecture and design patterns above the code              |
-| 🔍 **Auto-Discovery**          | Detects project identity, tech stack, and domain boundaries automatically  |
-| 🏛️ **DDD Enforcement**         | Strictly enforces Domain-Driven Design (Layer separation, Dependency Rule) |
-| 📋 **Requirements Management** | Implements rigorous 7-phase QUANT lifecycle                                |
-| 🛠️ **Skill Injection**         | High-leverage tools for complexity analysis, visualization, auditing       |
+**Run built-in analysis skills:**
 
----
+```bash
+# Check code complexity
+sh sia/skills/check_complexity.sh
+# Output: Functions with Rank C/D/E (refactor candidates)
 
-## 📖 How It Works
+# Visualize architecture
+sh sia/skills/visualize_architecture.sh  
+# Output: dependency_graph.svg (detect layer violations)
 
-**1. Install SIA as submodule** → Installer runs auto-discovery  
-**2. SIA detects your project** → Generates `.sia.detected.yaml`  
-**3. Copilot enhanced** → Reads `.github/copilot-instructions.md`  
-**4. You interact naturally** → SIA orchestrates specialized agents  
-
-```
-You: "I need user authentication with JWT"
-      ↓
-SIA: Translates to REQ-XXX → Analyzes domain → Decomposes QUANT → Guides DDD implementation
-      ↓
-Result: Clean architecture + tests + documentation
-```
-
----
-
-## 💡 Usage Scenarios
-
-### Scenario A: Existing Codebase (Brownfield)
-
-**Goal**: Analyze existing code, map architecture, and enforce standards.
-
-```
-You: "Initialize SIA for this repository"
-
-SIA Actions:
-1. ✅ Reads .sia.detected.yaml (tech stack, bounded contexts)
-2. ✅ Generates Project SPR mapping your architecture
-3. ✅ Identifies technical debt and refactoring opportunities
-4. ✅ Sets up requirements/ workflow for future changes
-5. ✅ Baseline analysis (complexity, coverage, dependencies)
-
-Result: Complete architectural understanding + quality metrics
-```
-
----
-
-### Scenario B: New Project (Greenfield)
-
-**Goal**: Scaffold a new application from scratch using best practices.
-
-```
-You: "Initialize SIA. I want to build a SaaS for pet grooming."
-
-SIA Actions:
-1. ✅ Proposes AI-Native Stack:
-   - Backend: Python + FastAPI + DDD/SOLID/KISS
-   - Database: PostgreSQL 15 + TimescaleDB + PostGIS
-   - Frontend: React 18 + Vite + SSE (real-time)
-   - AI Layer: Google ADK (optional, agents-as-services)
-   - DevOps: Docker Compose (hot reload, all services)
-   - Testing: Playwright MCP (E2E automation)
-
-2. ✅ Scaffolds DDD directory structure:
-   - Domain (entities, value objects, aggregates)
-   - Application (use cases, DTOs)
-   - Infrastructure (repositories, external services)
-   - API (FastAPI endpoints, dependency injection)
-
-3. ✅ Generates Project SPR (.sia/agents/pet_grooming.md)
-4. ✅ Creates first REQ-001 for MVP
-5. ✅ Note: AI is optional. App is 100% functional without agents.
-         AI = Additional layer (assistants, not core logic).
-
-Result: Production-ready structure + clean architecture + MVP roadmap
-```
-
----
-
-### Scenario C: Feature Implementation
-
-**Natural language to implementation:**
-
-```
-You: "I need user authentication with JWT tokens"
-
-SIA Workflow:
-1. ✅ Creates REQ-XXX with formal specification
-2. ✅ Analyzes impacted bounded contexts (Users, Auth)
-3. ✅ Decomposes into QUANT tasks:
-   - QUANT-001: Domain entities (User, Token)
-   - QUANT-002: Repository interfaces
-   - QUANT-003: JWT service implementation
-   - QUANT-004: API endpoints
-   - QUANT-005: Integration tests
-4. ✅ Guides DDD-compliant implementation
-5. ✅ Validates architecture with skills
-6. ✅ Archives completed requirement
-
-Result: Clean architecture + tests + documentation
+# Check test coverage
+sh sia/skills/check_coverage.sh
+# Output: htmlcov/index.html (coverage gaps)
 ```
 
 ---
