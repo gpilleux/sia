@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Inception Mode Support** (`installer/install.py`)
+  - Installer now detects when running in SIA framework itself
+  - Auto-configures paths for self-installation (dogfooding)
+  - Enables SIA to use its own tooling during development
+  - `.sia/prompts/` properly synced from `templates/prompts/`
 - **Automated Installer Testing Suite** (`tests/test_installer.py`)
   - 11 comprehensive tests covering all installation scenarios
   - Isolated temporary environment testing (no local contamination)
@@ -30,6 +35,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Version history and migration path
 
 ### Changed
+- **Slash Commands Architecture** (`templates/prompts/`)
+  - Established `templates/prompts/` as **single source of truth**
+  - Removed redundant `prompts/` directory (DRY violation)
+  - `.sia/prompts/` now auto-synced during installation
+  - Updated documentation with inception pattern workflow
+  - Clear update protocol: edit templates → re-run installer → commit
+- **Enhanced .gitignore**
+  - Added `.env` and environment variable file patterns
+  - Added comprehensive virtual environment exclusions
+  - Added OS-specific files (macOS, Windows, Linux)
+  - Added type checking caches (mypy, pyright, pyre)
+  - Added database files and secrets patterns
+  - Added UV cache directory
+  - Organized by category for maintainability
 - **Documentation Updates** (README, QUICKSTART, DISTRIBUTION)
   - Prioritize universal Python installer in all guides
   - Moved platform-specific installers to "legacy" status
@@ -49,6 +68,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed `.gitignore` validation test (template marker detection)
   - Fixed `.sia.detected.yaml` format test (nested YAML structure)
   - Registered `docker` pytest marker to eliminate warnings
+- **Inception Pattern Implementation**
+  - Eliminated duplicate `prompts/` directory
+  - SIA framework now properly uses `.sia/` structure
+  - Installer correctly detects self-installation context
 
 ### Added (Previous)
 - **Microsoft Suite Specialist Agent** (`agents/microsoft_suite_specialist.md`)

@@ -18,7 +18,16 @@ class SIAInstaller:
     def __init__(self):
         self.platform = platform.system()
         self.root = Path.cwd()
-        self.sia_framework = self.root / "sia"
+        
+        # Detect if running in SIA framework itself (inception mode)
+        # If installer/ exists in current dir, we're in SIA repo
+        if (self.root / "installer").exists():
+            # Inception mode: SIA installing itself
+            self.sia_framework = self.root
+        else:
+            # Normal mode: Installing from sia/ submodule
+            self.sia_framework = self.root / "sia"
+            
         self.sia_dir = self.root / ".sia"
         self.vscode_dir = self.root / ".vscode"
         self.github_dir = self.root / ".github"

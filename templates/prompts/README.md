@@ -7,6 +7,40 @@ Location: `.sia/prompts/` (configured via `.vscode/settings.json`)
 
 ---
 
+## 📍 **Source of Truth**
+
+**IMPORTANT:** This directory (`templates/prompts/`) is the **ONLY source of truth** for slash commands.
+
+### Inception Pattern
+
+SIA framework uses itself (inception):
+- **`templates/prompts/`** → Source of truth (edit here)
+- **`.sia/prompts/`** → Auto-synced copy (for SIA inception usage)
+- **Distribution** → `installer/install.py` copies from `templates/prompts/`
+
+### Update Workflow
+
+When you modify a prompt:
+
+```bash
+# 1. Edit source of truth
+vim templates/prompts/activate.prompt.md
+
+# 2. Re-run installer to sync to .sia/ (inception)
+python3 installer/install.py
+
+# 3. Commit changes
+git add templates/prompts/ .sia/prompts/
+git commit -m "Update slash command: activate"
+```
+
+**Alternative (manual sync):**
+```bash
+cp templates/prompts/*.prompt.md .sia/prompts/
+```
+
+---
+
 ## Quick Reference
 
 | Command | File | Purpose |
@@ -54,7 +88,19 @@ Every slash command embeds:
 
 ## Installation
 
-The installer (`sia/installer/install.sh`) copies these templates to your project's `.sia/prompts/` directory.
+**For new projects**, the installer copies these templates to `.sia/prompts/`:
+
+```bash
+# Normal installation (in target project)
+python3 sia/installer/install.py
+```
+
+**For SIA framework itself (inception)**, the installer detects it's running in the framework and syncs from local `templates/`:
+
+```bash
+# Inception installation (in SIA repo)
+python3 installer/install.py
+```
 
 To enable slash commands in VS Code, ensure `.vscode/settings.json` contains:
 
