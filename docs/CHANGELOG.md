@@ -8,6 +8,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Automated Installer Testing Suite** (`tests/test_installer.py`)
+  - 11 comprehensive tests covering all installation scenarios
+  - Isolated temporary environment testing (no local contamination)
+  - Cross-platform validation (macOS, Linux, Windows via Docker)
+  - Test coverage for: directory creation, README generation, config files, slash commands, gitignore, auto-discovery
+  - Idempotency tests ensuring safe re-runs
+  - Test documentation (`tests/README.md`)
+  - pytest configuration (`pyproject.toml`)
+  - **Validates**: All three installers produce identical results
+- **Universal Python Installer** (`installer/install.py`)
+  - Single cross-platform installer for macOS, Linux, and Windows
+  - Replaces platform-specific bash/batch scripts as primary installation method
+  - Automatic dependency detection and installation
+  - Consistent behavior across all operating systems
+  - Legacy installers (`install.sh`, `install.bat`) kept for backwards compatibility
+- **Installer Documentation** (`installer/README.md`)
+  - Comprehensive guide for all installation methods
+  - Troubleshooting section for common issues
+  - Development guidelines for maintaining installers
+  - Version history and migration path
+
+### Changed
+- **Documentation Updates** (README, QUICKSTART, DISTRIBUTION)
+  - Prioritize universal Python installer in all guides
+  - Moved platform-specific installers to "legacy" status
+  - Simplified installation instructions
+  - Added explicit warnings about future deprecation of shell scripts
+- **Installer Synchronization** (`install.sh`, `install.bat`)
+  - Synchronized both legacy installers with `install.py` feature parity
+  - Added slash commands installation (`.sia/prompts/*.prompt.md`)
+  - Added VS Code settings creation (`.vscode/settings.json`)
+  - Added `.gitignore` template installation
+  - Replaced `auto_discovery.py` → `smart_init.py` call
+  - Added Copilot instructions installation step
+  - Improved README formatting (multi-line echo blocks)
+
+### Fixed
+- **Test Suite Corrections**
+  - Fixed `.gitignore` validation test (template marker detection)
+  - Fixed `.sia.detected.yaml` format test (nested YAML structure)
+  - Registered `docker` pytest marker to eliminate warnings
+
+### Added (Previous)
 - **Microsoft Suite Specialist Agent** (`agents/microsoft_suite_specialist.md`)
   - Microsoft 365 expertise (SharePoint, OneDrive, Teams, Graph API)
   - Google Workspace → Microsoft 365 migration playbook

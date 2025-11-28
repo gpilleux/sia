@@ -20,23 +20,24 @@ Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD 
 
 ## 🚀 Quick Installation
 
-**One-liner for each platform** – copy and paste in your project root:
+**Universal cross-platform installer** – works on macOS, Linux, and Windows:
 
 ### Option 1: Git Submodule (Recommended)
 
 Keeps SIA updated across projects, tracks framework version.
 
-#### macOS / Linux
 ```bash
 git submodule add https://github.com/gpilleux/sia.git sia
-bash sia/installer/install.sh  # Run from project root
+python3 sia/installer/install.py  # Recommended: Cross-platform Python installer
 ```
 
-#### Windows (PowerShell/CMD)
-```cmd
-git submodule add https://github.com/gpilleux/sia.git sia
-sia\installer\install.bat  # Run from project root
+**Alternative platform-specific installers (legacy):**
+```bash
+bash sia/installer/install.sh      # macOS/Linux only
+sia\installer\install.bat          # Windows only
 ```
+
+> **💡 Tip**: Use `install.py` for all platforms. Shell scripts maintained for backwards compatibility.
 
 ### Option 2: Standalone Clone
 
@@ -44,7 +45,7 @@ Single project, no submodule. Add `sia/` to `.gitignore`.
 
 ```bash
 git clone https://github.com/gpilleux/sia.git sia
-bash sia/installer/install.sh  # Run from project root
+python3 sia/installer/install.py   # Recommended: Cross-platform installer
 echo "sia/" >> .gitignore
 ```
 
@@ -183,14 +184,14 @@ Result: Clean architecture + tests + documentation
 
 ## 🎯 Core Capabilities
 
-| Capability | Description | Features |
-|------------|-------------|----------|
-| 🧠 **Meta-Cognition** | Reasons about architecture and design patterns above the code | AI Orchestration, DDD enforcement, SOLID principles |
-| 🔍 **Auto-Discovery** | Detects project identity automatically | Tech stack detection, bounded contexts extraction, `.sia.detected.yaml` generation |
-| 📝 **SPR Skills** | Sparse Priming Representation (70-80% compression) | Extract domain knowledge, generate Project SPR, compress docs |
-| 🛠️ **Analysis Tools** | High-leverage code quality tools | Complexity analysis, dependency graphs, coverage reports |
-| 📋 **Requirements Management** | Rigorous 7-phase QUANT lifecycle | REQ-XXX tracking, domain analysis, QUANT decomposition, archival |
-| 🧠 **Specialized Agents** | Sub-agents for specific tasks | Repository Guardian, Research Specialist, Requirement Translator |
+| Capability                    | Description                                                   | Features                                                                           |
+| ----------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 🧠 **Meta-Cognition**          | Reasons about architecture and design patterns above the code | AI Orchestration, DDD enforcement, SOLID principles                                |
+| 🔍 **Auto-Discovery**          | Detects project identity automatically                        | Tech stack detection, bounded contexts extraction, `.sia.detected.yaml` generation |
+| 📝 **SPR Skills**              | Sparse Priming Representation (70-80% compression)            | Extract domain knowledge, generate Project SPR, compress docs                      |
+| 🛠️ **Analysis Tools**          | High-leverage code quality tools                              | Complexity analysis, dependency graphs, coverage reports                           |
+| 📋 **Requirements Management** | Rigorous 7-phase QUANT lifecycle                              | REQ-XXX tracking, domain analysis, QUANT decomposition, archival                   |
+| 🧠 **Specialized Agents**      | Sub-agents for specific tasks                                 | Repository Guardian, Research Specialist, Requirement Translator                   |
 
 ---
 

@@ -47,15 +47,20 @@ pip3 install uv
 # En la raíz de tu proyecto
 git submodule add https://github.com/gpilleux/sia.git sia
 
-# Ejecutar instalador
-cd sia
-
-# macOS/Linux:
-bash installer/install.sh
-
-# Windows:
-installer\install.bat
+# Ejecutar instalador universal (recomendado para todos los OS)
+python3 sia/installer/install.py
 ```
+
+**Instaladores alternativos (legacy - solo si install.py falla):**
+```bash
+# macOS/Linux únicamente:
+bash sia/installer/install.sh
+
+# Windows únicamente:
+sia\installer\install.bat
+```
+
+> **💡 Recomendación**: Usa `install.py` en todos los sistemas. Los scripts shell se mantienen por compatibilidad pero pueden deprecarse en versiones futuras.
 
 ### Paso 3: Verificar Instalación
 
@@ -216,8 +221,7 @@ python3 -m pip install uv
 
 **Solución:**
 ```bash
-chmod +x sia/installer/install.sh
-bash sia/installer/install.sh
+python3 sia/installer/install.py
 ```
 
 ### Auto-discovery falla
@@ -288,7 +292,7 @@ Si descubres mejoras aplicables a TODOS los proyectos:
 
 - [ ] Requisitos instalados (Python 3.10+, Git, uv)
 - [ ] Submodule agregado (`git submodule add ...`)
-- [ ] Instalador ejecutado (`bash installer/install.sh`)
+- [ ] Instalador ejecutado (`python3 sia/installer/install.py`)
 - [ ] Verificar `.sia.detected.yaml` generado
 - [ ] Revisar `.github/copilot-instructions.md`
 - [ ] Probar skill: `sh sia/skills/check_complexity.sh`

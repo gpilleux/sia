@@ -23,15 +23,17 @@ git submodule update --init --recursive
 
 **Step 2**: Run installer (from project root):
 
-**macOS / Linux:**
 ```bash
-bash sia/installer/install.sh
+python3 sia/installer/install.py  # ✅ Recommended: Works on all platforms
 ```
 
-**Windows:**
-```cmd
-sia\installer\install.bat
+**Alternative platform-specific installers (legacy):**
+```bash
+bash sia/installer/install.sh     # macOS/Linux only
+sia\installer\install.bat         # Windows only
 ```
+
+> **💡 Best Practice**: Use `install.py` for consistency. Shell scripts maintained for backwards compatibility but may be deprecated in future versions.
 
 ---
 
@@ -39,18 +41,10 @@ sia\installer\install.bat
 
 **Why standalone**: Single project, no multi-repo management, simpler `.gitignore`.
 
-**macOS/Linux**:
 ```bash
 git clone https://github.com/gpilleux/sia.git sia
-bash sia/installer/install.sh
+python3 sia/installer/install.py  # ✅ Recommended: Cross-platform
 echo "sia/" >> .gitignore
-```
-
-**Windows**:
-```cmd
-git clone https://github.com/gpilleux/sia.git sia
-sia\installer\install.bat
-echo sia/ >> .gitignore
 ```
 
 ---
