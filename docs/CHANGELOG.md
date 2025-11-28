@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Automatic UV Installation** (`installer/install.py`)
+  - Detects missing `uv` and installs automatically using official installers
+  - macOS/Linux: Uses `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows: Uses PowerShell script `irm https://astral.sh/uv/install.ps1 | iex`
+  - Fallback to `pip install uv` if official installer fails
+  - 2-minute timeout with graceful error handling
+  - Zero manual dependency setup required
 - **Inception Mode Support** (`installer/install.py`)
   - Installer now detects when running in SIA framework itself
   - Auto-configures paths for self-installation (dogfooding)

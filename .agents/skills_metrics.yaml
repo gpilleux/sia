@@ -1,0 +1,8 @@
+skills_usage:
+  check_complexity:
+    history:
+    - details:
+        target: .
+      timestamp: '2025-11-24T23:54:28.220335'
+    invocations: 1
+    last_used: '2025-11-24T23:54:28.220319'

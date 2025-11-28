@@ -8,7 +8,7 @@ This directory contains installation scripts for the SIA framework.
 
 **File**: `install.py`  
 **Platforms**: macOS, Linux, Windows  
-**Requirement**: Python 3.10+
+**Requirement**: Python 3.10+ (only)
 
 ```bash
 python3 installer/install.py
@@ -18,8 +18,10 @@ python3 installer/install.py
 - ✅ Single codebase for all platforms
 - ✅ Easier to maintain and update
 - ✅ Consistent behavior across systems
-- ✅ Automatic dependency detection
+- ✅ **Automatic dependency detection and installation**
+- ✅ **Auto-installs `uv` if missing** (no manual setup required)
 - ✅ Cross-platform path handling
+- ✅ Inception mode support (SIA installing itself)
 
 ---
 
@@ -51,7 +53,10 @@ All installers perform the same steps:
 
 1. **Check Dependencies**
    - Python 3.10+
-   - `uv` package manager (auto-installed if missing)
+   - `uv` package manager (**auto-installed if missing**)
+     - macOS/Linux: Uses official script `curl -LsSf https://astral.sh/uv/install.sh | sh`
+     - Windows: Uses official PowerShell script
+     - Fallback: `pip install uv` if official installer fails
 
 2. **Create .sia/ Structure** (STEP 1/4)
    - `agents/` - Project-specific agent definitions

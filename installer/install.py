@@ -63,14 +63,8 @@ class SIAInstaller:
         
         # Check uv
         if not self._command_exists("uv"):
-            print("[INFO] 'uv' not installed. Installing...")
-            try:
-                subprocess.run([sys.executable, "-m", "pip", "install", "uv"], 
-                             check=True, capture_output=True)
-                print("   ✓ uv installed")
-            except subprocess.CalledProcessError as e:
-                print(f"[ERROR] Failed to install uv: {e}")
-                sys.exit(1)
+            print("[INFO] 'uv' not installed. Installing automatically...")
+            self._install_uv()
         else:
             print("   ✓ uv installed")
             
@@ -295,6 +289,86 @@ Reusable skills available in `sia/skills/`
         print("  - Quick Start: sia/QUICKSTART.md")
         print("  - Distribution: sia/DISTRIBUTION.md")
         print()
+        
+    def _install_uv(self):
+        """Install uv using the official installer script"""
+        print("   📦 Installing uv package manager...")
+        
+        try:
+            if self.platform in ["Darwin", "Linux"]:
+                # Unix-like systems: Use official installer script
+                print("   → Using official installer: curl -LsSf https://astral.sh/uv/install.sh | sh")
+                result = subprocess.run(
+                    ["sh", "-c", "curl -LsSf https://astral.sh/uv/install.sh | sh"],
+                    capture_output=True,
+                    text=True,
+                    timeout=120  # 2 minutes timeout
+                )
+                
+                if result.returncode == 0:
+                    print("   ✓ uv installed successfully")
+                    print("   ⚠️  Note: You may need to restart your terminal or run:")
+                    print("      source $HOME/.cargo/env")
+                    
+                    # Try to verify installation
+                    if self._command_exists("uv"):
+                        print("   ✓ uv is now available in PATH")
+                    else:
+                        print("   ⚠️  uv installed but not yet in PATH")
+                        print("      Restart your terminal and run installer again")
+                        sys.exit(0)  # Exit gracefully, user needs to restart terminal
+                else:
+                    raise subprocess.CalledProcessError(result.returncode, "uv installer", result.stderr)
+                    
+            elif self.platform == "Windows":
+                # Windows: Use official PowerShell installer
+                print("   → Using official installer: PowerShell script")
+                result = subprocess.run(
+                    ["powershell", "-ExecutionPolicy", "ByPass", "-c",
+                     "irm https://astral.sh/uv/install.ps1 | iex"],
+                    capture_output=True,
+                    text=True,
+                    timeout=120
+                )
+                
+                if result.returncode == 0:
+                    print("   ✓ uv installed successfully")
+                    print("   ⚠️  Note: You may need to restart your terminal")
+                    
+                    # Try to verify installation
+                    if self._command_exists("uv"):
+                        print("   ✓ uv is now available in PATH")
+                    else:
+                        print("   ⚠️  uv installed but not yet in PATH")
+                        print("      Restart your terminal and run installer again")
+                        sys.exit(0)
+                else:
+                    raise subprocess.CalledProcessError(result.returncode, "uv installer", result.stderr)
+            else:
+                # Fallback to pip install (less reliable but works)
+                print("   → Falling back to pip install...")
+                subprocess.run([sys.executable, "-m", "pip", "install", "uv"], 
+                             check=True, capture_output=True)
+                print("   ✓ uv installed via pip")
+                
+        except subprocess.TimeoutExpired:
+            print("\n[ERROR] uv installation timed out")
+            print("Please install manually:")
+            print("  macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh")
+            print("  Windows: irm https://astral.sh/uv/install.ps1 | iex")
+            sys.exit(1)
+        except subprocess.CalledProcessError as e:
+            print(f"\n[ERROR] Failed to install uv: {e}")
+            print("\nPlease install manually:")
+            print("  macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh")
+            print("  Windows: irm https://astral.sh/uv/install.ps1 | iex")
+            print("  Fallback: pip install uv")
+            sys.exit(1)
+        except Exception as e:
+            print(f"\n[ERROR] Unexpected error installing uv: {e}")
+            print("\nPlease install manually:")
+            print("  https://docs.astral.sh/uv/getting-started/installation/")
+            sys.exit(1)
         
     def _command_exists(self, command: str) -> bool:
         """Check if a command exists in PATH"""

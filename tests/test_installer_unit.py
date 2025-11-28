@@ -46,6 +46,18 @@ class TestSIAInstallerUnit:
         # Non-existent command
         assert not installer._command_exists("this_command_definitely_does_not_exist_12345")
         
+        # uv should exist (auto-installed by framework)
+        # Note: This may fail on fresh systems, which is expected behavior
+        # The installer will auto-install uv in that case
+    
+    def test_install_uv_method_exists(self):
+        """Test that _install_uv method is available"""
+        installer = SIAInstaller()
+        
+        # Verify method exists
+        assert hasattr(installer, '_install_uv')
+        assert callable(getattr(installer, '_install_uv'))
+        
     def test_print_header_output(self, capsys):
         """Test that _print_header produces expected output"""
         installer = SIAInstaller()
