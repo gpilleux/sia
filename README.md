@@ -1,6 +1,6 @@
-# Super Intelligence Agency (SIA)
-
 <div align="center">
+
+# Super Intelligence Agency (SIA)
 
 [![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/gpilleux/sia/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
