@@ -48,7 +48,21 @@ bash sia/installer/install.sh  # Run from project root
 echo "sia/" >> .gitignore
 ```
 
-**Installation complete!** Now tell GitHub Copilot: *"Initialize SIA for this repository"* to activate the Super Agent.
+---
+
+### ⚡ **NEXT STEP - ACTIVATION REQUIRED**
+
+<div align="center">
+
+### 🎯 Open VS Code and tell GitHub Copilot:
+
+```
+"Initialize SIA for this repository"
+```
+
+> 👆 **This activates the Super Agent and generates your project's AI architecture**
+
+</div>
 
 ---
 
