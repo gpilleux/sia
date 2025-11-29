@@ -1,0 +1,14 @@
+{
+    "prompts/activate.prompt.md": "74f638e3bd2a5e598db1f64690595ac9787385075bd1ce6ec23cddc187654126",
+    "prompts/boost.prompt.md": "ef6a0d8301f4ebfbd16e21c17b50b41c74026050a357c8758410c7f849bc7bb0",
+    "prompts/continue.prompt.md": "16ab1ac6238199eeeacfb33566f2863452b8db9eb52638e10774f71103303941",
+    "prompts/debug.prompt.md": "a676533c5c80fa448b8e63d706246a38de6f45f791fb210ba35f76f4efcb0bc4",
+    "prompts/handoff.prompt.md": "3c215fe82788f42c73ff1934d4362b3744634bc114d06501ece2377fbf8b2019",
+    "prompts/next.prompt.md": "215851ab59da5295639bd40e37f4bd7cd57be03571ad563c9f2aa1fe6d983ee9",
+    "prompts/quant.prompt.md": "f6c4e4a16b61376d88515b8e541ee54ea60cf6c4137ae00e88c857284 6934e61",
+    "prompts/spr.prompt.md": "59002d9d0c70c07706d7daa5de78f7b30b411ef0bc152c9125c6150a1efa886c",
+    "prompts/sync.prompt.md": "9eca2a8b2a645d5f96549ef25e6764b599ecc6e5c82b639347a800bd56692e53",
+    "prompts/test.prompt.md": "5367009678bdb78cb1b0907773a71abaaca821e590ff2ba66196bf7b46d9442f",
+    "prompts/update.prompt.md": "4d5a83ad0c7c95299196a8ff89f4fe4baf28d97106ac4a2c7d5bab1684054c0a",
+    "prompts/validate.prompt.md": "c73b65c8bf96155d9ea8ceaccc1c09bbf0f38d921a3ab0d03eaa08c56e9cf8d4"
+}
