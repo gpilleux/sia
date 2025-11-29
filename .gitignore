@@ -110,3 +110,6 @@ temp/
 # UV Cache
 .uv/
 uv.lock
+
+.sia.detected.yaml
+
