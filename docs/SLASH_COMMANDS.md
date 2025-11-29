@@ -71,6 +71,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/quant` | Generate QUANT tasks | Breaking down requirements |
 | `/spr` | Compress content | Documentation |
 | `/update` | Update docs | After completing work |
+| `/sync` | Sync framework updates | After git submodule update |
 | `/next` | Prepare next session | Task completed |
 | `/handoff` | Transfer context | Ending session |
 
@@ -250,6 +251,71 @@ Agent: [Executes plan]
 5. Preserves only essential information
 
 **Technique:** 70-80% token reduction while maintaining value
+
+---
+
+### `/sync` - Framework Synchronization
+
+**Purpose:** Sincronizar `.sia/` con actualizaciones del submódulo SIA
+
+**Usage:**
+```
+/sync                  # Sincronización inteligente (interactiva)
+/sync --dry-run        # Mostrar cambios sin aplicar
+/sync --force          # Sobrescribir TODO (requiere confirmación)
+/sync rollback         # Restaurar desde último backup
+```
+
+**What it does:**
+1. Detecta versión del framework vs. versión local
+2. Lista archivos nuevos/modificados en `sia/templates/`
+3. Detecta personalizaciones (hash comparison)
+4. Pregunta antes de sobrescribir archivos personalizados
+5. Sincroniza: prompts, skills, framework agents
+6. Crea backups automáticos antes de sobrescribir
+7. Actualiza metadata (versión, timestamp, hashes)
+8. Genera reporte detallado
+
+**Componentes Sincronizados:**
+- **Prompts**: `sia/templates/prompts/*.prompt.md` → `.sia/prompts/`
+- **Skills**: `sia/skills/*` → `.sia/skills/` (solo nuevos)
+- **Framework Agents**: `repository_guardian.md`, `research_specialist.md`, etc.
+- **Templates**: Referencias en `.sia/knowledge/`
+
+**Protecciones:**
+- ✅ Detecta personalizaciones automáticamente
+- ✅ Pregunta antes de sobrescribir
+- ✅ Crea backups en `.sia/backup/{timestamp}/`
+- ✅ NUNCA toca `.sia/agents/{project}.md` (SPR del proyecto)
+- ✅ NUNCA toca `.sia.detected.yaml` (configuración del proyecto)
+
+**Metadata Tracking:**
+- `.sia/metadata/sia_version.txt` - Última versión sincronizada
+- `.sia/metadata/last_sync.txt` - Timestamp ISO 8601
+- `.sia/metadata/original_hashes.json` - Hashes para detectar personalizaciones
+- `.sia/metadata/sync.log` - Historial completo
+
+**Flujo Típico:**
+```bash
+# 1. Actualizar submódulo SIA
+git submodule update --remote sia
+
+# 2. Sincronizar en VS Code
+User: /sync
+
+# 3. Super Agent ejecuta protocolo tool-based
+# - Detecta: boost.prompt.md (nuevo) → Copia
+# - Detecta: debug.prompt.md (actualizado, no personalizado) → Actualiza
+# - Detecta: quant.prompt.md (personalizado) → Pregunta
+# - Actualiza metadata
+
+# 4. Reporte
+🔄 SINCRONIZACIÓN COMPLETADA
+Prompts: 2 nuevos, 1 actualizado, 1 protegido
+Framework Version: 1.1.0 → 1.2.0
+```
+
+**Principios:** Conservador, trazable, reversible, tool-native
 
 ---
 
