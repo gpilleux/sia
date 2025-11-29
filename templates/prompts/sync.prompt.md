@@ -85,21 +85,20 @@ existing_prompts = framework_prompts ∩ local_prompts
 ```
 For each file in new_prompts:
   
-  Step 1: Leer contenido del framework
-  Tool: read_file(f"sia/templates/prompts/{filename}", 1, -1)
-  Store: source_content
+  Step 1: Copiar archivo directamente (optimización de tokens)
+  Tool: run_in_terminal(
+    command: f"cp sia/templates/prompts/{filename} .sia/prompts/{filename}",
+    explanation: f"Copiar {filename} a prompts locales"
+  )
   
-  Step 2: Crear en local
-  Tool: create_file(f".sia/prompts/{filename}", source_content)
-  
-  Step 3: Calcular hash para tracking
+  Step 2: Calcular hash para tracking
   Tool: run_in_terminal(
     command: f"shasum -a 256 .sia/prompts/{filename} | awk '{{print $1}}'",
     explanation: "Calcular hash del prompt nuevo"
   )
   Store: file_hash
   
-  Step 4: Log
+  Step 3: Log
   Report: "✅ NEW: {filename}"
 ```
 
