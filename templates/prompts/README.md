@@ -47,6 +47,7 @@ cp templates/prompts/*.prompt.md .sia/prompts/
 |---------|------|---------|
 | `/activate` | `activate.prompt.md` | Bootstrap new session - quantum activation |
 | `/continue` | `continue.prompt.md` | Resume pending task |
+| `/sync` | `sync.prompt.md` | Synchronize .sia/ with framework updates |
 | `/next` | `next.prompt.md` | Complete task and prepare next session |
 | `/handoff` | `handoff.prompt.md` | Transfer context to next agent |
 | `/update` | `update.prompt.md` | Update REQ documentation |
