@@ -76,6 +76,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/sync`     | Sync framework updates    | After git submodule update      |
 | `/next`     | Prepare next session      | Task completed                  |
 | `/handoff`  | Transfer context          | Ending session                  |
+| `/oneliner` | Generate task one-liner   | Need concise task description   |
 
 ---
 
@@ -521,6 +522,56 @@ CONTEXT FILES:
 - [file 2]
 NEXT ACTION: [Immediate action]
 ```
+
+---
+
+### `/oneliner` - Next Task One-Liner
+
+**Purpose:** Generate one-liner for next task in requirements workflow (context already documented)
+
+**Usage:**
+```
+/oneliner                    # Auto-detect from NEXT_SESSION.md or pending QUANTs
+/oneliner + "REQ-003"        # Specific requirement
+```
+
+**What it does:**
+1. Identifies next task (reads `NEXT_SESSION.md` or scans pending QUANTs)
+2. Extracts minimal critical info: REQ-ID + QUANT-ID + Title + ONE critical detail
+3. Synthesizes one sentence for `/activate` usage
+4. References breakdown docs (Super Agent will do deep research)
+
+**Structure:**
+```
+Implementa REQ-{ID} QUANT-{N}: {Title} {minimal critical detail}
+```
+
+**Examples:**
+- ✅ "Implementa REQ-003 QUANT-001: OAuth Provider Configuration usando Google ADK patterns"
+- ✅ "Implementa REQ-007 QUANT-003: Message Entity Validation con ValueObjects RFC 5322"
+- ✅ "Implementa REQ-012 QUANT-002: AsyncRepository Pattern respetando dependency inversion"
+
+**Does NOT include:**
+- ❌ Full description (already in breakdown)
+- ❌ All acceptance criteria (Super Agent reads them)
+- ❌ Prior research (Super Agent executes it)
+
+**Output:**
+```
+📌 NEXT TASK:
+Implementa REQ-{ID} QUANT-{N}: {Title} {critical detail}
+
+📂 CONTEXT:
+- .sia/requirements/REQ-{ID}/REQ-{ID}_quant_breakdown.md
+- .sia/requirements/REQ-{ID}/REQ-{ID}_domain_analysis.md
+```
+
+🎯 **ACTIVATION:**
+```
+/activate "Implementa REQ-{ID} QUANT-{N}: {brief title}"
+```
+
+**Principles:** Minimal context, Reference docs, Super Agent investigates
 
 ---
 
