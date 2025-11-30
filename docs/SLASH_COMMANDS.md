@@ -65,6 +65,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/activate` | Bootstrap session         | Start of every session          |
 | `/continue` | Resume work               | Approved to proceed             |
 | `/boost`    | Reinforce powers          | Agent deviating from principles |
+| `/clean`    | Organize workspace        | Files in wrong locations        |
 | `/debug`    | First-principles analysis | Complex problems                |
 | `/test`     | Generate tests            | After implementation            |
 | `/validate` | UI validation             | Frontend changes                |
@@ -146,6 +147,84 @@ Agent: [Executes plan]
 2. Refreshes MCP sources
 3. Enforces core principles
 4. Validates recent work for violations
+
+---
+
+### `/clean` - Repository Cleanup
+
+**Purpose:** Organizar workspace - Archivos en ubicaciones canónicas
+
+**Usage:**
+```
+/clean                 # Dry-run (análisis sin ejecución)
+/clean --dry-run       # Explícito dry-run
+/clean + @continue     # Interactivo (presenta plan, espera confirmación)
+/clean --force         # Ejecuta TODO (requiere confirmación doble)
+```
+
+**What it does:**
+1. **Scan workspace** → Detecta archivos fuera de ubicaciones canónicas
+2. **Clasificar automáticamente** → Prompts, skills, docs, configs, temporales
+3. **Proponer movimientos** → Plan detallado con origen → destino
+4. **Esperar confirmación** → Requiere `@continue` para ejecutar
+5. **Ejecutar + backup** → Mueve archivos, crea backup automático
+6. **Log tracking** → Metadata en `.sia/metadata/cleanup_{timestamp}.log`
+
+**Detección automática:**
+- `*.prompt.md` fuera de `.sia/prompts/` o `sia/templates/prompts/`
+- Scripts Python en root → Clasificar como skill vs tool
+- Docs sueltos → Consolidar en `docs/` o `.sia/knowledge/`
+- Temporales → `.DS_Store`, `__pycache__`, `*.pyc`, `htmlcov/`
+- Backups antiguos → `.sia/backup/` (mantiene último mes)
+
+**Ubicaciones canónicas:**
+```
+.sia/
+  prompts/        → Proyecto-specific slash commands
+  skills/         → Proyecto-specific análisis
+  knowledge/      → Domain patterns
+  requirements/   → REQ-XXX folders
+  agents/         → Proyecto SPR
+  metadata/       → Version, sync, hashes
+
+sia/              → Framework submodule (READ-ONLY)
+  templates/prompts/
+  skills/
+  agents/
+  
+docs/            → User-facing documentation
+tests/            → Test suite
+```
+
+**Safety gates:**
+- ✅ Dry-run por defecto (NO ejecuta sin confirmación)
+- ✅ Backup automático en `.sia/backup/{timestamp}/` antes de mover
+- ✅ NUNCA toca: `.git/`, `pyproject.toml`, `.env`, `sia/*`
+- ✅ Log completo de movimientos para rollback
+- ✅ Confirmación doble para `--force`
+
+**Output:**
+```
+🧹 CLEANUP ANALYSIS
+
+📁 ARCHIVOS DETECTADOS FUERA DE LUGAR:
+   - test_script.py (root) → .sia/skills/
+   - old_prompt.md (docs/) → .sia/prompts/
+
+🗑️  TEMPORALES DETECTADOS:
+   - .DS_Store (12 archivos)
+   - __pycache__/ (5 directorios)
+
+📊 RESUMEN:
+   - Archivos a mover: 2
+   - Temporales a eliminar: 17
+
+🎯 ACCIÓN REQUERIDA:
+   - Dry-run completado
+   - Si apruebas: @continue
+```
+
+**Principles:** Safety First, Traceability, Rollback, DDD (bounded contexts)
 
 ---
 
