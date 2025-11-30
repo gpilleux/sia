@@ -11,12 +11,13 @@ Transforma input natural → REQ completo (Capture → Research → Reasoning �
 ---
 
 **PROTOCOLO:**
-1. **Valida Input** → Si vago: preguntar (component, bounded context, success criteria)
-2. **Si multi-context** → Sugerir split (REQ-{ID} por contexto)
-3. **Auto-increment ID** → Scan `.sia/requirements/REQ-\d+`, max+1, format REQ-{ID:03d}
-4. **Check duplicates** → Scan títulos existentes, preguntar si match
-5. **Presenta plan** → Research scope, invariants estimados, QUANT count
-6. **HALT** → Espera `/continue` antes de ejecutar
+1. **Revisa Knowledge** → Scan `.sia/knowledge/` y `.sia/knowledge/active/` para patterns/lecciones relevantes
+2. **Valida Input** → Si vago: preguntar (component, bounded context, success criteria)
+3. **Si multi-context** → Sugerir split (REQ-{ID} por contexto)
+4. **Auto-increment ID** → Scan `.sia/requirements/REQ-\d+`, max+1, format REQ-{ID:03d}
+5. **Check duplicates** → Scan títulos existentes, preguntar si match
+6. **Presenta plan** → Research scope, invariants estimados, QUANT count, knowledge aplicado
+7. **HALT** → Espera `/continue` antes de ejecutar
 
 **FASE 1: CAPTURE**
 - Usa `sia/requirements/_templates/REQUIREMENT_TEMPLATE.md`
@@ -25,10 +26,11 @@ Transforma input natural → REQ completo (Capture → Research → Reasoning �
 - Aplica SPR compression (70-80% token reduction)
 
 **FASE 2: RESEARCH (MANDATORY)**
+- Aplica knowledge previo (`.sia/knowledge/` patterns + lecciones aprendidas)
 - Usa `sia/requirements/_templates/DOMAIN_ANALYSIS_TEMPLATE.md`
 - Invoca MCP DeepWiki (≥1 query, idealmente 2-3)
 - Repos según contexto: auth→`google/adk-python`, frontend→`idosal/mcp-ui`, API→`fastapi/fastapi`
-- Crea `REQ-{ID}_domain_analysis.md` con findings + conclusions
+- Crea `REQ-{ID}_domain_analysis.md` con findings + conclusions + knowledge aplicado
 - Si MCP falla → Documenta error, continúa best-effort
 
 **FASE 3: REASONING**
@@ -56,6 +58,10 @@ Transforma input natural → REQ completo (Capture → Research → Reasoning �
 **MCP SOURCES (MANDATORY):**
 - `mcp_deepwiki_ask_question` → Research obligatorio (≥1 invocation)
 - Repos según contexto: `google/adk-python`, `idosal/mcp-ui`, `fastapi/fastapi`, `sqlalchemy/sqlalchemy`
+
+**KNOWLEDGE BASE:**
+- `.sia/knowledge/` → Patterns, design decisions, meta-learning
+- `.sia/knowledge/active/` → Active research, domain knowledge
 
 **TEMPLATES:**
 - `sia/requirements/_templates/REQUIREMENT_TEMPLATE.md`
