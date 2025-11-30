@@ -60,20 +60,21 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 
 ## Quick Reference
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/activate` | Bootstrap session | Start of every session |
-| `/continue` | Resume work | Approved to proceed |
-| `/boost` | Reinforce powers | Agent deviating from principles |
-| `/debug` | First-principles analysis | Complex problems |
-| `/test` | Generate tests | After implementation |
-| `/validate` | UI validation | Frontend changes |
-| `/quant` | Generate QUANT tasks | Breaking down requirements |
-| `/spr` | Compress content | Documentation |
-| `/update` | Update docs | After completing work |
-| `/sync` | Sync framework updates | After git submodule update |
-| `/next` | Prepare next session | Task completed |
-| `/handoff` | Transfer context | Ending session |
+| Command     | Purpose                   | When to Use                     |
+| ----------- | ------------------------- | ------------------------------- |
+| `/activate` | Bootstrap session         | Start of every session          |
+| `/continue` | Resume work               | Approved to proceed             |
+| `/boost`    | Reinforce powers          | Agent deviating from principles |
+| `/debug`    | First-principles analysis | Complex problems                |
+| `/test`     | Generate tests            | After implementation            |
+| `/validate` | UI validation             | Frontend changes                |
+| `/req`      | Create requirement        | New feature/enhancement request |
+| `/quant`    | Generate QUANT tasks      | Breaking down requirements      |
+| `/spr`      | Compress content          | Documentation                   |
+| `/update`   | Update docs               | After completing work           |
+| `/sync`     | Sync framework updates    | After git submodule update      |
+| `/next`     | Prepare next session      | Task completed                  |
+| `/handoff`  | Transfer context          | Ending session                  |
 
 ---
 
@@ -209,6 +210,62 @@ Agent: [Executes plan]
 3. Validates critical user flows
 4. Reports errors with context
 5. References `idosal/mcp-ui` for UIResource specs
+
+---
+
+### `/req` - Automated Requirement Pipeline
+
+**Purpose:** Automate complete requirement lifecycle from natural language input
+
+**Usage:**
+```
+/req + "Implementar autenticación con Google OAuth"
+/req + "Add health check endpoint to API"
+/req + "Mejorar performance de queries"
+```
+
+**What it does:**
+1. **Validates input** - Asks clarifying questions if vague
+2. **Generates REQ-ID** - Auto-increments from existing requirements
+3. **Executes research** - Invokes MCP DeepWiki for domain analysis
+4. **Extracts invariants** - Applies automated reasoning to formalize constraints
+5. **Creates QUANT tasks** - Decomposes into atomic, testable tasks
+6. **Updates NEXT_SESSION.md** - Prepares one-liner for `/activate`
+7. **Generates report** - SPR-compressed summary of all created artifacts
+
+**Output:**
+```
+✅ REQ-010 CREATED: Google OAuth Authentication
+
+📋 DOCUMENTS GENERATED:
+   - REQ-010.md (Specification)
+   - REQ-010_domain_analysis.md (Research findings)
+   - REQ-010_quant_breakdown.md (5 tasks, 15h AI / 60h Human)
+
+📚 RESEARCH EXECUTED:
+   - google/adk-python: OAuth integration patterns
+
+🔬 INVARIANTS EXTRACTED: 4
+   - ∀ user ∈ Users: user.email IS UNIQUE
+   - ∀ token ∈ OAuthTokens: token.expiry > NOW
+
+🎯 NEXT ACTION:
+   /activate + "Implementar REQ-010 QUANT-001: OAuth Provider Configuration"
+```
+
+**Activation Gates:**
+- Presents plan before execution (requires `/continue`)
+- Validates vague input (asks clarifying questions)
+- Detects multi-context requirements (suggests splitting)
+- Checks for duplicate requirements
+
+**Principles:**
+- **Research First**: MANDATORY MCP DeepWiki invocation
+- **Automated Reasoning**: LLM-based invariant extraction
+- **SPR Compression**: All docs token-optimized (70-80% reduction)
+- **DDD/SOLID/KISS**: Architectural principles embedded
+
+**Location:** `.sia/requirements/REQ-{ID}/`
 
 ---
 
