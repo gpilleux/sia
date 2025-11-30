@@ -18,9 +18,8 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 | `visualize_architecture.sh` | Pydeps dependency graph | Pre/Post-implementation | [→](visualize_architecture.md) |
 | `check_coverage.sh`         | pytest-cov HTML report  | Pre-archive, Post-QUANT | [→](check_coverage.md)         |
 | `audit_ddd.py`              | DDD compliance checker  | Post-implementation     | [→](audit_ddd.md)              |
-| `task_timer.py`             | QUANT task chronometer  | FASE 5 (start/stop)     | [→](task_timer.md)             |
 
-**Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~850 tokens.
+**Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~650 tokens.
 
 ---
 
@@ -38,12 +37,6 @@ sh sia/skills/check_coverage.sh
 
 # DDD audit (validate patterns)
 python3 sia/skills/audit_ddd.py
-
-# Task timer (track actual vs estimated time)
-uv run sia/skills/task_timer.py start QUANT-XXX HOURS "Description"
-uv run sia/skills/task_timer.py status
-uv run sia/skills/task_timer.py stop
-uv run sia/skills/task_timer.py metrics
 ```
 
 ---
@@ -58,17 +51,9 @@ sh sia/skills/visualize_architecture.sh  # Review SVG
 
 **FASE 5** (Post-Task Verification):
 ```bash
-# Start timer before implementation
-uv run sia/skills/task_timer.py start QUANT-040 3 "Task description"
-
-# ... execute task ...
-
 # Verification gates
 sh sia/skills/check_complexity.sh  # No regression
 sh sia/skills/check_coverage.sh    # Coverage maintained
-
-# Stop timer after completion
-uv run sia/skills/task_timer.py stop
 ```
 
 **FASE 7** (Pre-Archive):

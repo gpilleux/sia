@@ -48,9 +48,6 @@ graph TD
 **Parallel Opportunities**:
 - QUANT-{ID}-003 can run in parallel with QUANT-{ID}-002
 
-**Total Effort**: {X}h  
-**Estimated Duration**: {Y}h (considering parallelism)
-
 ### Sequential Order
 1. ✅ QUANT-{ID}-001 ({X}h, {RISK} risk) - {Short Title}
 2. ⏳ QUANT-{ID}-002 ({X}h, {RISK} risk) - {Short Title}
