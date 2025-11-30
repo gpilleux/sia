@@ -34,13 +34,22 @@ Transforma input natural → REQ completo (Capture → Research → Reasoning �
 - Si MCP falla → Documenta error, continúa best-effort
 
 **FASE 3: REASONING**
-- **Heurísticas invariantes**:
+- **First Principles Analysis** (MANDATORY FIRST STEP):
+  - Question: ¿Qué estamos intentando lograr fundamentalmente?
+  - Axioms: Listar verdades irrefutables (auto-evidentes, irreducibles, independientes)
+  - Assumptions: Identificar creencias heredadas → Eliminar o validar con research
+  - Facts: Medir datos observables (no especular)
+  - Rebuild: Derivar solución desde axiomas (KISS: simplest that works)
+  - Reference: `sia/skills/first_principles_analysis.md`
+  
+- **Heurísticas invariantes** (derivadas de axiomas):
   - Nouns → Entities ("user session" → `Session`)
   - Verbs → Relationships ("creates" → `--creates-->`)
   - Quantifiers → Lógica ("always"→`∀`, "never"→`∄`, "unique"→`UNIQUE`)
   - States → Constraints ("before X, Y"→`Y ⇒ X`)
+  
 - Extrae ≥2 invariantes con notación matemática (∀, ∃, ⇒, ==, ≠)
-- Actualiza `REQ-{ID}.md` INVARIANTS section
+- Actualiza `REQ-{ID}.md` FIRST PRINCIPLES + INVARIANTS sections
 
 **FASE 4: QUANT**
 - Usa `sia/requirements/_templates/QUANT_BREAKDOWN_TEMPLATE.md`

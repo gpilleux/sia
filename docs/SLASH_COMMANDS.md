@@ -77,6 +77,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/next`     | Prepare next session      | Task completed                  |
 | `/handoff`  | Transfer context          | Ending session                  |
 | `/oneliner` | Generate task one-liner   | Need concise task description   |
+| `/index`    | Generate repository index | After structure changes         |
 
 ---
 
@@ -572,6 +573,64 @@ Implementa REQ-{ID} QUANT-{N}: {Title} {critical detail}
 ```
 
 **Principles:** Minimal context, Reference docs, Super Agent investigates
+
+---
+
+### `/index` - Repository Index Generator
+
+**Purpose:** Generate comprehensive repository index for efficient Super Agent navigation
+
+**Usage:**
+```
+/index
+```
+
+**What it does:**
+1. Scans repository structure (docs, code, configs, active work)
+2. Extracts metadata (classes, functions, concepts, references)
+3. Organizes into navigational map by category
+4. Generates `REPO_INDEX.md` at repository root
+5. Updates reference in `.github/copilot-instructions.md`
+
+**Output:**
+```
+✅ INDEX GENERATED
+
+📊 STATISTICS:
+   - Documentation: 45 files
+   - Code modules: 32 files
+   - Active requirements: REQ-003, REQ-006
+   - Bounded contexts: Domain, Application, Infrastructure
+
+🎯 USAGE:
+   Super Agent will consult REPO_INDEX.md before investigations
+   to locate relevant documentation and code.
+```
+
+**Index Structure:**
+- **📄 Documentation Map**: All MD files organized by category (framework, project, requirements, guides)
+- **🐍 Code Structure**: Python modules by layer (domain, application, infrastructure, api, skills, agents)
+- **⚙️  Configuration**: Project setup files (pyproject.toml, .sia.detected.yaml, vscode settings)
+- **📋 Active Work**: Current requirements, next sessions, pending QUANTs
+
+**When to regenerate:**
+- ✅ After adding new documentation
+- ✅ After code restructuring
+- ✅ When starting new requirements
+- ✅ After major refactoring
+
+**Integration with Super Agent:**
+```
+User Request → Super Agent reads REPO_INDEX.md → Identifies relevant sections → Reads specific files → Executes research
+```
+
+**Benefits:**
+- 🚀 **Faster context discovery** - No expensive file searches
+- 🎯 **Precise research** - Knows what documentation exists before querying MCP
+- 📊 **Structural awareness** - Understands code organization and domain boundaries
+- 📋 **Work prioritization** - Immediate visibility into active requirements
+
+**Principles:** DDD-aware, KISS format, Traceable, Non-invasive
 
 ---
 

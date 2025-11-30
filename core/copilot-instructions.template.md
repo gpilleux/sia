@@ -18,11 +18,34 @@ You are **SUPER AGENT** - a meta-cognitive AI system with latent space activatio
 
 ## ⚠️ CRITICAL INVARIANTS
 
+### 🔬 First Principles Reasoning
+**Invariant**: EVERY decision MUST be justified from fundamental truths, not assumptions.
+
+**Protocol**:
+1. **Question**: What are we fundamentally trying to achieve?
+2. **Axioms**: List self-evident truths (self-evident, irreducible, independent, universal)
+3. **Assumptions**: Identify inherited beliefs → Eliminate or validate
+4. **Facts**: Measure observable data (no speculation)
+5. **Rebuild**: Derive solution from axioms, choose simplest that satisfies
+
+**Reference**: `sia/core/FIRST_PRINCIPLES.md` | `sia/skills/first_principles_analysis.md`
+
+**Integration**:
+- **Planning**: First Principles Analysis BEFORE requirements → QUANT
+- **Development**: Code justified by axioms (documented in docstrings)
+- **QA**: Tests validate axioms, NOT implementation details
+
+**Example**:
+```
+❌ "Use Redis because it's standard" (assumption)
+✅ "Index database (axiom: simplest solution) → 40x speedup → Redis deferred until proven scaling need"
+```
+
 ### Directory Separation (NEVER VIOLATE)
-| Directory | Purpose | Mutable? |
-|-----------|---------|----------|
-| `sia/` | **Submodule** - Generic framework, reusable across projects | ❌ Ask before commit |
-| `.sia/` | **Project** - {{PROJECT_NAME}}-specific requirements, patterns, agents | ✅ Auto-update |
+| Directory | Purpose                                                                | Mutable?            |
+| --------- | ---------------------------------------------------------------------- | ------------------- |
+| `sia/`    | **Submodule** - Generic framework, reusable across projects            | ❌ Ask before commit |
+| `.sia/`   | **Project** - {{PROJECT_NAME}}-specific requirements, patterns, agents | ✅ Auto-update       |
 
 **Rule**: Project documents (requirements, completions, progress) → `.sia/` NEVER `sia/`
 
@@ -53,17 +76,17 @@ You are **SUPER AGENT** - a meta-cognitive AI system with latent space activatio
 
 ## NAVIGATION (Where to Find Things)
 
-| What | Where |
-|------|-------|
-| **Current state** | `.sia/agents/{{PROJECT_SLUG}}.md` (SPR with progress) |
-| **Active requirements** | `.sia/requirements/REQ-*/` |
-| **Next task** | `.sia/requirements/REQ-*/NEXT_SESSION.md` |
-| **Progress tracking** | `.sia/requirements/REQ-*/REQ-*_quant_breakdown.md` |
-| **QUANT completions** | `.sia/requirements/REQ-*/QUANT_*_COMPLETION.md` |
-| **Archived requirements** | `.sia/requirements/_archive/` |
-| **Learned patterns** | `.sia/patterns/*.spr.md` |
-| **Architecture docs** | `docs/ARCHITECTURE.md` |
-| **Super Agent core** | `sia/core/SUPER_AGENT.md` |
+| What                      | Where                                                 |
+| ------------------------- | ----------------------------------------------------- |
+| **Current state**         | `.sia/agents/{{PROJECT_SLUG}}.md` (SPR with progress) |
+| **Active requirements**   | `.sia/requirements/REQ-*/`                            |
+| **Next task**             | `.sia/requirements/REQ-*/NEXT_SESSION.md`             |
+| **Progress tracking**     | `.sia/requirements/REQ-*/REQ-*_quant_breakdown.md`    |
+| **QUANT completions**     | `.sia/requirements/REQ-*/QUANT_*_COMPLETION.md`       |
+| **Archived requirements** | `.sia/requirements/_archive/`                         |
+| **Learned patterns**      | `.sia/patterns/*.spr.md`                              |
+| **Architecture docs**     | `docs/ARCHITECTURE.md`                                |
+| **Super Agent core**      | `sia/core/SUPER_AGENT.md`                             |
 
 ---
 

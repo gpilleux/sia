@@ -60,7 +60,141 @@ Testing:     pytest + Playwright MCP
 
 ---
 
-## 3. Two Phases of Initialization
+## 3. First Principles: Epistemological Foundation
+
+### Definition
+**First Principles Reasoning** = Recursive decomposition of problems until reaching fundamental truths that are self-evident, irreducible, independent, and universal.
+
+**Core Protocol**:
+```
+1. WHAT are we trying to achieve?
+2. WHY is this the goal? (Recursive until axiom)
+3. WHAT do we know is fundamentally true?
+4. WHAT are we assuming? (Eliminate)
+5. HOW do we rebuild from axioms?
+```
+
+### Contrast with Conventional Thinking
+
+| Conventional                  | First Principles                           |
+| ----------------------------- | ------------------------------------------ |
+| "Use X because it's standard" | "What problem does X solve fundamentally?" |
+| Copy existing patterns        | Derive solution from axioms                |
+| Assume inherited constraints  | Question every assumption                  |
+| Follow best practices blindly | Validate practices against fundamentals    |
+
+### Application in SIA
+
+#### Planning (Requirements → QUANT)
+```markdown
+Feature: "Add caching"
+
+❌ Conventional: "Add Redis because it's standard"
+
+✅ First Principles:
+Q: What's the fundamental problem?
+FACT: API response 2s (violates <200ms axiom)
+MEASUREMENT: 1.8s database query
+
+Q: What are we assuming?
+❌ ASSUMPTION: Caching needed
+❌ ASSUMPTION: Redis is solution
+
+Q: What's fundamentally true?
+AXIOM 1: Simplest solution that works (KISS)
+AXIOM 2: Optimize before adding complexity
+
+SOLUTION: Add database index (1.8s → 0.05s)
+JUSTIFIED: ✅ (simplest, biggest impact, zero complexity)
+```
+
+#### Development (Implementation)
+```python
+# ❌ CONVENTIONAL (No justification)
+def save_user(user_data):
+    db.execute("INSERT INTO users ...")
+
+# ✅ FIRST PRINCIPLES (Axiom-justified)
+def save_user(user: UserAggregate) -> Result[UserId, DomainError]:
+    """
+    AXIOM 1: Domain logic must not depend on infrastructure (DDD)
+    AXIOM 2: Invalid state must be unrepresentable
+    AXIOM 3: Side effects must be explicit
+    
+    JUSTIFICATION:
+    - UserAggregate type: Guarantees invariants (Axiom 2)
+    - Return Result[T, E]: Makes failure explicit (Axiom 3)
+    - Repository pattern: Decouples domain from DB (Axiom 1)
+    """
+    if not user.is_valid():
+        return Err(InvalidUserError(user.validation_errors))
+    
+    return self.repository.save(user)
+```
+
+#### QA (Testing)
+```python
+# ❌ CONVENTIONAL (Tests implementation)
+def test_user_service_calls_db():
+    assert mock_db.execute.called  # ← Tests HOW
+
+# ✅ FIRST PRINCIPLES (Tests axioms)
+def test_user_invariants_enforced():
+    """
+    AXIOM: Invalid users must be unrepresentable
+    INVARIANT: ∀ user ∈ Users: user.email.is_valid() ∧ user.age >= 18
+    """
+    result = UserAggregate.create(email="invalid", age=25)
+    assert result.is_err()  # ← Tests WHAT (invariant)
+```
+
+### Integration with SIA Capabilities
+
+**Meta-Cognition + First Principles**:
+- Meta-Cognition: Reasoning about reasoning
+- First Principles: Foundation for that reasoning
+- Result: Architectural decisions justified by axioms
+
+**Automated Reasoning + First Principles**:
+- First Principles: Extract axioms from requirements
+- Automated Reasoning: Derive mathematical invariants from axioms
+- Result: Invariants trace back to fundamental truths
+
+**Self-Discovery + First Principles**:
+- Conventional: Guess project type from folder names
+- First Principles: Base detection on observable facts
+- Result: `pyproject.toml` exists → Python project (no guessing)
+
+**Self-Evolution + First Principles**:
+- Observation: "Skills take 30s to run"
+- Axiom: Developer time > compute time
+- Solution: Parallelize skills (justified by axiom)
+
+### Anti-Patterns
+
+```markdown
+❌ Cargo Cult: "Use microservices because Netflix does"
+✅ First Principles: Do we have Netflix-scale problems? (No → Monolith)
+
+❌ Assumption: "We'll need Kafka for events"
+✅ First Principles: What's the event volume? (10/min → PostgreSQL LISTEN/NOTIFY)
+
+❌ Implementation Tests: "Test that method X calls method Y"
+✅ First Principles: Test domain invariants (Input → Expected Output)
+```
+
+### Complete Documentation
+
+See `core/FIRST_PRINCIPLES.md` for:
+- Philosophical foundation
+- Complete methodology (Planning, Development, QA)
+- Integration with all SIA workflows
+- Operational protocols
+- Anti-patterns and examples
+
+---
+
+## 4. Two Phases of Initialization
 
 ### Phase 1: Installer Script (Mechanical, Safe)
 **Execute**: `bash sia/installer/install.sh` or `smart_init.py`

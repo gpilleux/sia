@@ -166,6 +166,7 @@ Result: Clean architecture + tests + documentation
 
 | Capability                    | Description                                                   | Features                                                                           |
 | ----------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 🔬 **First Principles**        | Decompose problems to fundamental truths                      | Axiom extraction, assumption elimination, evidence-based decisions                 |
 | 🧠 **Meta-Cognition**          | Reasons about architecture and design patterns above the code | AI Orchestration, DDD enforcement, SOLID principles                                |
 | 🔍 **Auto-Discovery**          | Detects project identity automatically                        | Tech stack detection, bounded contexts extraction, `.sia.detected.yaml` generation |
 | 📝 **SPR Skills**              | Sparse Priming Representation (70-80% compression)            | Extract domain knowledge, generate Project SPR, compress docs                      |

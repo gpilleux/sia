@@ -8,6 +8,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **First Principles Reasoning Integration** (Epistemological Foundation)
+  - **Core Philosophy**: `core/FIRST_PRINCIPLES.md` - Complete methodology for axiom-based decision making
+  - **Fundamental Principle #1**: Added to `core/SUPER_AGENT.md` - Decompose problems to fundamental truths
+  - **Core Concept**: New section in `core/CONCEPTS.md` explaining First Principles integration with Meta-Cognition, Automated Reasoning, Self-Discovery
+  - **Requirements Workflow**: Phase 3 (Automated Reasoning) now starts with mandatory First Principles Analysis
+  - **Requirement Templates**: Updated with First Principles Analysis sections (axioms, assumptions, facts, reconstructed solutions)
+  - **Domain Analysis Template**: New Step 0 for First Principles Breakdown before external research
+  - **Prompt Skill**: `skills/first_principles_analysis.md` - Guided decomposition protocol with 5-level question system
+  - **Critical Invariant**: Added to `core/copilot-instructions.template.md` - All decisions justified from axioms
+  - **Slash Commands Enhanced**: `/debug`, `/req`, `/test` updated with First Principles protocols
+  - **Core Capability**: Listed as #1 in README.md capabilities table
+  - **Integration**: Complete propagation across planning, development, and QA workflows
+  - **Axiom Library**: SIA domain-specific axioms (Architectural, Performance, Testing)
+  - **Anti-Patterns**: Documented violations (Cargo Cult, Technology-First, Assumption-Based Architecture)
+  - **Validation Checklist**: 8-point verification for First Principles Analysis quality
+- **Repository Index Generator** (`skills/generate_index.py`)
+  - Comprehensive workspace navigation map for Super Agent
+  - AST-based code analysis (classes, functions, imports extraction)
+  - Organizes by category: Documentation, Code Structure, Configuration, Active Work
+  - Outputs human-readable `REPO_INDEX.md` at repository root
+  - Referenced in `.github/copilot-instructions.md` for Pre-Investigation Protocol
+- **`/index` Slash Command** (`templates/prompts/index.prompt.md`)
+  - Quick invocation of index generator
+  - Enables Super Agent to consult index before expensive searches
+  - Improves research efficiency (avoids redundant file searches)
+  - Documentation in `docs/SLASH_COMMANDS.md` and `skills/generate_index.md`
 - **Automatic UV Installation** (`installer/install.py`)
   - Detects missing `uv` and installs automatically using official installers
   - macOS/Linux: Uses `curl -LsSf https://astral.sh/uv/install.sh | sh`

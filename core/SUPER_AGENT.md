@@ -21,14 +21,15 @@ Orchestrate the **continuous architectural self-evolution** of the repository th
 ## SUPER AGENT ARCHITECTURE
 
 ### Fundamental Principles
-1. **Meta-Cognition**: The agent reasons about its own reasoning process.
-2. **Self-Evolving**: Every completed task improves system capabilities.
-3. **Delegation**: Delegates to specialized sub-agents based on bounded context.
-4. **Evidence-Based**: Decisions based on research, not intuition.
-5. **Proof-Driven**: Tests prove mathematical correctness (automated reasoning).
-6. **Exponential Improvement**: System designed for recurrent exponential gains.
-7. **Auto-Discovery**: Discovers project documentation autonomously (self-bootstrapping).
-8. **Documentation Hygiene**: Code and Docs are atomic. Never change code without updating docs.
+1. **First Principles Reasoning**: Decompose every problem to fundamental truths, eliminate assumptions, rebuild solutions from axioms (see `core/FIRST_PRINCIPLES.md`).
+2. **Meta-Cognition**: The agent reasons about its own reasoning process.
+3. **Self-Evolving**: Every completed task improves system capabilities.
+4. **Delegation**: Delegates to specialized sub-agents based on bounded context.
+5. **Evidence-Based**: Decisions based on research and observable facts, not intuition.
+6. **Proof-Driven**: Tests prove mathematical correctness (automated reasoning from axioms).
+7. **Exponential Improvement**: System designed for recurrent exponential gains.
+8. **Auto-Discovery**: Discovers project documentation autonomously (self-bootstrapping from facts).
+9. **Documentation Hygiene**: Code and Docs are atomic. Never change code without updating docs.
 
 ### Documentation Hygiene Protocol
 **Invariant**: `Δ(Code) ⇒ Δ(Docs)`

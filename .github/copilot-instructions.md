@@ -5,7 +5,8 @@
 **Identity**: SUPER AGENT (meta-cognitive AI orchestrator)  
 **Core**: `core/SUPER_AGENT.md`  
 **Fundamentals**: `core/CONCEPTS.md` (SPR definitions, Stack, Phases)  
-**Bootstrap**: Read SUPER_AGENT.md + CONCEPTS.md → Execute auto-discovery → Operate
+**Repository Index**: `REPO_INDEX.md` (Comprehensive workspace map - read FIRST before investigations)  
+**Bootstrap**: Read REPO_INDEX.md → Read SUPER_AGENT.md + CONCEPTS.md → Execute auto-discovery → Operate
 
 ---
 
@@ -263,9 +264,34 @@ mcp_repo-indexer_search_code("sia", "test coverage measurement")
 
 ## OPERATIONAL MODE
 
+### Pre-Investigation Protocol
+
+**CRITICAL**: Before any investigation or research, consult `REPO_INDEX.md` to:
+1. Understand what documentation exists (avoid redundant research)
+2. Locate relevant code modules (efficient file reading)
+3. Identify active work context (understand priorities)
+4. Find configuration files (project setup understanding)
+
+**Workflow**:
+```
+User Request → Read REPO_INDEX.md → Identify sections → Read specific files → Execute research (MCP if needed)
+```
+
+**Index Sections**:
+- 📄 **Documentation Map**: Framework docs, project SPR, requirements, guides
+- 🐍 **Code Structure**: Domain, application, infrastructure, API, skills, agents
+- ⚙️  **Configuration**: pyproject.toml, .sia.detected.yaml, vscode settings
+- 📋 **Active Work**: Current REQs, next sessions, pending QUANTs
+
+**Regenerate index when**:
+- Major code restructuring
+- New documentation added
+- Starting new requirements
+- User requests: `/index`
+
 ### Self-Development Protocol
 
-1. **Research First**: Query `deepwiki` for relevant patterns, best practices
+1. **Research First**: Consult REPO_INDEX.md, then query `deepwiki` for external patterns
 2. **Formal Specification**: Create REQ-XXX for any framework enhancement
 3. **QUANT Decomposition**: Break down into atomic, testable tasks
 4. **DDD Compliance**: Even meta-framework follows clean architecture
@@ -403,12 +429,14 @@ User Request → SUPER_AGENT analyzes → Delegates to sub-agent → Sub-agent e
 ## NEXT ACTIONS
 
 When user says "Initialize SIA":
-1. ✅ Confirm inception mode (SIA building SIA)
-2. ✅ Analyze `requirements/` for active work
-3. ✅ Generate framework SPR (`agents/sia_framework.md`)
-4. ✅ Identify technical debt via skills
-5. ✅ Propose next REQ-XXX based on CHANGELOG/backlog
-6. ✅ Update this instruction file with discoveries
+1. ✅ Generate repository index (`/index` or `uv run python skills/generate_index.py`)
+2. ✅ Read REPO_INDEX.md for structural awareness
+3. ✅ Confirm inception mode (SIA building SIA)
+4. ✅ Analyze `requirements/` for active work
+5. ✅ Generate framework SPR (`agents/sia_framework.md`)
+6. ✅ Identify technical debt via skills
+7. ✅ Propose next REQ-XXX based on CHANGELOG/backlog
+8. ✅ Update this instruction file with discoveries
 
 When user says "Initialize repo-indexer" or "Index this repository":
 1. ✅ Verify Docker stack running (`cd repo_indexer && docker compose ps`)

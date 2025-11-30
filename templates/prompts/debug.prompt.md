@@ -8,12 +8,18 @@ Analicemos esto OMEGA CRITICAL 🔍
 ---
 
 **PROTOCOLO:**
-1. **Primeros Principios** → Entender la raíz del problema
+1. **First Principles** → Descomponer hasta verdades fundamentales
+   - ¿Qué es fundamentalmente verdad? (axiomas)
+   - ¿Qué estamos asumiendo? (eliminar creencias heredadas)
+   - ¿Qué hechos observables tenemos? (medir, no especular)
+   
 2. **Domain Research First** → Leer código existente antes de asumir
+
 3. **Preguntas clave:**
-   - ¿Cuál es el flujo esperado?
-   - ¿Dónde se rompe?
-   - ¿Qué asunciones son incorrectas?
+   - ¿Cuál es el flujo esperado? (desde axiomas, no asunciones)
+   - ¿Dónde se rompe? (evidencia observable)
+   - ¿Qué asunciones son incorrectas? (contrastar con hechos)
+   
 4. **Patterns** → Revisión de patrones documentados de experiencias pasadas (`.sia/patterns`)
 
 **MCP SOURCES:**

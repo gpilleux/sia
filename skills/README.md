@@ -14,19 +14,23 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 
 | Skill                       | Purpose                 | When                    | Docs                           |
 | --------------------------- | ----------------------- | ----------------------- | ------------------------------ |
+| `generate_index.py`         | Repository index map    | After structure changes | [→](generate_index.md)         |
 | `check_complexity.sh`       | Radon complexity hunter | Pre/Post-QUANT          | [→](check_complexity.md)       |
 | `visualize_architecture.sh` | Pydeps dependency graph | Pre/Post-implementation | [→](visualize_architecture.md) |
 | `check_coverage.sh`         | pytest-cov HTML report  | Pre-archive, Post-QUANT | [→](check_coverage.md)         |
 | `audit_ddd.py`              | DDD compliance checker  | Post-implementation     | [→](audit_ddd.md)              |
 | `task_timer.py`             | QUANT task chronometer  | FASE 5 (start/stop)     | [→](task_timer.md)             |
 
-**Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~850 tokens.
+**Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~1000 tokens.
 
 ---
 
 ## Quick Reference
 
 ```bash
+# Repository index (structural navigation)
+uv run python sia/skills/generate_index.py  # Outputs: REPO_INDEX.md
+
 # Complexity check (detect technical debt)
 sh sia/skills/check_complexity.sh
 

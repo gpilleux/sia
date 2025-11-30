@@ -112,14 +112,102 @@ mcp_playwright_browser_navigate(url="https://docs.example.com")
 ## PHASE 3: AUTOMATED REASONING
 
 ### Action
-Apply **automated_reasoning** to extract invariants and formalize problem.
+Apply **First Principles Analysis** followed by **automated_reasoning** to extract invariants and formalize problem.
 
 ### Process
+
+#### Step 1: First Principles Analysis (MANDATORY)
+**Question Protocol**:
+```markdown
+1. WHAT are we trying to achieve fundamentally?
+   → Strip away inherited assumptions, get to core problem
+
+2. WHY is this the goal? (Recursive until axiom)
+   → "To improve UX" → Why? → "Faster response" → Why? → AXIOM: Users tolerate <200ms
+
+3. WHAT do we know is fundamentally true?
+   → List axioms (self-evident, irreducible, independent)
+
+4. WHAT are we assuming?
+   → Identify inherited beliefs, mark for elimination
+
+5. HOW do we rebuild from axioms?
+   → Derive solution from fundamental truths
+```
+
+**Example**:
+```markdown
+Feature: "Add caching to API"
+
+❌ Conventional: "Use Redis because it's standard"
+
+✅ First Principles:
+Q: What's fundamentally true?
+AXIOM 1: Users tolerate <200ms latency
+AXIOM 2: Data changes infrequently (hourly updates)
+AXIOM 3: Simplest solution that works (KISS)
+
+Q: What are we assuming?
+❌ ASSUMPTION: Caching is needed
+❌ ASSUMPTION: Redis is the solution
+
+Q: What are the facts?
+MEASUREMENT: API response 2s (1.8s DB query + 0.2s serialization)
+FACT: Query scans 1M rows (missing index)
+FACT: 90% of queries request same 100 records
+
+Q: Rebuild from axioms:
+OPTION 1: Add database index
+  - Cost: 5 min, Impact: 1.8s → 0.05s, Complexity: Zero
+  - JUSTIFIED: ✅ (simplest, biggest impact)
+
+OPTION 2: Redis cache
+  - Cost: New infra, Impact: 1.8s → 0.01s, Complexity: High
+  - JUSTIFIED: ❌ (unjustified complexity vs index)
+
+DECISION: Database index (First Principles: Simplest solution)
+DEFER: Redis only if horizontal scaling requires distributed cache
+```
+
+#### Step 2: Automated Reasoning (Extract Invariants)
+Once axioms identified, derive mathematical constraints:
+
 1. **Formalize Problem**: `∀ message ∈ session: message.session_id == session.id`
-2. **Extract Invariants**: Mathematical constraints.
-3. **Identify Axioms**: What is assumed true?
+2. **Extract Invariants**: Mathematical constraints from axioms.
+3. **Identify Axioms**: What is assumed true? (from Step 1)
 4. **Build Dependency DAG**: Entity → Repo → Migration → Test.
 5. **Generate Theorems** (QUANT tasks).
+
+**Example** (continuing from above):
+```markdown
+AXIOM: Query latency < 200ms (from First Principles)
+
+INVARIANTS (derived):
+INV-1: ∀ user_query: execution_time(query) < 200ms
+INV-2: ∀ index: selectivity(index) > 0.1 ⇒ justified
+INV-3: ∀ optimization: complexity_cost < performance_gain
+
+DEPENDENCY DAG:
+1. Create index migration
+2. Validate index usage (EXPLAIN ANALYZE)
+3. Test latency invariant (<200ms)
+4. Document decision (ADR with First Principles justification)
+```
+
+### Integration with Skills
+**Before Automated Reasoning**, baseline the system:
+```bash
+# Complexity baseline (identify refactor targets)
+sh sia/skills/check_complexity.sh
+
+# Architecture baseline (validate DDD compliance)
+sh sia/skills/visualize_architecture.sh
+
+# Coverage baseline (identify test gaps)
+sh sia/skills/check_coverage.sh
+```
+
+**Skills provide objective data** for First Principles analysis (facts, not assumptions).
 
 ---
 
