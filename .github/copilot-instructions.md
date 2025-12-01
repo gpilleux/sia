@@ -370,28 +370,60 @@ Layer 5: Integration Tests (CI/CD)  → Full system validation
 ## DELEGATION MODEL
 
 **Primary Agent**: SUPER_AGENT (this context)  
-**Sub-Agents** (in `agents/`):
-- `repository_guardian.md` - DDD/SOLID enforcement, architecture validation
-- `research_specialist.md` - Knowledge discovery, pattern research
+**Sub-Agents** (Native VS Code Custom Agents in `.github/agents/`):
+- `research-specialist.agent.md` - Knowledge discovery (MCP Deepwiki + Repo-Indexer) ✅ ACTIVE
+- `repository-guardian.agent.md` - DDD/SOLID enforcement, architecture validation (PLANNED)
+- `compliance-officer.agent.md` - Requirements validation, QUANT lifecycle (PLANNED)
+- `sia-ddd.agent.md` - AI-Native patterns (ADK, TimescaleDB, SSE) (PLANNED)
+
+**Legacy Documentation** (SPR Reference in `agents/`):
+- `research_specialist.md` - Knowledge discovery patterns (source of truth)
+- `repository_guardian.md` - DDD enforcement patterns
+- `compliance_officer.md` - Requirements workflow patterns
 - `sia.md` - SIA orchestrator identity (self-reference)
-- `compliance_officer.md` - Requirements validation, QUANT lifecycle management
-- `evolve_spr.py` - Self-improvement protocol executor
 
 **External Knowledge Systems:**
 - **DeepWiki MCP** (`mcp_deepwiki_*`) - GitHub repository documentation and Q&A
 - **Repo-Indexer MCP** (`mcp_repo-indexer_*`) - Semantic code search via embeddings
 - **Pylance MCP** (`mcp_pylance_*`) - Python language server documentation
 
-**Invocation Pattern**:
+### Native Delegation Protocol (REQ-011)
+
+**Decision Tree**:
 ```
-User Request → SUPER_AGENT analyzes → Delegates to sub-agent → Sub-agent executes → SUPER_AGENT validates → Update SPR
+User Request → SUPER_AGENT analyzes bounded context
+    ↓
+Match expertise?
+    ├─ Research needed? → research-specialist (via runSubagent)
+    ├─ Architecture validation? → repository-guardian (PLANNED)
+    ├─ Requirements creation? → compliance-officer (PLANNED)
+    └─ AI-Native patterns? → sia-ddd (PLANNED)
+    ↓
+runSubagent({agentName, prompt, description})
+    ↓
+Sub-agent executes (async, shared session)
+    ↓
+Sub-agent returns markdown SPR
+    ↓
+SUPER_AGENT validates + integrates
+    ↓
+Update Project SPR (.sia/agents/[project].md)
 ```
+
+**Delegation Skill**: `skills/delegate_subagent.md` - Full protocol documentation
+
+**Invocation Requirements**:
+1. ✅ VS Code setting enabled: `"github.copilot.chat.codeGeneration.useIntentDetection": true`
+2. ✅ Custom agent exists: `.github/agents/[agent-name].agent.md`
+3. ✅ Delegation prompt formatted: TASK + CONTEXT + CONSTRAINTS + EXPECTED OUTPUT
+4. ✅ Token budget sufficient: >10,000 remaining
 
 **Knowledge Acquisition Priority**:
 1. **Code Structure Questions** → Use `mcp_repo-indexer_search_code` (semantic search in indexed repos)
-2. **Framework/Library Questions** → Use `mcp_deepwiki_ask_question` (GitHub repo docs)
-3. **Python Language Questions** → Use `mcp_pylance_mcp_s_pylanceDocuments` (Pylance docs)
+2. **Framework/Library Questions** → Delegate to `research-specialist` (via runSubagent)
+3. **Python Language Questions** → Use `mcp_pylance_*` (Pylance docs)
 4. **Workspace File Search** → Use `semantic_search` or `grep_search` (local files)
+5. **Architecture Validation** → Delegate to `repository-guardian` (PLANNED)
 
 ---
 

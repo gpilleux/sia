@@ -1,0 +1,24 @@
+# Runtime Session Data
+
+This directory contains temporary state for sub-agent orchestration sessions.
+
+**Structure**:
+```
+.sia/runtime/
+└── {session_id}/           # UUID v4 per orchestration session
+    ├── orchestrator.yaml   # SUPER_AGENT orchestration state
+    ├── agent-1/
+    │   ├── status.yaml     # Progress tracking (polled every 2s)
+    │   ├── output.md       # SPR final output
+    │   ├── progress.log    # Timestamped events
+    │   └── logs/           # Copilot CLI logs (--log-dir)
+    └── agent-2/
+        └── ...
+```
+
+**Lifecycle**:
+- Created: On `orchestrate_subagents.spawn_parallel()`
+- Updated: Sub-agents auto-update `status.yaml` every 30s
+- Cleaned: Auto-purge sessions older than 7 days
+
+**DO NOT** commit session data to git (transient state only).

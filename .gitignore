@@ -111,5 +111,8 @@ temp/
 .uv/
 uv.lock
 
+# SIA Runtime Sessions (transient orchestration state)
+.sia/runtime/*/
+
 .sia.detected.yaml
 

@@ -12,14 +12,15 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 
 ## Available Skills
 
-| Skill                       | Purpose                 | When                    | Docs                           |
-| --------------------------- | ----------------------- | ----------------------- | ------------------------------ |
-| `generate_index.py`         | Repository index map    | After structure changes | [→](generate_index.md)         |
-| `check_complexity.sh`       | Radon complexity hunter | Pre/Post-QUANT          | [→](check_complexity.md)       |
-| `visualize_architecture.sh` | Pydeps dependency graph | Pre/Post-implementation | [→](visualize_architecture.md) |
-| `check_coverage.sh`         | pytest-cov HTML report  | Pre-archive, Post-QUANT | [→](check_coverage.md)         |
-| `audit_ddd.py`              | DDD compliance checker  | Post-implementation     | [→](audit_ddd.md)              |
-| `task_timer.py`             | QUANT task chronometer  | FASE 5 (start/stop)     | [→](task_timer.md)             |
+| Skill                       | Purpose                    | When                    | Docs                           |
+| --------------------------- | -------------------------- | ----------------------- | ------------------------------ |
+| `delegate_subagent.md`      | Native custom agent invoke | Delegation needed       | [→](delegate_subagent.md)      |
+| `generate_index.py`         | Repository index map       | After structure changes | [→](generate_index.md)         |
+| `check_complexity.sh`       | Radon complexity hunter    | Pre/Post-QUANT          | [→](check_complexity.md)       |
+| `visualize_architecture.sh` | Pydeps dependency graph    | Pre/Post-implementation | [→](visualize_architecture.md) |
+| `check_coverage.sh`         | pytest-cov HTML report     | Pre-archive, Post-QUANT | [→](check_coverage.md)         |
+| `audit_ddd.py`              | DDD compliance checker     | Post-implementation     | [→](audit_ddd.md)              |
+| `task_timer.py`             | QUANT task chronometer     | FASE 5 (start/stop)     | [→](task_timer.md)             |
 
 **Token Budget**: Index (~50 tokens), Full doc (~200 tokens each). Total if all loaded: ~1000 tokens.
 
