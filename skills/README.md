@@ -14,7 +14,7 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 
 | Skill                       | Purpose                    | When                    | Docs                           |
 | --------------------------- | -------------------------- | ----------------------- | ------------------------------ |
-| `delegate_subagent.md`      | Native custom agent invoke | Delegation needed       | [→](delegate_subagent.md)      |
+| `orchestrate_subagents.py`  | CLI-based agent delegation | Multi-agent orchestration | [→](delegate_subagent.md)    |
 | `generate_index.py`         | Repository index map       | After structure changes | [→](generate_index.md)         |
 | `check_complexity.sh`       | Radon complexity hunter    | Pre/Post-QUANT          | [→](check_complexity.md)       |
 | `visualize_architecture.sh` | Pydeps dependency graph    | Pre/Post-implementation | [→](visualize_architecture.md) |
@@ -29,6 +29,10 @@ This README = **index only** (~50 tokens). Full docs = separate files (pay-per-u
 ## Quick Reference
 
 ```bash
+# Sub-agent orchestration (CLI-based delegation)
+uv run python sia/skills/orchestrate_subagents.py  # Test mode
+# Production: Use from Python code (see delegate_subagent.md)
+
 # Repository index (structural navigation)
 uv run python sia/skills/generate_index.py  # Outputs: REPO_INDEX.md
 

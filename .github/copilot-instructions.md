@@ -394,14 +394,14 @@ Layer 5: Integration Tests (CI/CD)  → Full system validation
 User Request → SUPER_AGENT analyzes bounded context
     ↓
 Match expertise?
-    ├─ Research needed? → research-specialist (via runSubagent)
+    ├─ Research needed? → research-specialist (via orchestrate_subagents)
     ├─ Architecture validation? → repository-guardian (PLANNED)
     ├─ Requirements creation? → compliance-officer (PLANNED)
     └─ AI-Native patterns? → sia-ddd (PLANNED)
     ↓
-runSubagent({agentName, prompt, description})
+Spawn via orchestrate_subagents.py (CLI-based execution)
     ↓
-Sub-agent executes (async, shared session)
+Sub-agent executes (background, monitored via output parsing)
     ↓
 Sub-agent returns markdown SPR
     ↓
@@ -410,17 +410,17 @@ SUPER_AGENT validates + integrates
 Update Project SPR (.sia/agents/[project].md)
 ```
 
-**Delegation Skill**: `skills/delegate_subagent.md` - Full protocol documentation
+**Delegation Skill**: `skills/orchestrate_subagents.py` - CLI-based orchestration
 
 **Invocation Requirements**:
-1. ✅ VS Code setting enabled: `"github.copilot.chat.codeGeneration.useIntentDetection": true`
+1. ✅ Copilot CLI installed: `gh copilot --version`
 2. ✅ Custom agent exists: `.github/agents/[agent-name].agent.md`
 3. ✅ Delegation prompt formatted: TASK + CONTEXT + CONSTRAINTS + EXPECTED OUTPUT
-4. ✅ Token budget sufficient: >10,000 remaining
+4. ✅ Python 3.10+ available for orchestrator execution
 
 **Knowledge Acquisition Priority**:
 1. **Code Structure Questions** → Use `mcp_repo-indexer_search_code` (semantic search in indexed repos)
-2. **Framework/Library Questions** → Delegate to `research-specialist` (via runSubagent)
+2. **Framework/Library Questions** → Delegate to `research-specialist` (via orchestrate_subagents.py)
 3. **Python Language Questions** → Use `mcp_pylance_*` (Pylance docs)
 4. **Workspace File Search** → Use `semantic_search` or `grep_search` (local files)
 5. **Architecture Validation** → Delegate to `repository-guardian` (PLANNED)

@@ -1,6 +1,12 @@
 # Delegate Subagent Skill
 
-**Purpose**: Enable SUPER AGENT to programmatically invoke custom agents via native VS Code `runSubagent` tool.
+**Purpose**: Enable SUPER AGENT to programmatically invoke custom agents via Copilot CLI background execution.
+
+**Implementation**: `skills/orchestrate_subagents.py` - CLI-based subprocess orchestration
+
+**Version**: 2.0.0 (Updated 2025-11-30)  
+**Breaking Change**: Migrated from native `runSubagent` tool to CLI-based execution via `orchestrate_subagents.py`  
+**Reason**: Custom agents are instruction contexts (not script executors), orchestrator handles monitoring
 
 **When to use**: 
 - Research needed (external knowledge) → `research-specialist`
@@ -13,20 +19,26 @@
 
 ## Prerequisites
 
-**VS Code Settings** (`.vscode/settings.json`):
-```json
-{
-  "github.copilot.chat.codeGeneration.useIntentDetection": true
-}
+**Copilot CLI** (GitHub CLI with Copilot extension):
+```bash
+# Verify installation
+gh copilot --version
+# Expected: gh version X.X.X (with copilot extension)
 ```
 
 **Custom Agent Location**: `.github/agents/*.agent.md`
 
+**Python Environment**: Python 3.10+ with optional PyYAML
+
 **Verification**:
 ```bash
-# Check custom agents are detected
+# Check custom agents exist
 ls -la .github/agents/
 # Expected: research-specialist.agent.md, repository-guardian.agent.md, etc.
+
+# Test orchestrator
+python skills/orchestrate_subagents.py
+# Expected: Session creation successful
 ```
 
 ---
@@ -92,32 +104,40 @@ Repos to query: langchain-ai/langchain, pgvector/pgvector
 Current context: MCP server using FastMCP + SQLAlchemy async
 ```
 
-### Step 3: Invoke Subagent (Tool Call)
+### Step 3: Invoke Subagent (CLI Execution)
 
-**Method**: Use `runSubagent` tool (built-in VS Code Copilot)
+**Method**: Execute `orchestrate_subagents.py` (Copilot CLI subprocess)
 
 **Parameters**:
-- `agentName`: Custom agent identifier (e.g., "research-specialist")
+- `agent_name`: Custom agent identifier (e.g., "research-specialist")
 - `prompt`: Delegation prompt (formatted per template above)
-- `description`: 3-5 word task summary (for logging)
+- `timeout`: Execution timeout in seconds (default: 300)
 
 **Example invocation**:
-```typescript
-// Internal tool call (executed by SUPER AGENT)
-runSubagent({
-  agentName: "research-specialist",
-  prompt: `[Full delegation prompt from Step 2]`,
-  description: "LangChain pgvector research"
-})
+```python
+# Execute via run_in_terminal or direct Python call
+from skills.orchestrate_subagents import SubAgentOrchestrator
+
+tasks = [{
+    'agent_name': 'research-specialist',
+    'prompt': '[Full delegation prompt from Step 2]',
+    'timeout': 300
+}]
+
+orchestrator = SubAgentOrchestrator()
+agents = orchestrator.spawn_parallel(tasks)
+status = orchestrator.monitor_progress(agents)
+results = orchestrator.consolidate_results(agents)
 ```
 
-### Step 4: Await Response (Async)
+### Step 4: Monitor Execution (Background Process)
 
 **Execution model**:
-- Subagent executes in separate context
-- Has access to specialized tools (MCP, semantic_search, etc.)
-- Returns markdown SPR output
-- Shared session context (preserves user intent)
+- Copilot CLI spawns subagent as subprocess
+- Subagent has access to specialized tools (MCP, semantic_search, etc.)
+- Orchestrator monitors via output file polling
+- Returns markdown SPR output when completed
+- **Note**: Real-time status updates pending (QUANT-001.1), currently uses start/end states
 
 **Expected response format**:
 ```markdown
@@ -270,22 +290,28 @@ Technical debt: [if any]
 
 ## Anti-Patterns (What NOT to Do)
 
-### ❌ Accidental Invocation
+### ❌ Accidental CLI Invocation
 
-**Problem**: Mentioning "runSubagent" in response triggers auto-execution
+**Problem**: Running orchestrator without proper task definition causes errors
 
 **Example**:
-```markdown
-# BAD (triggers execution)
-"Now I'll use runSubagent to delegate to research-specialist..."
-→ Copilot interprets this as instruction, executes immediately
+```python
+# BAD (incomplete task definition)
+tasks = [{'agent_name': 'research-specialist'}]  # Missing prompt!
+orchestrator.spawn_parallel(tasks)
+→ CLI error: missing required argument 'prompt'
 ```
 
 **Solution**:
-```markdown
-# GOOD (describe without triggering)
-"Delegating to research specialist custom agent for knowledge discovery..."
-→ Execute tool call separately, don't announce tool name
+```python
+# GOOD (complete task definition)
+tasks = [{
+    'agent_name': 'research-specialist',
+    'prompt': '[Complete delegation prompt with TASK/CONTEXT/etc]',
+    'timeout': 300
+}]
+orchestrator.spawn_parallel(tasks)
+→ Successful spawn with proper configuration
 ```
 
 ### ❌ Incomplete Delegation Prompt
@@ -344,16 +370,17 @@ User: "Research FastAPI patterns"
 **Problem**: Blindly accepting subagent output without verification
 
 **Example**:
-```markdown
+```python
 # BAD
-output = runSubagent(...)
-return output  # No validation
+results = orchestrator.consolidate_results(agents)
+return results['research-specialist']  # No validation
 ```
 
 **Solution**:
-```markdown
+```python
 # GOOD
-output = runSubagent(...)
+results = orchestrator.consolidate_results(agents)
+output = results['research-specialist']
 
 # Validate structure
 assert "## RESEARCH FINDINGS" in output
@@ -439,23 +466,44 @@ Repos: langchain-ai/langchain, pgvector/pgvector
 Current: FastMCP + SQLAlchemy async
 ```
 
-### Step 2: Invoke Subagent (Tool Call)
-```typescript
-runSubagent({
-  agentName: "research-specialist",
-  prompt: `[prompt from Step 1]`,
-  description: "pgvector LangChain research"
-})
+### Step 2: Invoke Subagent (CLI Execution)
+```python
+from skills.orchestrate_subagents import SubAgentOrchestrator
+
+tasks = [{
+    'agent_name': 'research-specialist',
+    'prompt': '[prompt from Step 1]',
+    'timeout': 300
+}]
+
+orchestrator = SubAgentOrchestrator()
+agents = orchestrator.spawn_parallel(tasks)
+# Returns: [AgentProcess(agent_name='research-specialist', process=<Popen>, ...)]
 ```
 
-### Step 3: Subagent Execution (Automatic)
-- Research Specialist activates
-- Executes MCP Deepwiki queries:
+### Step 3: Monitor Execution (Background)
+```python
+# Monitor progress (polls output files every 2s)
+status = orchestrator.monitor_progress(agents, verbose=True)
+# Output:
+# ⚙️ [research-specialist] 50% - Executing research (estimated)
+# ✅ [research-specialist] 100% - Completed
+```
+
+- Research Specialist executes in background
+- Copilot CLI runs MCP Deepwiki queries:
   1. `langchain-ai/langchain` - "How to configure PGVector as vector store..."
   2. `pgvector/pgvector` - "Best practices for index optimization..."
-- Synthesizes findings into SPR markdown
+- Writes findings to `.sia/runtime/{session_id}/research-specialist/output.md`
 
-### Step 4: Subagent Returns Output
+### Step 4: Consolidate Results
+```python
+# Read output files from all agents
+results = orchestrator.consolidate_results(agents)
+output = results['research-specialist']
+```
+
+**Output Structure**:
 ```markdown
 ## RESEARCH FINDINGS
 
@@ -501,28 +549,49 @@ vectorstore = await PGVector.afrom_documents(
 ```
 
 ### Step 5: SUPER AGENT Validates & Integrates
-```markdown
-✅ Output validated (matches SPR format)
-✅ Patterns extracted:
-   - Async pooling (SQLAlchemy async engine)
-   - Batch embedding (batch_size=100)
-   - HNSW indexing (m=16, ef_construction=64)
+```python
+# Validate output from orchestrator
+output = results['research-specialist']
 
-✅ Anti-patterns documented:
-   - Sync in async context
-   - Single embeddings
+validation_checklist = {
+    "has_markdown_format": True,  # ✅
+    "has_patterns_section": True,  # ✅
+    "has_antipatterns_section": True,  # ✅
+    "has_code_examples": True,  # ✅
+    "code_is_executable": True,  # ✅
+    "answers_original_question": True  # ✅
+}
 
-✅ Updating Project SPR (.sia/agents/repo_indexer.md):
-   + Added pattern: PGVector + LangChain async integration
-   + Added code example: HNSW index configuration
-   + Documented anti-patterns
+if all(validation_checklist.values()):
+    # Extract patterns for Project SPR
+    patterns = extract_patterns(output)
+    # → Pattern 1: Async pooling (SQLAlchemy async engine)
+    # → Pattern 2: Batch embedding (batch_size=100)
+    # → Pattern 3: HNSW indexing (m=16, ef_construction=64)
+    
+    # Document anti-patterns
+    antipatterns = extract_antipatterns(output)
+    # → Sync in async context
+    # → Single embeddings
+    
+    # Update knowledge cache
+    update_cache(
+        topic="pgvector_langchain_async_pattern",
+        content=output,
+        req="REQ-015",
+        tokens_used=587
+    )
+    
+    # Update Project SPR (.sia/agents/repo_indexer.md)
+    update_project_spr(
+        section="Infrastructure.PGVector",
+        patterns=patterns,
+        antipatterns=antipatterns,
+        code_examples=extract_code_examples(output)
+    )
 
-✅ Knowledge cached (.sia/knowledge/active/research_cache.md):
-   + pgvector_langchain_async_pattern
-
-Total tokens used: 1,800 (delegation + research + validation)
-vs Manual execution: 35,000 tokens
-Efficiency gain: 94.9%
+# Total execution time: ~57s (QUANT-001 validated)
+# Output quality: 10,516 chars, 5 patterns, 5 anti-patterns, 3+ code examples
 ```
 
 ---
@@ -533,16 +602,21 @@ Efficiency gain: 94.9%
 - [ ] Identified correct custom agent (has required tools)
 - [ ] Formulated complete delegation prompt (TASK, CONTEXT, CONSTRAINTS, EXPECTED OUTPUT)
 - [ ] Verified agent exists (`.github/agents/[agent-name].agent.md`)
-- [ ] Token budget sufficient (>10,000 remaining)
+- [ ] Copilot CLI installed (`gh copilot --version`)
+- [ ] Python environment ready (Python 3.10+)
 
 **During delegation**:
-- [ ] Tool call executed without errors
-- [ ] Subagent activated (visible in VS Code Copilot logs)
-- [ ] Response returned (markdown format)
+- [ ] Orchestrator spawned successfully (no CLI errors)
+- [ ] Subagent process running (PID visible in logs)
+- [ ] Output file being written (`.sia/runtime/{session_id}/{agent}/output.md`)
 
 **After delegation**:
 - [ ] Output validated (matches SPR structure)
 - [ ] Patterns extracted for Project SPR
+- [ ] Anti-patterns documented
+- [ ] Code examples stored
+- [ ] Knowledge cached (avoid redundant research)
+- [ ] Execution metrics captured (time, token efficiency)
 - [ ] Anti-patterns documented
 - [ ] Code examples stored
 - [ ] Knowledge cached (avoid redundant research)
@@ -568,14 +642,15 @@ Match expertise?
     ├─ Requirements creation → compliance-officer
     └─ AI-Native patterns → sia-ddd
     ↓
-Delegate via runSubagent tool
+Execute via orchestrate_subagents.py (CLI subprocess)
     ↓
 Validate & integrate findings
     ↓
 Update Project SPR
 ```
 
-**See**: `skills/delegate_subagent.md` for full protocol
+**See**: `skills/delegate_subagent.md` for full protocol  
+**Implementation**: `skills/orchestrate_subagents.py` for CLI orchestration
 
 ---
 
@@ -595,7 +670,8 @@ Update Project SPR
 ---
 
 **Status**: ✅ ACTIVE (REQ-011 QUANT-001)  
-**Version**: 1.0.0  
+**Version**: 2.0.0  
 **Last Updated**: 2025-11-30  
-**Dependencies**: VS Code Copilot custom agents, runSubagent tool  
-**Integration**: SUPER_AGENT orchestration protocol
+**Dependencies**: Copilot CLI (gh copilot), Python 3.10+, orchestrate_subagents.py  
+**Integration**: SUPER_AGENT orchestration protocol via CLI subprocess execution  
+**Known Limitations**: Real-time status monitoring pending (QUANT-001.1), currently uses start/complete states

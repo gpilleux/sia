@@ -4,6 +4,11 @@ Sub-Agent Orchestrator - CLI-Based Parallel Execution
 
 Purpose: Spawn and monitor multiple sub-agents in parallel using Copilot CLI.
 
+**IMPORTANT**: This is the PRIMARY delegation mechanism for SIA framework.
+- Replaces native `runSubagent` tool (which doesn't support monitoring)
+- Custom agents are instruction contexts, NOT Python executors
+- Orchestrator spawns CLI subprocesses and monitors via output files
+
 Architecture:
     - File-based communication (status.yaml for progress tracking)
     - CLI subprocess spawning (copilot --agent <name> -p "prompt")
@@ -34,12 +39,12 @@ Environment:
 """
 
 import os
+import subprocess
 import sys
 import time
 import uuid
-import subprocess
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional, TypedDict
 
 try:

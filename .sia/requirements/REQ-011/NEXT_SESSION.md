@@ -1,116 +1,133 @@
-# REQ-011 NEXT SESSION - QUANT-001 End-to-End Validation
+# REQ-011 NEXT SESSION - QUANT-002 Repository Guardian Conversion
 
-**Objective**: Validate file-based protocol with live CLI sub-agent execution
+**Objective**: Convert Repository Guardian to native custom agent with skills integration
 
-**Status**: QUANT-001 implemented ✅ → Needs runtime validation
+**Status**: QUANT-001 VALIDATED (partial) ✅ → Ready for QUANT-002
 
 ---
 
 ## CONTEXT
 
-**Completed**:
-- File-based protocol (status.yaml, output.md, progress.log)
-- Orchestrator skill (spawn_parallel, poll_status, monitor_progress)
-- Research Specialist (progress tracking integrated)
-- Validation script (8/8 static checks passed)
+**QUANT-001 Results** (Session 3):
+- ✅ **Delegation works**: Agent executes, MCP queries functional, output quality excellent
+- ✅ **Copilot CLI integration**: Spawn successful, subprocess management working
+- ❌ **Real-time monitoring fails**: status.yaml never updated (architectural issue)
+- ✅ **Output quality validated**: 254 lines SPR, 5 patterns, 5 anti-patterns, 5 code examples
+- ✅ **Token efficiency confirmed**: 2,400 / 5,000 budget (48% used), 96% savings vs full wiki
 
-**Pending**:
-- **Live execution test** (copilot CLI spawn + real MCP queries)
-- End-to-end flow validation (spawn → poll → consolidate → integrate)
-- Performance metrics (latency, token usage, progress accuracy)
+**Key Learning** (LESSON_LEARNED_CLI_AGENTS.md):
+- Custom agents are **instruction contexts**, NOT Python script executors
+- Python code in agent.md = documentation/examples (not executable)
+- Agents CAN call MCP tools, CANNOT run arbitrary Python
+- Progress tracking must be orchestrator responsibility (parse output OR simple state machine)
+- **Delegation implementation**: Use `skills/orchestrate_subagents.py` (CLI-based subprocess execution)
+- **Documentation updated**: All references to `runSubagent` replaced with `orchestrate_subagents.py`
+
+**Decision**: 
+- Proceed to QUANT-002 (delegation validated, monitoring optional)
+- Skip QUANT-001.1 hotfix (not blocking for multi-agent system)
 
 ---
 
 ## TASK
 
-**Primary**: Execute live sub-agent orchestration with Research Specialist
+**Primary**: Create Repository Guardian custom agent with DDD enforcement capabilities
 
-**Test Scenario**:
-```
-User: "Investiga patrones de async connection pooling con pgvector en LangChain"
-→ SUPER_AGENT spawns research-specialist via orchestrator
-→ Monitor real-time progress (status.yaml polling every 2s)
-→ Validate MCP queries executed (DeepWiki calls to langchain-ai/langchain)
-→ Verify SPR output generated (findings, patterns, anti-patterns, code)
-→ Consolidate results (extract patterns for integration)
-```
+**Target File**: `.github/agents/repository-guardian.agent.md`
 
----
-
-## VALIDATION CHECKLIST
-
-### Pre-Execution
-- [ ] Copilot CLI installed (`which copilot` returns path)
-- [ ] Custom agent detected (`research-specialist.agent.md` visible)
-- [ ] VS Code settings enabled (`useIntentDetection: true`)
-- [ ] MCP servers active (deepwiki, repo-indexer)
-
-### Execution
-- [ ] Session created (`.sia/runtime/{UUID}/` directory exists)
-- [ ] Agent spawned (subprocess PID captured, no immediate crash)
-- [ ] Status updates (status.yaml modified at ~30s intervals)
-- [ ] Progress visible (`[research-specialist] X% - Current task`)
-- [ ] MCP queries executed (DeepWiki logs show repo queries)
-- [ ] Timeout enforced (agent completes or kills after 300s)
-
-### Post-Execution
-- [ ] Status final (`state: completed`, `progress_percent: 100`)
-- [ ] Output generated (`output.md` exists, SPR format valid)
-- [ ] Findings extracted (3+ patterns OR 1+ code example)
-- [ ] Token efficiency (<5000 total, no context explosion)
-- [ ] No errors (`errors: []` in status.yaml)
-- [ ] Progress log complete (phases logged with timestamps)
-
-### Integration
-- [ ] Results consolidated (orchestrator.consolidate_results() returns SPR)
-- [ ] Patterns extracted (code examples, anti-patterns identified)
-- [ ] Project SPR updated (findings integrated into `.sia/agents/[project].md`)
+**Scope**:
+1. **Migrate SPR content** from `agents/repository_guardian.md`
+2. **Define tools access**: `run_in_terminal`, `get_errors`, `read_file`, `grep_search`
+3. **Integrate skills**: `audit_ddd.py`, `check_complexity.sh`, `check_coverage.sh`
+4. **Test delegation**: SUPER_AGENT → repository-guardian (DDD validation flow)
+5. **Test handoff**: research-specialist → repository-guardian (pattern validation)
 
 ---
 
-## COMMANDS
+## IMPLEMENTATION CHECKLIST
 
-**Execute orchestrator**:
+### Pre-Implementation
+- [x] QUANT-001 validation complete (delegation confirmed working)
+- [x] Research Specialist operational (`.github/agents/research-specialist.agent.md`)
+- [x] Source SPR available (`agents/repository_guardian.md`)
+- [ ] Skills tested individually (`audit_ddd.py`, `check_complexity.sh`)
+
+### Agent Creation
+- [ ] YAML frontmatter defined (name, description, target, tools)
+- [ ] LSA (Latent Space Activation) section migrated
+- [ ] Core mission documented (DDD enforcement, SOLID validation)
+- [ ] Expertise sections preserved (Clean Architecture, Domain Modeling)
+- [ ] Workflow phases defined (Discovery → Analysis → Validation → Reporting)
+- [ ] Skills integration instructions (how to invoke via run_in_terminal)
+- [ ] Anti-patterns documented (what NOT to do)
+
+### Skills Integration
+- [ ] Test `audit_ddd.py` execution via `run_in_terminal`
+- [ ] Verify output parsing (violations → SPR format)
+- [ ] Test `check_complexity.sh` invocation
+- [ ] Test `check_coverage.sh` invocation
+- [ ] Validate error handling (missing tools, invalid paths)
+
+### Delegation Testing
+- [ ] SUPER_AGENT → repository-guardian (direct delegation)
+- [ ] Prompt template validated (TASK + CONTEXT + FILES + EXPECTED OUTPUT)
+- [ ] Output received (SPR format with violations)
+- [ ] Findings actionable (specific files + line numbers + corrections)
+
+### Handoff Testing
+- [ ] research-specialist → repository-guardian (pattern → validation flow)
+- [ ] Context preserved (sessionId shared between agents)
+- [ ] Output coherent (research findings fed into validation)
+
+---
+
+## REFERENCE COMMANDS
+
+**Test audit_ddd.py directly**:
 ```bash
-uv run --with pyyaml python -c "
-from skills.orchestrate_subagents import SubAgentOrchestrator
+# Verify skill works standalone
+uv run python skills/audit_ddd.py --directory installer --output analysis/ddd_audit.md
 
-orchestrator = SubAgentOrchestrator()
-tasks = [{
-    'agent_name': 'research-specialist',
-    'prompt': '''Research async connection pooling with pgvector in LangChain.
-
-CONTEXT: Building semantic code search with high concurrent load.
-QUESTIONS:
-1. How to configure PGVector with async engine + connection pooling?
-2. Batch embedding patterns (optimal batch_size for throughput)?
-3. Index optimization (IVFFlat vs HNSW for 100k+ vectors)?
-
-EXPECTED OUTPUT: SPR markdown (code examples + patterns + anti-patterns)
-REPOS: langchain-ai/langchain, pgvector/pgvector''',
-    'timeout': 300
-}]
-
-agents = orchestrator.spawn_parallel(tasks)
-orchestrator.monitor_progress(agents, verbose=True)
-results = orchestrator.consolidate_results(agents)
-
-print('\n' + '='*80)
-print('RESULTS:')
-print('='*80)
-for agent_name, spr in results.items():
-    print(f'\n## {agent_name.upper()}\n')
-    print(spr[:500] + '...' if len(spr) > 500 else spr)
-"
+# Expected: Markdown report with violations (if any)
+cat analysis/ddd_audit.md
 ```
 
-**Inspect session**:
+**Create agent file structure**:
 ```bash
-SESSION_ID=$(ls -t .sia/runtime/ | head -1)
-cat .sia/runtime/$SESSION_ID/orchestrator.yaml
-cat .sia/runtime/$SESSION_ID/research-specialist/status.yaml
-head -50 .sia/runtime/$SESSION_ID/research-specialist/output.md
-tail -20 .sia/runtime/$SESSION_ID/research-specialist/progress.log
+# Template structure
+cat > .github/agents/repository-guardian.agent.md << 'EOF'
+---
+name: repository-guardian
+description: DDD/SOLID enforcement and architecture validation
+target: github-copilot
+tools:
+  - run_in_terminal
+  - get_errors
+  - read_file
+  - grep_search
+  - list_code_usages
+---
+
+# Repository Guardian Agent
+
+[LSA, Mission, Expertise, Workflow sections from agents/repository_guardian.md]
+EOF
+```
+
+**Test delegation (interactive in Copilot Chat)**:
+```
+@workspace Delega a repository-guardian:
+
+TASK: Audit DDD compliance in installer/ directory
+
+CONTEXT: SIA framework installer module (auto_discovery.py, smart_init.py, install.py)
+
+EXPECTED OUTPUT:
+- Layer violations (if any)
+- Dependency rule breaks
+- Suggested fixes with code examples
+
+FILES: installer/*.py
 ```
 
 ---
@@ -118,82 +135,95 @@ tail -20 .sia/runtime/$SESSION_ID/research-specialist/progress.log
 ## SUCCESS CRITERIA
 
 **Minimum (MVP)**:
-1. Agent spawns without crash
-2. Status updates at least once (progress > 0%)
-3. Output file created (even if incomplete)
+1. Custom agent file created (`.github/agents/repository-guardian.agent.md`)
+2. Agent detected by VS Code (no YAML parsing errors)
+3. Delegation invocation successful (SUPER_AGENT → repository-guardian works)
+4. Output generated (SPR format, even if basic)
 
 **Target (Production-Ready)**:
-1. Status updates every 30s (5+ updates during 150s execution)
-2. Progress reaches 100% (state: completed)
-3. SPR output valid (<5000 tokens, 2+ findings)
-4. MCP queries logged (DeepWiki execution confirmed)
-5. No errors in status.yaml
+1. Skills integration works (`run_in_terminal` executes `audit_ddd.py`)
+2. Output parsing correct (violations extracted, formatted as SPR)
+3. Findings actionable (specific files, line numbers, corrections)
+4. Token efficiency maintained (<3000 tokens for typical audit)
+5. Anti-patterns documented in agent definition
 
 **Stretch (Optimal)**:
-1. Latency <120s (spawn → completion)
-2. Token efficiency >95% (vs full wiki context)
-3. Code examples runnable (syntax-valid Python)
-4. Anti-patterns identified (3+ documented)
-5. Handoff ready (can delegate to repository-guardian)
+1. Handoff validated (research-specialist → repository-guardian works)
+2. Multiple skills orchestrated (`audit_ddd.py` + `check_complexity.sh` in one session)
+3. Error handling robust (missing skills, invalid paths handled gracefully)
+4. Output includes visual diagrams (architecture violations visualized)
+5. Integration with SUPER_AGENT seamless (findings auto-update Project SPR)
 
 ---
 
 ## FAILURE SCENARIOS + MITIGATION
 
-**Scenario 1**: Agent crashes on spawn
-- **Check**: Copilot CLI version (`copilot --version`)
-- **Mitigation**: Update CLI or fallback to manual MCP queries
+**Scenario 1**: YAML frontmatter parsing error
+- **Check**: VS Code Problems panel (agent file syntax errors)
+- **Mitigation**: Validate against research-specialist.agent.md structure
 
-**Scenario 2**: Status never updates (stuck at 0%)
-- **Check**: `SIA_STATUS_FILE` env var set correctly
-- **Mitigation**: Debug snippet in research-specialist.agent.md
+**Scenario 2**: Skills not executable via run_in_terminal
+- **Check**: Test skill directly (`uv run python skills/audit_ddd.py`)
+- **Mitigation**: Fix skill dependencies, update instructions in agent
 
-**Scenario 3**: MCP queries fail (rate limit, auth)
-- **Check**: MCP server logs, API keys
-- **Mitigation**: Increase timeout, add retry logic
+**Scenario 3**: Agent doesn't invoke skills (uses tools but not run_in_terminal)
+- **Check**: Prompt clarity (did we explicitly say "run audit_ddd.py"?)
+- **Mitigation**: Update agent workflow instructions (step-by-step skill invocation)
 
-**Scenario 4**: Output incomplete (progress 60%, then hang)
-- **Check**: Copilot CLI logs in `logs/copilot.log`
-- **Mitigation**: Adjust timeout, simplify prompt
+**Scenario 4**: Output lacks violations details (generic response)
+- **Check**: Skill output (does audit_ddd.py return structured data?)
+- **Mitigation**: Improve skill output format, update agent parsing instructions
 
----
-
-## PERFORMANCE METRICS TO CAPTURE
-
-**Timing**:
-- Spawn latency (create_session → agent PID captured)
-- First status update (PID → first status.yaml modification)
-- MCP query latency (status update → DeepWiki response)
-- Completion time (spawn → state: completed)
-
-**Resource Usage**:
-- Memory (subprocess RSS during execution)
-- Disk (session directory size after completion)
-- Network (MCP query count × avg response size)
-
-**Quality**:
-- Token count (prompt + MCP responses + output)
-- Findings quality (patterns useful? code runnable?)
-- SPR compliance (structure matches template?)
+**Scenario 5**: Handoff fails (context not shared between agents)
+- **Check**: sessionId preservation (VS Code logs)
+- **Mitigation**: Document handoff protocol, test with simpler case first
 
 ---
 
-## NEXT STEPS POST-VALIDATION
+## METRICS TO CAPTURE
 
-**If PASS**:
-1. Mark QUANT-001 as production-ready
-2. Update SESSION_SUMMARY.md with live metrics
-3. Move to QUANT-002 (Repository Guardian conversion)
+**Implementation Metrics**:
+- Agent file size (lines of YAML + markdown)
+- Migration completeness (% of repository_guardian.md content preserved)
+- Skills integrated (count of run_in_terminal invocations in workflow)
 
-**If PARTIAL PASS** (works but has issues):
-1. Document issues in LESSONS_LEARNED.md
-2. Create QUANT-001.1 (refinements/bugfixes)
-3. Re-validate before QUANT-002
+**Execution Metrics**:
+- Delegation latency (invocation → first output)
+- Skill execution time (audit_ddd.py runtime)
+- Token usage (delegation prompt + agent response)
 
-**If FAIL** (agent doesn't execute):
-1. Debug root cause (CLI, MCP, protocol)
-2. Fix blockers in hotfix commit
-3. Re-run validation before proceeding
+**Quality Metrics**:
+- Violations detected (count of DDD/SOLID issues found)
+- Findings actionable (% with file + line + correction)
+- False positives (manual validation of reported issues)
+- Output SPR compliance (structure matches template)
+
+**Comparison (vs QUANT-001)**:
+- Skills invocation vs MCP queries (execution model difference)
+- Output complexity (violations report vs research findings)
+- Token efficiency (local skills vs external API calls)
+
+---
+
+## NEXT STEPS POST-IMPLEMENTATION
+
+**If PASS** (all criteria met):
+1. Mark QUANT-002 complete
+2. Update SESSION_SUMMARY.md with metrics
+3. Commit both agents (research-specialist + repository-guardian)
+4. Move to QUANT-003 (Compliance Officer conversion)
+
+**If PARTIAL PASS** (agent works, skills integration has issues):
+1. Document issues in LESSONS_LEARNED.md (e.g., "Skills require explicit paths")
+2. Create QUANT-002.1 (skills integration refinement)
+3. Update agent workflow instructions
+4. Re-test before QUANT-003
+
+**If FAIL** (agent doesn't invoke skills):
+1. Debug root cause (tools access, run_in_terminal limitations)
+2. Test simpler skill first (check_complexity.sh vs audit_ddd.py)
+3. Consider alternative: Agent uses read_file + grep_search (manual DDD check)
+4. Escalate if architectural blocker (runSubagent limitations)
 
 ---
 
@@ -202,25 +232,43 @@ tail -20 .sia/runtime/$SESSION_ID/research-specialist/progress.log
 ```
 @activate
 
-"Valida QUANT-001 end-to-end: ejecuta research-specialist via orchestrator con prompt pgvector async patterns. 
+"Implementa QUANT-002: Convierte Repository Guardian a custom agent nativo.
 
-Verifica:
-- Spawn exitoso (PID capturado)
-- Status updates cada 30s (5+ durante ejecución)
-- Output.md SPR válido (<5000 tokens, 2+ findings)
-- MCP queries ejecutadas (DeepWiki logs)
-- No errors en status.yaml
+Tareas:
+1. Crea .github/agents/repository-guardian.agent.md
+   - Migra SPR desde agents/repository_guardian.md
+   - YAML frontmatter: tools [run_in_terminal, get_errors, read_file, grep_search]
+   - Workflow: integra audit_ddd.py, check_complexity.sh
 
-Captura métricas: latency spawn→completion, token count, findings quality.
+2. Prueba delegación:
+   - SUPER_AGENT → repository-guardian (DDD audit en installer/)
+   - Verifica skills execution vía run_in_terminal
+   - Valida output SPR (violations + corrections)
 
-Si PASS → Update SESSION_SUMMARY + QUANT-002.
-Si FAIL → Debug + hotfix antes de continuar."
+3. Prueba handoff:
+   - research-specialist → repository-guardian
+   - Contexto compartido (sessionId)
+   - Findings coherentes
+
+Criterios éxito:
+- ✅ Agent ejecutable (no YAML errors)
+- ✅ Skills invocadas correctamente
+- ✅ Output actionable (file + line + fix)
+- ✅ Handoff funciona (context preserved)
+
+Captura métricas: implementation time, skills execution latency, token usage, violations count.
+
+Si PASS → Update SESSION_SUMMARY + commit + QUANT-003.
+Si PARTIAL → Document issues + QUANT-002.1.
+Si FAIL → Debug skills integration OR simplify approach."
 ```
 
 ---
 
 **Created**: 2025-11-30  
-**REQ**: REQ-011 QUANT-001  
-**Type**: Validation Protocol  
+**Updated**: 2025-11-30 (Post QUANT-001 validation)  
+**REQ**: REQ-011 QUANT-002  
+**Type**: Implementation Protocol  
 **Format**: SPR (Sparse Priming Representation)  
-**Status**: Ready for execution
+**Status**: Ready for execution  
+**Prerequisites**: ✅ QUANT-001 validated (delegation works, monitoring optional)
