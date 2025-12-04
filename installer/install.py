@@ -206,7 +206,7 @@ Reusable skills available in `sia/skills/`
             
         try:
             subprocess.run(
-                ["uv", "run", "--with", "pyyaml", "python3", str(smart_init)],
+                ["uv", "run", "--with", "pyyaml", str(smart_init)],
                 check=True,
                 cwd=self.root
             )
