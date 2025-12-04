@@ -178,7 +178,7 @@ Reusable skills available in `sia/skills/`
         }
         
         for path, content in readmes.items():
-            path.write_text(content)
+            path.write_text(content, encoding="utf-8")
             
     def _install_vscode_settings(self):
         """Install VS Code settings with placeholder replacement"""
@@ -186,12 +186,12 @@ Reusable skills available in `sia/skills/`
         if not template.exists():
             return
             
-        content = template.read_text()
+        content = template.read_text(encoding="utf-8")
         # Simple placeholder replacement
         content = content.replace("{{LOCALE}}", "en")
         content = content.replace("{{EXTRA_PATHS}}", "")
         
-        (self.vscode_dir / "settings.json").write_text(content)
+        (self.vscode_dir / "settings.json").write_text(content, encoding="utf-8")
         
     def _run_smart_init(self):
         """Run smart initialization (auto-discovery + population)"""
