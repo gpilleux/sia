@@ -65,6 +65,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/activate` | Bootstrap session         | Start of every session          |
 | `/continue` | Resume work               | Approved to proceed             |
 | `/boost`    | Reinforce powers          | Agent deviating from principles |
+| `/clean`    | Organize workspace        | Files in wrong locations        |
 | `/debug`    | First-principles analysis | Complex problems                |
 | `/test`     | Generate tests            | After implementation            |
 | `/validate` | UI validation             | Frontend changes                |
@@ -75,6 +76,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/sync`     | Sync framework updates    | After git submodule update      |
 | `/next`     | Prepare next session      | Task completed                  |
 | `/handoff`  | Transfer context          | Ending session                  |
+| `/oneliner` | Generate task one-liner   | Need concise task description   |
 
 ---
 
@@ -146,6 +148,84 @@ Agent: [Executes plan]
 2. Refreshes MCP sources
 3. Enforces core principles
 4. Validates recent work for violations
+
+---
+
+### `/clean` - Repository Cleanup
+
+**Purpose:** Organizar workspace - Archivos en ubicaciones canónicas
+
+**Usage:**
+```
+/clean                 # Dry-run (análisis sin ejecución)
+/clean --dry-run       # Explícito dry-run
+/clean + @continue     # Interactivo (presenta plan, espera confirmación)
+/clean --force         # Ejecuta TODO (requiere confirmación doble)
+```
+
+**What it does:**
+1. **Scan workspace** → Detecta archivos fuera de ubicaciones canónicas
+2. **Clasificar automáticamente** → Prompts, skills, docs, configs, temporales
+3. **Proponer movimientos** → Plan detallado con origen → destino
+4. **Esperar confirmación** → Requiere `@continue` para ejecutar
+5. **Ejecutar + backup** → Mueve archivos, crea backup automático
+6. **Log tracking** → Metadata en `.sia/metadata/cleanup_{timestamp}.log`
+
+**Detección automática:**
+- `*.prompt.md` fuera de `.sia/prompts/` o `sia/templates/prompts/`
+- Scripts Python en root → Clasificar como skill vs tool
+- Docs sueltos → Consolidar en `docs/` o `.sia/knowledge/`
+- Temporales → `.DS_Store`, `__pycache__`, `*.pyc`, `htmlcov/`
+- Backups antiguos → `.sia/backup/` (mantiene último mes)
+
+**Ubicaciones canónicas:**
+```
+.sia/
+  prompts/        → Proyecto-specific slash commands
+  skills/         → Proyecto-specific análisis
+  knowledge/      → Domain patterns
+  requirements/   → REQ-XXX folders
+  agents/         → Proyecto SPR
+  metadata/       → Version, sync, hashes
+
+sia/              → Framework submodule (READ-ONLY)
+  templates/prompts/
+  skills/
+  agents/
+  
+docs/            → User-facing documentation
+tests/            → Test suite
+```
+
+**Safety gates:**
+- ✅ Dry-run por defecto (NO ejecuta sin confirmación)
+- ✅ Backup automático en `.sia/backup/{timestamp}/` antes de mover
+- ✅ NUNCA toca: `.git/`, `pyproject.toml`, `.env`, `sia/*`
+- ✅ Log completo de movimientos para rollback
+- ✅ Confirmación doble para `--force`
+
+**Output:**
+```
+🧹 CLEANUP ANALYSIS
+
+📁 ARCHIVOS DETECTADOS FUERA DE LUGAR:
+   - test_script.py (root) → .sia/skills/
+   - old_prompt.md (docs/) → .sia/prompts/
+
+🗑️  TEMPORALES DETECTADOS:
+   - .DS_Store (12 archivos)
+   - __pycache__/ (5 directorios)
+
+📊 RESUMEN:
+   - Archivos a mover: 2
+   - Temporales a eliminar: 17
+
+🎯 ACCIÓN REQUERIDA:
+   - Dry-run completado
+   - Si apruebas: @continue
+```
+
+**Principles:** Safety First, Traceability, Rollback, DDD (bounded contexts)
 
 ---
 
@@ -442,6 +522,56 @@ CONTEXT FILES:
 - [file 2]
 NEXT ACTION: [Immediate action]
 ```
+
+---
+
+### `/oneliner` - Next Task One-Liner
+
+**Purpose:** Generate one-liner for next task in requirements workflow (context already documented)
+
+**Usage:**
+```
+/oneliner                    # Auto-detect from NEXT_SESSION.md or pending QUANTs
+/oneliner + "REQ-003"        # Specific requirement
+```
+
+**What it does:**
+1. Identifies next task (reads `NEXT_SESSION.md` or scans pending QUANTs)
+2. Extracts minimal critical info: REQ-ID + QUANT-ID + Title + ONE critical detail
+3. Synthesizes one sentence for `/activate` usage
+4. References breakdown docs (Super Agent will do deep research)
+
+**Structure:**
+```
+Implementa REQ-{ID} QUANT-{N}: {Title} {minimal critical detail}
+```
+
+**Examples:**
+- ✅ "Implementa REQ-003 QUANT-001: OAuth Provider Configuration usando Google ADK patterns"
+- ✅ "Implementa REQ-007 QUANT-003: Message Entity Validation con ValueObjects RFC 5322"
+- ✅ "Implementa REQ-012 QUANT-002: AsyncRepository Pattern respetando dependency inversion"
+
+**Does NOT include:**
+- ❌ Full description (already in breakdown)
+- ❌ All acceptance criteria (Super Agent reads them)
+- ❌ Prior research (Super Agent executes it)
+
+**Output:**
+```
+📌 NEXT TASK:
+Implementa REQ-{ID} QUANT-{N}: {Title} {critical detail}
+
+📂 CONTEXT:
+- .sia/requirements/REQ-{ID}/REQ-{ID}_quant_breakdown.md
+- .sia/requirements/REQ-{ID}/REQ-{ID}_domain_analysis.md
+```
+
+🎯 **ACTIVATION:**
+```
+/activate "Implementa REQ-{ID} QUANT-{N}: {brief title}"
+```
+
+**Principles:** Minimal context, Reference docs, Super Agent investigates
 
 ---
 
