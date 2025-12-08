@@ -231,7 +231,7 @@ class AutoDiscovery:
             # Check for FastAPI
             config_file = pyproject if pyproject else requirements
             try:
-                content = config_file.read_text()
+                content = config_file.read_text(encoding="utf-8")
                 if "fastapi" in content.lower():
                     stack.append("fastapi")
                 if "django" in content.lower():
@@ -247,7 +247,7 @@ class AutoDiscovery:
         if package_json:
             stack.append("node")
             try:
-                content = package_json.read_text()
+                content = package_json.read_text(encoding="utf-8")
                 if "react" in content.lower():
                     stack.append("react")
                 if "next" in content.lower():
@@ -331,7 +331,7 @@ class AutoDiscovery:
             print(f"   ⚠️  Template not found at {template_path}")
             return
 
-        content = template_path.read_text()
+        content = template_path.read_text(encoding="utf-8")
         
         # Replacements
         content = content.replace("{{PROJECT_NAME}}", self.config["project"].get("name", "Unknown"))
@@ -341,7 +341,7 @@ class AutoDiscovery:
         # SPR Content
         spr_path = self.config["spr"].get("path")
         if spr_path and (self.root / spr_path).exists():
-            spr_content = (self.root / spr_path).read_text()
+            spr_content = (self.root / spr_path).read_text(encoding="utf-8")
             content = content.replace("{{PROJECT_SPR_CONTENT}}", spr_content)
         else:
             content = content.replace("{{PROJECT_SPR_CONTENT}}", "_No SPR found._")
@@ -355,7 +355,7 @@ class AutoDiscovery:
         print(f"   📝 Writing to: {output_path}")
         print(f"   📝 Content Preview:\n{content[:200]}")
         
-        output_path.write_text(content)
+        output_path.write_text(content, encoding="utf-8")
         print(f"   ✅ Instructions updated at {output_path}")
 
 if __name__ == "__main__":

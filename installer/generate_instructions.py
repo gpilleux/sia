@@ -23,7 +23,7 @@ def generate_instructions(root_dir: str = "."):
         config = yaml.safe_load(f)
         
     # Load Template
-    template = template_path.read_text()
+    template = template_path.read_text(encoding="utf-8")
     
     # Load SPR
     spr_rel_path = config.get("spr", {}).get("path")
@@ -31,7 +31,7 @@ def generate_instructions(root_dir: str = "."):
     if spr_rel_path:
         spr_path = root / spr_rel_path
         if spr_path.exists():
-            spr_content = spr_path.read_text()
+            spr_content = spr_path.read_text(encoding="utf-8")
         else:
             print(f"⚠️  SPR file {spr_path} not found.")
     
@@ -59,7 +59,7 @@ def generate_instructions(root_dir: str = "."):
     
     # Write
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(content)
+    output_path.write_text(content, encoding="utf-8")
     print(f"✅ Generated instructions at {output_path}")
 
 if __name__ == "__main__":
