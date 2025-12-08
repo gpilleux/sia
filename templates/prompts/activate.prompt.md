@@ -33,14 +33,14 @@ Activa todos los super poderes del Super Agent para esta sesión.
    - `.sia/requirements/REQ-XXX/NEXT_SESSION.md` → Tarea pendiente
    - `.sia/requirements/REQ-XXX/REQ-XXX_quant_breakdown.md` → Estado QUANTs
 
-3. **Presenta plan de acción** y espera confirmación (`@continue`)
+3. **Presenta plan de acción** y espera confirmación (`/continue`)
 
 ---
 
 **USO TÍPICO:**
 ```
-@activate + "Lee REQ-003 y continúa donde quedamos"
-@activate + [one-liner generado por @next]
+/activate + "Lee REQ-003 y continúa donde quedamos"
+/activate + [one-liner generado por /oneliner]
 ```
 
 Confirma activación y presenta el contexto del REQ.

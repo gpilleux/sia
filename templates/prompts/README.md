@@ -47,8 +47,10 @@ cp templates/prompts/*.prompt.md .sia/prompts/
 |---------|------|---------|
 | `/activate` | `activate.prompt.md` | Bootstrap new session - quantum activation |
 | `/continue` | `continue.prompt.md` | Resume pending task |
+| `/oneliner` | `oneliner.prompt.md` | Generate activation one-liner for next task |
 | `/sync` | `sync.prompt.md` | Synchronize .sia/ with framework updates |
 | `/next` | `next.prompt.md` | Complete task and prepare next session |
+| `/commit` | `commit.prompt.md` | Generate atomic commits for current session |
 | `/handoff` | `handoff.prompt.md` | Transfer context to next agent |
 | `/update` | `update.prompt.md` | Update REQ documentation |
 | `/validate` | `validate.prompt.md` | Validate UI with Playwright |
@@ -56,6 +58,7 @@ cp templates/prompts/*.prompt.md .sia/prompts/
 | `/debug` | `debug.prompt.md` | OMEGA CRITICAL first-principles analysis |
 | `/spr` | `spr.prompt.md` | Compress content with SPR technique |
 | `/quant` | `quant.prompt.md` | Generate QUANT tasks breakdown |
+| `/clean` | `clean.prompt.md` | Organize workspace files to canonical locations |
 | `/boost` | `boost.prompt.md` | Reinforce powers mid-session |
 
 ---
@@ -68,9 +71,11 @@ cp templates/prompts/*.prompt.md .sia/prompts/
 3. [work...]     → Implementation
 4. /test         → Generate tests
 5. /validate     → Validate UI
-6. /update       → Document progress
-7. /next         → Prepare next session
-8. /handoff      → Transfer to next agent
+6. /commit       → Generate atomic commits
+7. /update       → Document progress
+8. /next         → Prepare next session
+9. /oneliner     → Get one-liner for next task
+10. /handoff     → Transfer to next agent
 ```
 
 ---
