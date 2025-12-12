@@ -88,6 +88,9 @@ secrets/
 .aws/
 .gcp/
 
+# SIA Framework - Local Requirements (never commit)
+.sia/requirements/
+
 # Docker
 .dockerignore
 
