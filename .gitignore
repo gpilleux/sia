@@ -129,3 +129,10 @@ docs/STEROIDS_SHEETS_INTEGRATION.md
 # Documentos Confidenciales
 docs/CAPACITACION_SIA.md
 CAPACITACION_SIA.md.bak
+
+# Project-specific files (MINVU, Sheets, etc.)
+.github/copilot-instructions-minvu.md
+agents/sheets.md
+agents/minvu*.md
+**/sheets.md
+**/*minvu*.md
