@@ -8,6 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **File Reader Skills System** (`templates/skills/file_readers/`, REQ-011)
+  - Zero-setup text extraction from DOCX, XLSX, PDF files
+  - Ephemeral dependencies via `uv run --with {library}`
+  - Strategy pattern with auto-discovery registry (`AbstractFileReader`)
+  - CLI facades: `read_docx.py`, `read_xlsx.py`, `read_pdf.py`
+  - Universal CLI: `read_file.py` (auto-detect format by extension)
+  - Comprehensive error handling (corrupted files, password-protected, unsupported formats)
+  - Memory-efficient implementations:
+    - DOCX: `iter_inner_content()` for nested elements extraction
+    - XLSX: `read_only=True` mode for 10x memory reduction
+    - PDF: `get_text(sort=True)` for natural reading order
+  - Installer integration: Auto-copies `file_readers/` module to `.sia/skills/`
+  - `/sync` prompt integration: Synchronizes file readers on framework updates
+  - Documentation: `skills/README.md` with non-technical usage examples
+  - Test coverage: 96% on core module, 85%+ on readers
+  - Exit code hygiene: 0=success, 1=file error, 2=unexpected
+  - Output separation: stdout=text, stderr=errors
+  - **Implementation**: Strategy + Registry pattern (DDD compliant)
+  - **Dependencies**: python-docx, openpyxl, PyMuPDF (ephemeral via uv)
+  - **Cross-platform**: macOS, Linux, Windows compatible
 - **Automatic UV Installation** (`installer/install.py`)
   - Detects missing `uv` and installs automatically using official installers
   - macOS/Linux: Uses `curl -LsSf https://astral.sh/uv/install.sh | sh`

@@ -77,6 +77,7 @@ cp sia/templates/prompts/*.prompt.md .sia/prompts/
 | `/next`     | Prepare next session      | Task completed                  |
 | `/handoff`  | Transfer context          | Ending session                  |
 | `/oneliner` | Generate task one-liner   | Need concise task description   |
+| `/read`     | Extract text from files   | Read DOCX, XLSX, PDF            |
 
 ---
 
@@ -572,6 +573,54 @@ Implementa REQ-{ID} QUANT-{N}: {Title} {critical detail}
 ```
 
 **Principles:** Minimal context, Reference docs, Super Agent investigates
+
+---
+
+### `/read` - Universal File Reader
+
+**Purpose:** Extract text from DOCX, XLSX, PDF files and persist to `.sia/docs/`
+
+**Usage:**
+```
+/read '/path/to/document.docx'
+/read '/path/to/spreadsheet.xlsx'
+/read '/path/to/report.pdf'
+```
+
+**What it does:**
+1. Executes `.sia/skills/read_file.py` with auto-format detection
+2. Extracts plain text from document
+3. **Persists literal content** to `.sia/docs/<basename>.txt`
+4. Presents concise content summary with artifact location
+
+**Supported formats:**
+- `.docx` - Microsoft Word documents
+- `.xlsx` - Microsoft Excel spreadsheets
+- `.pdf` - PDF documents
+
+**Example output:**
+```
+📄 Contenido extraído de: documento.docx
+💾 Persistido en: .sia/docs/documento.txt
+
+[Brief summary highlighting key content]
+```
+
+**Internal command:**
+```bash
+mkdir -p .sia/docs && \
+cd .sia/skills && \
+uv run --with python-docx --with openpyxl --with PyMuPDF python read_file.py '<filepath>' | \
+tee ../../.sia/docs/<basename>.txt
+```
+
+**Benefits:**
+- ✅ Zero manual copy-paste
+- ✅ Direct content extraction
+- ✅ **Persistent artifact** in `.sia/docs/`
+- ✅ Auto-dependency management via `uv`
+- ✅ Cross-format support
+- ✅ Traceable: `Δ(Input) ⇒ Δ(Artifact)`
 
 ---
 

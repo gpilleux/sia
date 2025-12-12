@@ -48,4 +48,88 @@ uv run skills/task_timer.py metrics
 
 ---
 
+## FILE READERS
+
+**Extract text from documents without manual dependency installation**
+
+File Readers system (REQ-011) provides zero-setup text extraction from DOCX, XLSX, and PDF files using ephemeral dependencies via `uv`.
+
+### Quick Start (No Technical Knowledge Required)
+
+**Read Word documents**:
+```bash
+uv run skills/read_docx.py report.docx > report_text.txt
+```
+
+**Read Excel spreadsheets**:
+```bash
+uv run skills/read_xlsx.py data.xlsx > data_text.txt
+```
+
+**Read PDF files**:
+```bash
+uv run skills/read_pdf.py invoice.pdf > invoice_text.txt
+```
+
+### Advanced Usage (Auto-detect format)
+
+```bash
+# Universal reader (detects format automatically)
+uv run skills/read_file.py document.docx
+uv run skills/read_file.py spreadsheet.xlsx
+uv run skills/read_file.py report.pdf
+
+# List supported formats
+uv run skills/read_file.py --list-formats
+```
+
+### Supported Formats
+
+- **DOCX**: Microsoft Word (text, tables, headers, footers)
+- **XLSX**: Microsoft Excel (all sheets, merged cells)
+- **PDF**: Adobe PDF (text extraction, natural reading order)
+
+### Error Handling
+
+**File not found**:
+```bash
+$ uv run skills/read_docx.py noexiste.docx
+Error: File not found: noexiste.docx
+```
+
+**Corrupted file**:
+```bash
+$ uv run skills/read_xlsx.py corrupted.xlsx
+Error: Corrupted XLSX file: Bad ZIP file
+```
+
+**Password-protected**:
+```bash
+$ uv run skills/read_pdf.py encrypted.pdf
+Error: Password-protected PDFs require password parameter
+```
+
+### Batch Processing
+
+**Process multiple files**:
+```bash
+for file in documents/*.docx; do
+    uv run skills/read_docx.py "$file" > "text/${file%.docx}.txt"
+done
+```
+
+### Technical Notes
+
+- **Zero setup**: `uv` installs dependencies automatically (python-docx, openpyxl, PyMuPDF)
+- **Memory efficient**: Uses streaming for large files
+- **Extensible**: Add new formats by creating readers in `file_readers/`
+- **Exit codes**: 0=success, 1=file error, 2=unexpected error
+- **Output separation**: stdout=text, stderr=errors
+
+**Implementation**: `file_readers/` module + CLI facades (`read_*.py`)
+
+**Documentation**: `.sia/requirements/REQ-011/` (domain analysis, QUANT breakdown)
+
+---
+
 **Philosophy**: Minimal tooling, maximum leverage. Use platform capabilities over custom scripts.
