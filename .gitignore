@@ -134,5 +134,6 @@ CAPACITACION_SIA.md.bak
 .github/copilot-instructions-minvu.md
 agents/sheets.md
 agents/minvu*.md
+agents/microsoft/
 **/sheets.md
 **/*minvu*.md
