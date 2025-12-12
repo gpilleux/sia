@@ -95,6 +95,9 @@ secrets/
 # Prototypes (experimental code)
 prototypes/
 
+# MCP Servers (development/testing)
+mcp_servers/
+
 # Docker
 .dockerignore
 
