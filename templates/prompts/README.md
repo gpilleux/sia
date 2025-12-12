@@ -43,23 +43,22 @@ cp templates/prompts/*.prompt.md .sia/prompts/
 
 ## Quick Reference
 
-| Command | File | Purpose |
-|---------|------|---------|
-| `/activate` | `activate.prompt.md` | Bootstrap new session - quantum activation |
-| `/continue` | `continue.prompt.md` | Resume pending task |
-| `/oneliner` | `oneliner.prompt.md` | Generate activation one-liner for next task |
-| `/sync` | `sync.prompt.md` | Synchronize .sia/ with framework updates |
-| `/next` | `next.prompt.md` | Complete task and prepare next session |
-| `/commit` | `commit.prompt.md` | Generate atomic commits for current session |
-| `/handoff` | `handoff.prompt.md` | Transfer context to next agent |
-| `/update` | `update.prompt.md` | Update REQ documentation |
-| `/validate` | `validate.prompt.md` | Validate UI with Playwright |
-| `/test` | `test.prompt.md` | Generate tests (Domain Research First!) |
-| `/debug` | `debug.prompt.md` | OMEGA CRITICAL first-principles analysis |
-| `/spr` | `spr.prompt.md` | Compress content with SPR technique |
-| `/quant` | `quant.prompt.md` | Generate QUANT tasks breakdown |
-| `/clean` | `clean.prompt.md` | Organize workspace files to canonical locations |
-| `/boost` | `boost.prompt.md` | Reinforce powers mid-session |
+| Command              | File                          | Purpose                                               |
+| -------------------- | ----------------------------- | ----------------------------------------------------- |
+| `/activate`          | `activate.prompt.md`          | Bootstrap new session - quantum activation            |
+| `/continue`          | `continue.prompt.md`          | Resume pending task                                   |
+| `/sync`              | `sync.prompt.md`              | Synchronize .sia/ with framework updates              |
+| `/sync-instructions` | `sync_instructions.prompt.md` | Update copilot-instructions.md with SIA core sections |
+| `/next`              | `next.prompt.md`              | Complete task and prepare next session                |
+| `/handoff`           | `handoff.prompt.md`           | Transfer context to next agent                        |
+| `/update`            | `update.prompt.md`            | Update REQ documentation                              |
+| `/validate`          | `validate.prompt.md`          | Validate UI with Playwright                           |
+| `/test`              | `test.prompt.md`              | Generate tests (Domain Research First!)               |
+| `/debug`             | `debug.prompt.md`             | OMEGA CRITICAL first-principles analysis              |
+| `/spr`               | `spr.prompt.md`               | Compress content with SPR technique                   |
+| `/quant`             | `quant.prompt.md`             | Generate QUANT tasks breakdown                        |
+| `/boost`             | `boost.prompt.md`             | Reinforce powers mid-session                          |
+| `/read`              | `read.prompt.md`              | Extract text from DOCX, XLSX, PDF                     |
 
 ---
 

@@ -192,9 +192,71 @@ For each file in existing_prompts:
 
 ### **4.1 Skills (`sia/skills/` → `.sia/skills/`)**
 
+**4.1.1 File Readers Module (REQ-011)**
+```
+Tool: list_dir("sia/templates/skills/file_readers/")
+Store: file_reader_modules[]
+
+If file_reader_modules:
+  Report: "📚 Detectados file readers en framework"
+  
+  # Sync file_readers/ module
+  For each module_file in file_reader_modules:
+    source = f"sia/templates/skills/file_readers/{module_file}"
+    target = f".sia/skills/file_readers/{module_file}"
+    
+    Tool: read_file(source, 1, -1)
+    Store: source_content
+    
+    If NOT exists(target):
+      Tool: create_file(target, source_content)
+      Report: "✅ NEW MODULE: file_readers/{module_file}"
+    Else:
+      Tool: read_file(target, 1, -1)
+      Store: target_content
+      
+      If source_content != target_content:
+        Tool: replace_string_in_file(target, target_content, source_content)
+        Report: "🔄 UPDATED: file_readers/{module_file}"
+      Else:
+        Report: "✅ SYNC: file_readers/{module_file}"
+  
+  # Sync CLI facades (read_*.py)
+  Tool: list_dir("sia/templates/skills/")
+  Filter: read_*.py
+  Store: reader_facades[]
+  
+  For each facade in reader_facades:
+    source = f"sia/templates/skills/{facade}"
+    target = f".sia/skills/{facade}"
+    
+    Tool: read_file(source, 1, -1)
+    Store: source_content
+    
+    If NOT exists(target):
+      Tool: create_file(target, source_content)
+      Tool: run_in_terminal(
+        command: f"chmod +x .sia/skills/{facade}",
+        explanation: "Hacer ejecutable el reader facade"
+      )
+      Report: "✅ NEW READER: {facade}"
+    Else:
+      Tool: read_file(target, 1, -1)
+      Store: target_content
+      
+      If source_content != target_content:
+        Tool: replace_string_in_file(target, target_content, source_content)
+        Report: "🔄 UPDATED: {facade}"
+      Else:
+        Report: "✅ SYNC: {facade}"
+Else:
+  Report: "⚠️  File readers no disponibles en framework (versión <1.2.0)"
+```
+
+**4.1.2 Other Skills (Custom)**
 ```
 Tool: list_dir("sia/skills/")
-Filter: *.sh, *.py, *.md (excluding README.md)
+Filter: *.sh, *.py, *.md (excluding README.md, read_*.py)
 Store: framework_skills[]
 
 For each skill in framework_skills:
