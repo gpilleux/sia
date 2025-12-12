@@ -91,6 +91,7 @@ secrets/
 # SIA Framework - Local Requirements (never commit)
 .sia/requirements/*
 !.sia/requirements/_archive/
+.sia/docs
 
 # Prototypes (experimental code)
 prototypes/
