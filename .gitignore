@@ -89,7 +89,8 @@ secrets/
 .gcp/
 
 # SIA Framework - Local Requirements (never commit)
-.sia/requirements/
+.sia/requirements/*
+!.sia/requirements/_archive/
 
 # Prototypes (experimental code)
 prototypes/
