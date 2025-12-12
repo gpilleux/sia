@@ -102,6 +102,17 @@ REM Copy slash commands (prompts)
 echo    [INFO] Installing slash commands...
 xcopy sia\templates\prompts\*.prompt.md .sia\prompts\ /Y /Q >nul
 
+REM Install file reader skills
+echo    [INFO] Installing file reader skills...
+if exist sia\templates\skills\file_readers (
+    mkdir .sia\skills\file_readers 2>nul
+    xcopy sia\templates\skills\file_readers\* .sia\skills\file_readers\ /E /Y /Q >nul
+    copy sia\templates\skills\read_*.py .sia\skills\ >nul 2>&1
+    echo    [OK] File readers installed (DOCX, XLSX, PDF)
+) else (
+    echo    [WARN] File readers not found in templates (framework might be outdated)
+)
+
 REM Install VS Code settings
 if exist .vscode\settings.json (
     echo    [WARN] .vscode\settings.json already exists, skipping...

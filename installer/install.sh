@@ -115,6 +115,18 @@ cp sia/templates/INIT_REQUIRED.template.md .sia/INIT_REQUIRED.md
 echo "   📋 Installing slash commands..."
 cp sia/templates/prompts/*.prompt.md .sia/prompts/
 
+# Install file reader skills
+echo "   📚 Installing file reader skills..."
+if [ -d "sia/templates/skills/file_readers" ]; then
+    mkdir -p .sia/skills/file_readers
+    cp -r sia/templates/skills/file_readers/* .sia/skills/file_readers/
+    cp sia/templates/skills/read_*.py .sia/skills/ 2>/dev/null || true
+    chmod +x .sia/skills/read_*.py 2>/dev/null || true
+    echo "   ✅ File readers installed (DOCX, XLSX, PDF)"
+else
+    echo "   ⚠️  File readers not found in templates (framework might be outdated)"
+fi
+
 # Install VS Code settings
 if [ -f .vscode/settings.json ]; then
     echo "   ⚠️  .vscode/settings.json already exists, skipping..."

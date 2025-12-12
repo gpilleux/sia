@@ -103,6 +103,35 @@ class SIAInstaller:
         if prompts_src.exists():
             for prompt_file in prompts_src.glob("*.prompt.md"):
                 shutil.copy(prompt_file, self.sia_dir / "prompts" / prompt_file.name)
+        
+        # Install file reader skills
+        print("   📚 Installing file reader skills...")
+        file_readers_src = self.sia_framework / "templates" / "skills" / "file_readers"
+        if file_readers_src.exists():
+            file_readers_dst = self.sia_dir / "skills" / "file_readers"
+            file_readers_dst.mkdir(parents=True, exist_ok=True)
+            
+            # Copy file_readers module
+            for file in file_readers_src.rglob("*"):
+                if file.is_file():
+                    relative_path = file.relative_to(file_readers_src)
+                    dst_file = file_readers_dst / relative_path
+                    dst_file.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(file, dst_file)
+            
+            # Copy CLI facades (read_*.py)
+            skills_src = self.sia_framework / "templates" / "skills"
+            if skills_src.exists():
+                for facade_file in skills_src.glob("read_*.py"):
+                    dst_file = self.sia_dir / "skills" / facade_file.name
+                    shutil.copy(facade_file, dst_file)
+                    # Make executable on Unix systems
+                    if self.platform in ["Darwin", "Linux"]:
+                        dst_file.chmod(0o755)
+            
+            print("   ✅ File readers installed (DOCX, XLSX, PDF)")
+        else:
+            print("   ⚠️  File readers not found in templates (framework might be outdated)")
                 
         # Install VS Code settings
         vscode_settings = self.vscode_dir / "settings.json"
