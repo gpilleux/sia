@@ -91,6 +91,9 @@ secrets/
 # SIA Framework - Local Requirements (never commit)
 .sia/requirements/
 
+# Prototypes (experimental code)
+prototypes/
+
 # Docker
 .dockerignore
 
