@@ -27,8 +27,9 @@ Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD 
 Keeps SIA updated across projects, tracks framework version.
 
 ```bash
+# git init
 git submodule add https://github.com/gpilleux/sia.git sia
-python3 sia/installer/install.py  # Recommended: Cross-platform Python installer
+uv run sia/installer/install.py  # Recommended: Cross-platform Python installer
 ```
 
 **Alternative platform-specific installers (legacy):**
