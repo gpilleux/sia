@@ -1,0 +1,140 @@
+# === SIA Framework .gitignore ===
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+*.egg-info/
+*.egg
+build/
+dist/
+*.whl
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+*.cover
+*.py,cover
+nosetests.xml
+coverage.xml
+
+# Type Checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Logs
+*.log
+logs/
+log/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets & Credentials
+.env
+.env.local
+.env.*.local
+secrets/
+*.pem
+*.key
+.aws/
+.gcp/
+
+# SIA Framework - Local Requirements (never commit)
+.sia/requirements/*
+!.sia/requirements/_archive/
+.sia/docs
+
+# Prototypes (experimental code)
+prototypes/
+
+# MCP Servers (development/testing)
+mcp_servers/
+
+# Docker
+.dockerignore
+
+# Node.js (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Temporary Files
+*.tmp
+*.temp
+tmp/
+temp/
+*.bak
+*.swn
+
+# UV Cache
+.uv/
+uv.lock
+
+.sia.detected.yaml
+
+scripts
+docs/STEROIDS_SHEETS_INTEGRATION.md
+
+# Documentos Confidenciales
+docs/CAPACITACION_SIA.md
+CAPACITACION_SIA.md.bak
+
+# Project-specific files (MINVU, Sheets, etc.)
+.github/copilot-instructions-minvu.md
+agents/sheets.md
+agents/minvu*.md
+agents/microsoft/
+**/sheets.md
+**/*minvu*.md
