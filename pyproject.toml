@@ -1,0 +1,57 @@
+[project]
+name = "sia-framework"
+version = "1.1.0"
+description = "Super Intelligence Agency - Meta-Cognitive Framework for Autonomous Software Development"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Gustavo Pilleux", email = "gpilleux@gmail.com"}
+]
+keywords = ["ai", "github-copilot", "ddd", "framework", "automation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/gpilleux/sia"
+Documentation = "https://github.com/gpilleux/sia/blob/main/README.md"
+Repository = "https://github.com/gpilleux/sia"
+Changelog = "https://github.com/gpilleux/sia/blob/main/docs/CHANGELOG.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "docker: Tests that require Docker (run manually with -m docker)",
+]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+
+[tool.coverage.run]
+source = ["installer"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
