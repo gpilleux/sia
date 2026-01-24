@@ -1,13 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "sia-framework"
-version = "1.1.0"
+version = "1.0.0"
 description = "Super Intelligence Agency - Meta-Cognitive Framework for Autonomous Software Development"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
-authors = [
-    {name = "Gustavo Pilleux", email = "gpilleux@gmail.com"}
-]
+license = { text = "MIT" }
+authors = [{ name = "Guillermo Pilleux", email = "gpilleux@gmail.com" }]
 keywords = ["ai", "github-copilot", "ddd", "framework", "automation"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -17,6 +19,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
+dependencies = ["pyyaml>=6.0", "click>=8.0"]
+
+[project.scripts]
+sia-framework = "sia_framework.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/gpilleux/sia"
@@ -24,26 +30,23 @@ Documentation = "https://github.com/gpilleux/sia/blob/main/README.md"
 Repository = "https://github.com/gpilleux/sia"
 Changelog = "https://github.com/gpilleux/sia/blob/main/docs/CHANGELOG.md"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/sia_framework"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/sia_framework/**/*", "README.md", "LICENSE"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-markers = [
-    "docker: Tests that require Docker (run manually with -m docker)",
-]
-addopts = [
-    "-v",
-    "--tb=short",
-    "--strict-markers",
-]
+markers = ["docker: Tests that require Docker (run manually with -m docker)"]
+addopts = ["-v", "--tb=short", "--strict-markers"]
 
 [tool.coverage.run]
 source = ["installer"]
-omit = [
-    "*/tests/*",
-    "*/__pycache__/*",
-]
+omit = ["*/tests/*", "*/__pycache__/*"]
 
 [tool.coverage.report]
 exclude_lines = [
