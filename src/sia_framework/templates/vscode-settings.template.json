@@ -1,0 +1,56 @@
+{
+    "// GitHub Copilot Configuration": "",
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "github.copilot.chat.scopeSelection": true,
+    "github.copilot.chat.localeOverride": "{{LOCALE}}",
+    
+    "// SIA Framework - Slash Commands": "",
+    "chat.promptFilesLocations": {
+        ".sia/prompts": true
+    },
+    
+    "// Python Configuration": "",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}",
+        "{{EXTRA_PATHS}}"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    
+    "// Editor Configuration": "",
+    "editor.rulers": [88, 120],
+    "editor.formatOnSave": true,
+    
+    "// Python Formatting & Linting": "",
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    
+    "// File Exclusions": "",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/htmlcov": true,
+        "**/.coverage": true,
+        "**/coverage.json": true
+    },
+    
+    "// Terminal Environment": "",
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}"
+    },
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}"
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}"
+    }
+}

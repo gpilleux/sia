@@ -1,50 +1,30 @@
 # SIA Framework - Quick Start Guide
 
-**Get started with SIA in 5 minutes on any platform**
+**Get started with SIA in 2 minutes on any platform**
 
 ## Prerequisites
 
-- **Git** (2.0+)
-- **Python** (3.10+)
+- **Python** (3.10+) with `uv` or `uvx`
 - **GitHub Copilot** subscription (required for AI orchestration)
 
 ## Installation
 
-### Option 1: Git Submodule (Recommended)
-
-**Why submodule**: Keep SIA updated across projects, track framework version, reuse configuration.
-
-**Step 1**: Add SIA as submodule:
+### One Command Install
 
 ```bash
-git submodule add https://github.com/gpilleux/sia.git sia
-git submodule update --init --recursive
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework init
 ```
 
-**Step 2**: Run installer (from project root):
+That's it! ✅
+
+### Other Commands
 
 ```bash
-python3 sia/installer/install.py  # ✅ Recommended: Works on all platforms
-```
+# Update copilot-instructions.md after project changes
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework update
 
-**Alternative platform-specific installers (legacy):**
-```bash
-bash sia/installer/install.sh     # macOS/Linux only
-sia\installer\install.bat         # Windows only
-```
-
-> **💡 Best Practice**: Use `install.py` for consistency. Shell scripts maintained for backwards compatibility but may be deprecated in future versions.
-
----
-
-### Option 2: Standalone Clone
-
-**Why standalone**: Single project, no multi-repo management, simpler `.gitignore`.
-
-```bash
-git clone https://github.com/gpilleux/sia.git sia
-python3 sia/installer/install.py  # ✅ Recommended: Cross-platform
-echo "sia/" >> .gitignore
+# Check installation health
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework doctor
 ```
 
 ---
@@ -55,14 +35,17 @@ echo "sia/" >> .gitignore
 3. ✅ Extracts bounded contexts from domain layer
 4. ✅ Generates `.sia.detected.yaml` configuration
 5. ✅ Creates `.github/copilot-instructions.md` with SIA integration
+6. ✅ Installs slash commands in `.sia/prompts/`
+7. ✅ Installs file readers (DOCX, XLSX, PDF) in `.sia/skills/`
 
-### Step 3: Verify Installation
+### Verify Installation
 
 Check that these files were created:
 
 ```bash
 ls -la .sia.detected.yaml
 ls -la .github/copilot-instructions.md
+ls -la .sia/
 ```
 
 ## Initialization Scenarios

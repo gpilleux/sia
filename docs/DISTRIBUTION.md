@@ -12,55 +12,31 @@
 ✅ **Analizar código** (complejidad, cobertura, dependencias)  
 ✅ **Razonar sobre arquitectura** antes de implementar  
 
-## Instalación Rápida (3 minutos)
+## Instalación Rápida (2 minutos)
 
 ### Paso 1: Requisitos Previos
 
-**Todos los sistemas operativos:**
-- Git 2.0+
-- Python 3.10+
-- Suscripción a GitHub Copilot
+- Python 3.10+ con `uv` o `uvx`
+- GitHub Copilot (suscripción requerida)
 
-**Instalación por plataforma:**
+**Instalar uv (si no lo tienes):**
 
-**macOS (Homebrew):**
 ```bash
-brew install python@3.10 git
-pip3 install uv
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+irm https://astral.sh/uv/install.ps1 | iex
 ```
 
-**Linux (Debian/Ubuntu):**
-```bash
-sudo apt install python3 python3-pip git
-pip3 install uv
-```
-
-**Windows:**
-1. Descargar Python 3.10+ desde [python.org](https://www.python.org/downloads/)
-   - ✅ Marcar "Add Python to PATH" durante instalación
-2. Descargar Git desde [git-scm.com](https://git-scm.com/download/win)
-3. Abrir Command Prompt y ejecutar: `pip install uv`
-
-### Paso 2: Agregar SIA a Tu Proyecto
+### Paso 2: Instalar SIA
 
 ```bash
 # En la raíz de tu proyecto
-git submodule add https://github.com/gpilleux/sia.git sia
-
-# Ejecutar instalador universal (recomendado para todos los OS)
-python3 sia/installer/install.py
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework init
 ```
 
-**Instaladores alternativos (legacy - solo si install.py falla):**
-```bash
-# macOS/Linux únicamente:
-bash sia/installer/install.sh
-
-# Windows únicamente:
-sia\installer\install.bat
-```
-
-> **💡 Recomendación**: Usa `install.py` en todos los sistemas. Los scripts shell se mantienen por compatibilidad pero pueden deprecarse en versiones futuras.
+¡Eso es todo! ✅
 
 ### Paso 3: Verificar Instalación
 
@@ -68,9 +44,20 @@ sia\installer\install.bat
 # Verificar archivos generados
 ls -la .sia.detected.yaml
 ls -la .github/copilot-instructions.md
+ls -la .sia/
 
 # Revisar configuración detectada
 cat .sia.detected.yaml
+```
+
+### Otros Comandos
+
+```bash
+# Actualizar copilot-instructions.md
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework update
+
+# Verificar salud de la instalación
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework doctor
 ```
 
 ## ¿Qué Hace el Instalador?
@@ -94,19 +81,25 @@ El instalador ejecuta **auto-discovery** en tu proyecto:
    - Crea `.sia.detected.yaml` con toda la metadata
    - Actualiza `.github/copilot-instructions.md` con SIA
 
+5. **Instala herramientas:**
+   - Slash commands en `.sia/prompts/`
+   - File readers (DOCX, XLSX, PDF) en `.sia/skills/`
+
 ## Estructura del Proyecto Post-Instalación
 
 ```
 tu-proyecto/
+├── .sia/                       # ✅ Directorio SIA del proyecto
+│   ├── agents/                 # Agentes específicos del proyecto
+│   ├── knowledge/              # Base de conocimiento
+│   ├── requirements/           # Gestión de requerimientos
+│   ├── skills/                 # Scripts y herramientas
+│   └── prompts/                # Slash commands
 ├── .sia.detected.yaml          # ✅ Config auto-generada
 ├── .github/
 │   └── copilot-instructions.md # ✅ Instrucciones mejoradas con SIA
-├── sia/                        # ✅ Git submodule (framework)
-│   ├── core/                   # Identidad del framework
-│   ├── agents/                 # Sub-agentes reusables
-│   ├── skills/                 # Herramientas de análisis
-│   ├── requirements/           # Templates QUANT
-│   └── installer/              # Scripts de instalación
+├── .vscode/
+│   └── settings.json           # ✅ Configuración VS Code
 └── ... (tu código existente)
 ```
 
@@ -131,23 +124,7 @@ SIA:
   5. Valida arquitectura post-cambio
 ```
 
-### 2. Validación de Arquitectura
-
-```bash
-# Analizar complejidad ciclomática
-sh sia/skills/check_complexity.sh
-# Output: Funciones con Rank C/D/E (refactorizar)
-
-# Visualizar dependencias
-sh sia/skills/visualize_architecture.sh
-# Output: Grafo de módulos (detecta violations)
-
-# Revisar cobertura de tests
-sh sia/skills/check_coverage.sh
-# Output: Reporte HTML con gaps
-```
-
-### 3. Gestión de Requerimientos
+### 2. Gestión de Requerimientos
 
 SIA implementa ciclo QUANT de 7 fases:
 

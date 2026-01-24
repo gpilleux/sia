@@ -2,7 +2,7 @@
 
 # Super Intelligence Agency (SIA)
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/gpilleux/sia/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/gpilleux/sia/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)](docs/QUICKSTART.md)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -20,34 +20,22 @@ Transform GitHub Copilot into a "Super Agent" with architectural reasoning, DDD 
 
 ## 🚀 Quick Installation
 
-**Universal cross-platform installer** – works on macOS, Linux, and Windows:
-
-### Option 1: Git Submodule (Recommended)
-
-Keeps SIA updated across projects, tracks framework version.
+**One command installation** using `uvx`:
 
 ```bash
-# git init
-git submodule add https://github.com/gpilleux/sia.git sia
-uv run sia/installer/install.py  # Recommended: Cross-platform Python installer
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework init
 ```
 
-**Alternative platform-specific installers (legacy):**
-```bash
-bash sia/installer/install.sh      # macOS/Linux only
-sia\installer\install.bat          # Windows only
-```
+That's it! SIA is now installed in your project.
 
-> **💡 Tip**: Use `install.py` for all platforms. Shell scripts maintained for backwards compatibility.
-
-### Option 2: Standalone Clone
-
-Single project, no submodule. Add `sia/` to `.gitignore`.
+### Other Commands
 
 ```bash
-git clone https://github.com/gpilleux/sia.git sia
-python3 sia/installer/install.py   # Recommended: Cross-platform installer
-echo "sia/" >> .gitignore
+# Update copilot-instructions.md after project changes
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework update
+
+# Check installation health
+uvx --from git+https://github.com/gpilleux/sia.git sia-framework doctor
 ```
 
 ---

@@ -5,6 +5,45 @@ All notable changes to the SIA (Super Intelligence Agency) framework will be doc
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-01-23
+
+### Breaking Changes
+- **Migrated to uvx Installation**
+  - Removed git submodule installation method
+  - New installation: `uvx --from git+https://github.com/gpilleux/sia.git sia-framework init`
+  - Package now distributed as `sia-framework` via pip/uvx
+  - Removed legacy shell installers (`install.sh`, `install.bat`)
+
+### Added
+- **CLI Entry Point** (`src/sia_framework/cli.py`)
+  - `sia-framework init` - Initialize SIA in current directory
+  - `sia-framework update` - Regenerate copilot-instructions.md
+  - `sia-framework doctor` - Check installation health
+  - Built with Click for robust argument parsing
+- **Package Structure** (`src/sia_framework/`)
+  - Proper Python package with `pyproject.toml` build system
+  - Uses `hatchling` for building wheels
+  - Includes all templates, core docs, agents, and skills as package data
+  - Dependencies: `pyyaml>=6.0`, `click>=8.0`
+- **Package Mode Detection**
+  - Installer detects running as installed package vs development mode
+  - Uses `importlib.resources` for accessing package data files
+  - Inception mode preserved for SIA self-development
+
+### Changed
+- **Simplified Installation**
+  - From 3 steps (submodule + install.py + init) to 1 command
+  - No more `.gitmodules` or submodule management
+  - Cleaner project structure without `sia/` subdirectory
+- **Version Reset to 1.0.0**
+  - Starting semantic versioning from this major release
+  - All previous versions considered pre-release/beta
+
+### Removed
+- `installer/install.sh` - Legacy bash installer
+- `installer/install.bat` - Legacy Windows batch installer
+- Git submodule installation method
+
 ## [Unreleased]
 
 ### Added
@@ -138,7 +177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - MCP setup guide with Azure authentication
   - Verification checklists for each scenario
 
-## [1.1.0] - 2025-11-23
+## [0.2.0] - 2025-11-23 (Pre-release)
 
 ### Added
 - **Context Hygiene Protocol** (`core/PROMPT_PLACEMENT.md`)
@@ -179,7 +218,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Context contamination from one-time prompts in permanent template
 - Missing platform detection in installer scripts
 
-## [1.0.0] - 2025-11-20
+## [0.1.0] - 2025-11-20 (Pre-release)
 
 ### Added
 - **Core Framework**
@@ -222,8 +261,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History Summary
 
-- **1.1.0**: Context hygiene, standalone install, distribution readiness
-- **1.0.0**: Initial framework release with SUPER AGENT orchestration
+- **1.0.0**: uvx installation, package distribution, CLI entry point
+- **0.2.0**: Context hygiene, standalone install, distribution readiness (pre-release)
+- **0.1.0**: Initial framework release with SUPER AGENT orchestration (pre-release)
 
 ---
 
