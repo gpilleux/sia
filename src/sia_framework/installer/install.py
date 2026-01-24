@@ -236,6 +236,36 @@ class SIAInstaller:
 
         print("   ✅ File readers installed (DOCX, XLSX, PDF)")
 
+        # Install SIA Core (Super Agent brain)
+        print("   🧠 Installing SIA core (Super Agent context)...")
+        core_dst = self.sia_dir / "core"
+        core_dst.mkdir(parents=True, exist_ok=True)
+        self._copy_resource_dir(("core",), core_dst)
+        print("   ✅ Core installed (SUPER_AGENT, CONCEPTS, STANDARDS)")
+
+        # Install Framework Agents
+        print("   🤖 Installing framework agents...")
+        agents_dst = self.sia_dir / "agents" / "_framework"
+        agents_dst.mkdir(parents=True, exist_ok=True)
+        self._copy_resource_dir(("agents",), agents_dst)
+        print("   ✅ Framework agents installed (repository_guardian, research_specialist)")
+
+        # Install additional skills (create_expert_agent, etc.)
+        print("   🛠️  Installing additional skills...")
+        skills_dst = self.sia_dir / "skills"
+        self._copy_resource_dir(("skills",), skills_dst)
+        print("   ✅ Skills installed (create_expert_agent, etc.)")
+
+        # Install reference templates
+        print("   📄 Installing reference templates...")
+        templates_dst = self.sia_dir / "templates"
+        templates_dst.mkdir(parents=True, exist_ok=True)
+        # Copy specific templates (not prompts or skills, those are already handled)
+        for template_name in ["PROJECT_SPR.template.md", "DEFAULT_STACK.md", "INIT_REQUIRED.template.md"]:
+            if self._resource_exists("templates", template_name):
+                self._copy_resource(("templates", template_name), templates_dst / template_name)
+        print("   ✅ Reference templates installed")
+
         # Install VS Code settings
         vscode_settings = self.vscode_dir / "settings.json"
         if vscode_settings.exists() and not self.force:
@@ -254,7 +284,11 @@ class SIAInstaller:
                 self._copy_resource(("templates", "gitignore.template"), gitignore_path)
 
         print("   ✅ .sia/ structure created")
+        print("   ✅ .sia/core/ Super Agent brain installed")
+        print("   ✅ .sia/agents/_framework/ framework agents installed")
+        print("   ✅ .sia/skills/ all skills installed")
         print("   ✅ .sia/prompts/ slash commands installed")
+        print("   ✅ .sia/templates/ reference templates installed")
         print("   ✅ .vscode/settings.json configured")
         print("   ✅ .sia/INIT_REQUIRED.md created (one-time init instructions)")
 
@@ -266,20 +300,30 @@ class SIAInstaller:
 This directory contains the SIA framework integration for this project.
 
 ## Structure
-- `agents/`: Project-specific agent definitions
+- `core/`: SIA core context (SUPER_AGENT, CONCEPTS, STANDARDS)
+- `agents/`: Project agents + `_framework/` (repository_guardian, etc.)
 - `knowledge/`: Active and archived knowledge base
 - `requirements/`: Requirements management (active and archived)
-- `skills/`: Project-specific automation skills
+- `skills/`: All skills (file readers, create_expert_agent, etc.)
+- `prompts/`: Slash commands for Copilot
+- `templates/`: Reference templates (PROJECT_SPR, DEFAULT_STACK)
 
 See SIA Framework documentation for complete reference.
 """,
             self.sia_dir / "agents" / "README.md": """# Project Agents
 
-Define project-specific agents here. The SUPER AGENT will populate this
-directory during repository initialization.
+Project-specific agents go here. Framework agents are in `_framework/`.
+
+The SUPER AGENT will create your project SPR during initialization.
 
 ## Next Steps
 Ask GitHub Copilot: "Initialize SIA agents for this repository"
+
+## Framework Agents (in _framework/)
+- repository_guardian.md - DDD/SOLID enforcement
+- research_specialist.md - Domain research
+- compliance_officer.md - QUANT compliance
+- sia.md - Core SIA agent
 """,
             self.sia_dir
             / "knowledge"
@@ -300,10 +344,22 @@ Documents are archived after project milestones.
 """,
             self.sia_dir / "skills" / "README.md": """# Project Skills
 
-Project-specific automation scripts.
-
 ## Installed Skills
-- File readers: DOCX, XLSX, PDF support
+
+### File Readers
+- `read_docx.py` - Extract text from Word documents
+- `read_xlsx.py` - Extract text from Excel spreadsheets
+- `read_pdf.py` - Extract text from PDF files
+- `read_file.py` - Universal reader (auto-detect format)
+
+### Agent Creation
+- `create_expert_agent.md` - Guide for creating expert agents
+- `create_agent_cli.py` - CLI for agent scaffolding
+
+## Usage
+```bash
+uv run .sia/skills/read_file.py document.pdf
+```
 """,
         }
 
@@ -372,13 +428,16 @@ Project-specific automation scripts.
         print("[SUCCESS] SIA Installation Complete!")
         print()
         print("  Created:")
-        print("  - Directory: .sia/ (agents, knowledge, requirements, skills, prompts)")
-        print("  - Directory: .vscode/ (VS Code configuration)")
-        print("  - Configuration: .sia.detected.yaml")
-        print("  - Configuration: .vscode/settings.json (slash commands enabled)")
-        print("  - Instructions: .github/copilot-instructions.md")
-        print("  - Init Protocol: .sia/INIT_REQUIRED.md (one-time)")
-        print("  - Slash Commands: .sia/prompts/*.prompt.md")
+        print("  - .sia/core/ - Super Agent brain (SUPER_AGENT, CONCEPTS, STANDARDS)")
+        print("  - .sia/agents/_framework/ - Framework agents (guardian, specialist)")
+        print("  - .sia/skills/ - All skills (file readers, create_expert_agent)")
+        print("  - .sia/prompts/ - Slash commands (17 commands)")
+        print("  - .sia/templates/ - Reference templates (PROJECT_SPR, DEFAULT_STACK)")
+        print("  - .sia/knowledge/ - Knowledge base structure")
+        print("  - .sia/requirements/ - Requirements management")
+        print("  - .vscode/settings.json - VS Code configuration")
+        print("  - .github/copilot-instructions.md - Copilot context")
+        print("  - .sia.detected.yaml - Auto-detected project config")
         print()
         print("⚠️  IMPORTANT: Repository requires SUPER AGENT initialization")
         print()
@@ -387,6 +446,7 @@ Project-specific automation scripts.
         print("  2. Ask Copilot: 'Initialize SIA for this repository'")
         print()
         print("     The SUPER AGENT will:")
+        print("     - Read .sia/core/SUPER_AGENT.md for context")
         print("     - Analyze repository structure and domain")
         print("     - Generate project SPR (.sia/agents/<project>.md)")
         print("     - Detect specialized agents")
