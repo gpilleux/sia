@@ -1,0 +1,134 @@
+# === SIA Framework Standard Exclusions ===
+# Generated from sia/templates/gitignore.template
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+*.cover
+*.py,cover
+.cache
+nosetests.xml
+coverage.xml
+*.coveragerc
+
+# Type Checking
+.pytype/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Docker
+.dockerignore
+
+# Node.js (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+logs/
+log/
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets & Environment
+.env.local
+.env.*.local
+secrets/
+*.pem
+*.key
+
+# Build Artifacts
+*.wasm
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary Files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Project-Specific (CUSTOMIZE BELOW)
+# ==================================
+# Uncomment and customize for your project:
+# output/
+# data/
+# uploads/
+# downloads/
